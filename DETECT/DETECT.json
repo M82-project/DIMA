@@ -1,0 +1,82 @@
+{
+  "values": [
+    {
+      "value": "TA0011",
+      "description": "Information préexistante",
+      "meta": {
+        "techniques": [
+          {
+            "TE0111": "Heuristique de disponibilité"
+          },
+          {
+            "TE0112": "Effet de simple exposition"
+          },
+        ]
+      },
+      "uuid": "f7b94d9e-2e5b-4082-9f96-ab704e6e1d95"
+    },
+    {
+      "value": "TA0012",
+      "description": "Information à exposition répétée", 
+      "meta": {
+        "techniques": [
+          {
+            "TE0121": "Illusion de la fréquence"
+          },
+          {
+            "T0122": "Effet de contexte"
+          }
+        ]
+      },
+      "uuid": "a2d9c63d-f4d6-4183-b0f7-2169b8c2d8d4"
+    },
+    {
+      "value": "TA0013",
+      "description": "Information clivante",
+      "meta": {
+        "techniques": [
+          {
+            "TE0131": "Effet de bizarrerie"
+          },
+          {
+            "TE0132": "Biais de négativité"
+          }
+        ]
+      },
+      "uuid": "d8f6b6c4-e9b1-4c16-9d8c-2b3ce6d2f332"
+    },
+    {
+      "value": "TA0014",
+      "description": "Ecart à la norme",
+      "meta": {
+        "techniques": [
+          {
+            "TE0141": "Effet von Restorff"
+          },
+          {
+            "TE0142": "Biais d'ancrage"
+          },
+          {
+            "TE0143": "Effet de contraste"
+          }
+        ]
+      },
+      "uuid": "b7f72b4a-d8a9-4613-9d1d-f11e01e6527c"
+    },
+    {
+      "value": "TA0015",
+      "description": "Détail signifiant",
+      "meta": {
+        "techniques": [
+          {
+            "T0151": "Biais de distinction"
+          },
+          {
+            "T0152": "Loi de Weber-Fechner"
+          }
+        ]
+      },
+      "uuid": "e8d27437-6c1d-4e07-9f33-d8e164bb9d2e"
+    }
+  ]
+}
