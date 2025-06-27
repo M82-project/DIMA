@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Analyseur DIMA",
+  "version": "1.0",
+  "description": "Plugin d'analyse de manipulation cognitive selon la matrice DIMA",
+  "permissions": ["activeTab", "storage"],
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"]
+  }],
+  "action": {
+    "default_title": "Analyse DIMA"
+  }
+}
