@@ -20,6 +20,12 @@ const DIMA_TECHNIQUES = [
         mots_cles: ["partout", "everywhere", "de plus en plus", "more and more", "fréquent", "frequent", "épidémie", "epidemic"]
     },
     {
+        index: "TE0122",
+        nom: "Effet de contexte",
+        phase: "Detect", 
+        mots_cles: ["similaire", "same as", "cela rappelle", "déjà vu", "par ailleurs", "contexte"]
+    },
+    {
         index: "TE0131",
         nom: "Effet de bizarrerie",
         phase: "Detect",
@@ -44,6 +50,12 @@ const DIMA_TECHNIQUES = [
         mots_cles: ["première fois", "first time", "jamais vu", "never seen", "inédit", "unprecedented", "révélation", "revelation"]
     },
     {
+        index: "TE0143",
+        nom: "Effet de contraste",
+        phase: "Detect", 
+        mots_cles: ["par rapport à", "compare with", "différence", "difference", "comparaison", "delta", "distinction"]
+    },
+    {
         index: "TE0500",
         nom: "Clickbait",
         phase: "Detect",
@@ -52,10 +64,16 @@ const DIMA_TECHNIQUES = [
 
     // PHASE INFORMER
     {
+        index: "TE0211",
+        nom: "Corrélation illusoire",
+        phase: "Informer",
+        mots_cles: ["corrélation", "similaire", "pareil", "comparaison"]
+    },
+    {
         index: "TE0221",
         nom: "Stéréotypes",
         phase: "Informer",
-        mots_cles: ["tous les", "all the", "toujours", "always", "jamais", "never", "en général", "in general", "les français", "americans"]
+        mots_cles: ["tous les", "stéréotype", "les étrangers", "les immigrants", "all the", "toujours", "always", "jamais", "never", "en général", "in general", "les français", "americans"]
     },
     {
         index: "TE0241",
@@ -67,13 +85,13 @@ const DIMA_TECHNIQUES = [
         index: "TE0251",
         nom: "Faux consensus",
         phase: "Informer",
-        mots_cles: ["tout le monde", "everyone", "la plupart", "most people", "nous pensons", "we think", "consensus", "accord"]
+        mots_cles: ["tout le monde", "consesnsus", "convergence","everyone", "la plupart", "most people", "nous pensons", "we think", "consensus", "accord"]
     },
     {
         index: "TE0261",
         nom: "Biais rétrospectif",
         phase: "Informer",
-        mots_cles: ["j'avais dit", "i told you", "prévisible", "predictable", "on aurait dû", "should have", "signes", "signs"]
+        mots_cles: ["j'avais dit", "nous étions prévenus", "on le savait","i told you", "prévisible", "predictable", "on aurait dû", "should have", "signes", "signs"]
     },
 
     // PHASE MEMORISER
@@ -81,13 +99,13 @@ const DIMA_TECHNIQUES = [
         index: "TE0321",
         nom: "Biais de confirmation",
         phase: "Mémoriser",
-        mots_cles: ["confirme", "confirms", "prouve", "proves", "comme prévu", "as expected", "j'avais raison", "i was right", "évident", "obvious"]
+        mots_cles: ["confirme", "cela démontre", "démontrer", "confirms", "prouve", "proves", "comme prévu", "as expected", "j'avais raison", "i was right", "évident", "obvious"]
     },
     {
         index: "TE0331",
         nom: "Effet de récence",
         phase: "Mémoriser",
-        mots_cles: ["récent", "recent", "dernier", "last", "nouveau", "new", "frais", "fresh", "actuel", "current"]
+        mots_cles: ["récent", "recent", "nouveauté", "dernier", "last", "nouveau", "new", "frais", "fresh", "actuel", "current"]
     },
     {
         index: "TE0333",
@@ -226,7 +244,7 @@ class DIMAAnalyzer {
         const result = {
             globalScore: globalScore,
             detectedTechniques: detected,
-            riskLevel: globalScore < 25 ? 'Faible' : globalScore < 50 ? 'Modéré' : globalScore < 75 ? 'Élevé' : 'Critique',
+            riskLevel: globalScore < 20 ? 'Faible' : globalScore < 30 ? 'Modéré' : globalScore < 50 ? 'Élevé' :globalScore < 75 ? 'Très Élevé' : 'Critique',
             url: window.location.href,
             title: title
         };
