@@ -70,10 +70,34 @@ const DIMA_TECHNIQUES = [
         mots_cles: ["corrélation", "similaire", "pareil", "comparaison"]
     },
     {
+        index: "TE0212",
+        nom: "Biais de la preuve anecdotique",
+        phase: "Informer",
+        mots_cles: ["cette histoire démontre", "anecdote", "exemple", "illustration"]
+    },
+    {
+        index: "TE0213",
+        nom: "Illusion des séries",
+        phase: "Informer",
+        mots_cles: ["coïncidences", "motif", "données démontrent", "statistiques"]
+    },
+    {
         index: "TE0221",
         nom: "Stéréotypes",
         phase: "Informer",
         mots_cles: ["tous les", "stéréotype", "les étrangers", "les immigrants", "all the", "toujours", "always", "jamais", "never", "en général", "in general", "les français", "americans"]
+    },
+       {
+        index: "TE0231",
+        nom: "Biais d'homogénéité",
+        phase: "Informer",
+        mots_cles: ["tous les", "Homogène", "tous pareil", "toutes choses égales par ailleurs", "tous"]
+    },
+        {
+        index: "TE0232",
+        nom: "Biais de la route connue",
+        phase: "Informer",
+        mots_cles: ["comme avant", "habitude", "habituel", "conserrver", "rassurant"]
     },
     {
         index: "TE0241",
@@ -95,6 +119,24 @@ const DIMA_TECHNIQUES = [
     },
 
     // PHASE MEMORISER
+    {
+        index: "TE0312",
+        nom: "Biais de la confusion des sources",
+        phase: "Mémoriser",
+        mots_cles: ["des sources affirment", "sources confirment", "rien ne démontre", "hasard ?", "les faits"]
+    },
+    {
+        index: "TE0313",
+        nom: "Effet d'espacement",
+        phase: "Mémoriser",
+        mots_cles: ["comme déjà", "dans un article précédent"]
+    },
+    {
+        index: "TE0314",
+        nom: "Effet de suggestion",
+        phase: "Mémoriser",
+        mots_cles: ["et si", "cela évoque", "évoquer", "image"]
+    },
     {
         index: "TE0321",
         nom: "Biais de confirmation",
