@@ -1,5 +1,5 @@
 Créez un nouveau dossier sur votre bureau : plugin-dima
-copiez dans ce dossier les deux fichier : content.js et manifest.json
+copiez dans ce dossier les fichiers : content.js, manifest.json et les logo.
 Ouvrez Chrome ou Edge
 Tapez dans la barre d'adresse : chrome://extensions/ (ou edge://extensions/)
 Activez le "Mode développeur" (bouton en haut à droite)
