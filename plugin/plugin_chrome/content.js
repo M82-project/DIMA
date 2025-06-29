@@ -362,10 +362,11 @@ class DIMAAnalyzer {
     }
 
     getColor(score) {
-        if (score < 25) return '#27ae60';
-        if (score < 50) return '#f39c12'; 
-        if (score < 75) return '#e67e22';
-        return '#e74c3c';
+        if (score < 20) return '#27ae60';
+        if (score < 30) return '#f39c12'; 
+        if (score < 50) return '#e67e22';
+        if (score < 75) return '#d35400';
+        return '#b30000';
     }
 
     showModal() {
