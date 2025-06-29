@@ -404,7 +404,7 @@ class DIMAAnalyzer {
                         </div>
                         <p style="color: #7f8c8d; margin: 0;">
                             Détection de manipulation cognitive par 
-                            <a href="https://diod.m82-project.org/" target="_blank" 
+                            <a href="https://m82-project.org/" target="_blank" 
                                style="color: #3498db; text-decoration: none;">M82 Project</a>
                         </p>
                     </div>
