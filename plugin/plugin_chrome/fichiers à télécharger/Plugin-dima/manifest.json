@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Analyseur DIMA - M82 Project",
+  "version": "1.0",
+  "description": "Plugin d'analyse de manipulation cognitive selon la matrice DIMA par M82 Project",
+  "permissions": ["activeTab", "storage"],
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["content.js"]
+  }],
+  "action": {
+    "default_title": "Analyse DIMA - M82 Project"
+  },
+  "icons": {
+    "16": "m82-logo-16.png",
+    "48": "m82-logo-48.png",
+    "128": "m82-logo-128.png"
+  },
+  "web_accessible_resources": [{
+    "resources": ["m82-logo-16.png"],
+    "matches": ["<all_urls>"]
+  }]
+}
