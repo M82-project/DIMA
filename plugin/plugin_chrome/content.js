@@ -1,11 +1,11 @@
-// Plugin DIMA - Version simplifiée et robuste
+// Plugin DIMA - Version avec fichiers PNG
 const DIMA_TECHNIQUES = [
     // PHASE DETECTER
     {
         index: "TE0111",
         nom: "Heuristique de disponibilité",
         phase: "Detect",
-        mots_cles: ["récent", "recently", "exemple", "example", "cas", "case", "témoignage", "testimony"]
+        mots_cles: ["récent","disponible", "recently", "exemple", "example", "cas", "case", "témoignage", "testimony"]
     },
     {
         index: "TE0112", 
@@ -199,7 +199,6 @@ class DIMAAnalyzer {
     init() {
         console.log('DIMA: Initialisation...');
         
-        // Attendre que la page soit prête
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 this.delayedInit();
@@ -210,7 +209,6 @@ class DIMAAnalyzer {
     }
 
     delayedInit() {
-        // Attendre un peu plus pour que la page soit complètement chargée
         setTimeout(() => {
             try {
                 this.analyzeCurrentPage();
@@ -228,7 +226,6 @@ class DIMAAnalyzer {
             const textElements = document.querySelectorAll('p, h1, h2, h3, article, .content, .article-content');
             let content = '';
             
-            // Extraire le texte de manière sécurisée
             for (let i = 0; i < Math.min(textElements.length, 10); i++) {
                 const element = textElements[i];
                 if (element && element.textContent) {
@@ -237,7 +234,6 @@ class DIMAAnalyzer {
             }
             
             content = content.substring(0, 1500);
-            
             console.log('DIMA: Texte extrait:', content.length, 'caractères');
             
             this.analysisResults = this.performAnalysis(title, content);
@@ -297,7 +293,6 @@ class DIMAAnalyzer {
 
     createButton() {
         try {
-            // Supprimer l'ancien bouton s'il existe
             const existing = document.getElementById('dima-btn');
             if (existing) {
                 existing.remove();
@@ -310,9 +305,10 @@ class DIMAAnalyzer {
 
             const button = document.createElement('div');
             button.id = 'dima-btn';
+            
+            // Bouton simple SANS logo (comme demandé)
             button.innerHTML = `🧠 ${this.analysisResults.globalScore}`;
             
-            // Style du bouton
             button.style.cssText = `
                 position: fixed !important;
                 top: 20px !important;
@@ -334,7 +330,6 @@ class DIMAAnalyzer {
 
             button.title = `DIMA Score: ${this.analysisResults.globalScore} - ${this.analysisResults.detectedTechniques.length} techniques détectées`;
             
-            // Events
             button.addEventListener('click', () => {
                 this.showModal();
             });
@@ -347,7 +342,6 @@ class DIMAAnalyzer {
                 button.style.transform = 'scale(1)';
             });
 
-            // Ajouter le bouton au DOM
             if (document.body) {
                 document.body.appendChild(button);
                 this.buttonCreated = true;
@@ -373,7 +367,6 @@ class DIMAAnalyzer {
         try {
             console.log('DIMA: Affichage du modal');
             
-            // Supprimer modal existant
             const existing = document.getElementById('dima-modal');
             if (existing) {
                 existing.remove();
@@ -396,11 +389,24 @@ class DIMAAnalyzer {
                 font-family: Arial, sans-serif !important;
             `;
 
+            // Récupérer l'URL du logo via l'API Chrome
+            const logoUrl = chrome.runtime.getURL('m82-logo-16.png');
+
             modal.innerHTML = `
                 <div style="background: white; padding: 30px; border-radius: 15px; max-width: 600px; max-height: 80vh; overflow-y: auto; margin: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <h2 style="color: #2c3e50; margin: 0 0 10px 0;">🧠 Analyse DIMA</h2>
-                        <p style="color: #7f8c8d; margin: 0;">Détection de manipulation cognitive</p>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px;">
+                            <img src="${logoUrl}" 
+                                 style="width: 24px; height: 24px;" 
+                                 alt="M82 Project"
+                                 onerror="this.style.display='none'">
+                            <h2 style="color: #2c3e50; margin: 0;">Analyse DIMA</h2>
+                        </div>
+                        <p style="color: #7f8c8d; margin: 0;">
+                            Détection de manipulation cognitive par 
+                            <a href="https://diod.m82-project.org/" target="_blank" 
+                               style="color: #3498db; text-decoration: none;">M82 Project</a>
+                        </p>
                     </div>
                     
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
@@ -435,7 +441,6 @@ class DIMAAnalyzer {
                 </div>
             `;
 
-            // Event pour fermer en cliquant à l'extérieur
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     modal.remove();
