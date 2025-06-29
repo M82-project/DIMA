@@ -35,7 +35,7 @@ const DIMA_TECHNIQUES = [
         index: "TE0132",
         nom: "Biais de négativité", 
         phase: "Detect",
-        mots_cles: ["catastrophe", "disaster", "danger", "menace", "threat", "risque", "risk", "grave", "serious", "crise", "crisis"]
+        mots_cles: ["catastrophe", "chaos","disaster", "danger", "menace", "threat", "risque", "risk", "grave", "serious", "crise", "crisis"]
     },
     {
         index: "TE0141",
