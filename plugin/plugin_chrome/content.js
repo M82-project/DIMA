@@ -73,7 +73,7 @@ const DIMA_TECHNIQUES = [
         index: "TE0212",
         nom: "Biais de la preuve anecdotique",
         phase: "Informer",
-        mots_cles: ["cette histoire démontre", "anecdote", "exemple", "illustration"]
+        mots_cles: ["cette histoire démontre", "anecdote", "exemple", "illustration","selon une étude","un témoignage","un témoin"]
     },
     {
         index: "TE0213",
