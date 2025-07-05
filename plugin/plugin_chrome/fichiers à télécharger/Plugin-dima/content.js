@@ -1275,7 +1275,10 @@ Contenu: ${this.analysisResults.contentLength} caractères`;
                     <!-- En-tête -->
                     <div style="text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #f0f0f0;">
                         <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 10px;">
-                            🧠
+                            <img src="${logoUrl}" 
+                                 style="width: 24px; height: 24px;" 
+                                 alt="M82 Project"
+                                 onerror="this.style.display='none'">
                             <h2 style="color: #2c3e50; margin: 0; font-size: 1.8em;">Analyse DIMA (Améliorée)</h2>
                         </div>
                         <p style="color: #7f8c8d; margin: 0; font-size: 0.95em;">
