@@ -1,4 +1,4 @@
-// Plugin DIMA - Version avec extraction de contenu améliorée
+// Plugin DIMA - Version avec extraction de contenu améliorée--V1
 const DIMA_TECHNIQUES = [
     // PHASE DETECTER
     {
