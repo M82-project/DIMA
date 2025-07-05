@@ -1266,7 +1266,9 @@ Contenu: ${this.analysisResults.contentLength} caractères`;
                 font-family: 'Segoe UI', Arial, sans-serif !important;
                 animation: fadeIn 0.3s ease-out !important;
             `;
-
+ // Récupérer l'URL du logo
+            const logoUrl = chrome.runtime.getURL('m82-logo-16.png');
+            
             modal.innerHTML = `
                 <div style="background: white; padding: 30px; border-radius: 20px; max-width: 900px; max-height: 90vh; overflow-y: auto; margin: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); animation: slideIn 0.3s ease-out;">
                     
