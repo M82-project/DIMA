@@ -1279,7 +1279,7 @@ Contenu: ${this.analysisResults.contentLength} caractères`;
                                  style="width: 24px; height: 24px;" 
                                  alt="M82 Project"
                                  onerror="this.style.display='none'">
-                            <h2 style="color: #2c3e50; margin: 0; font-size: 1.8em;">Analyse DIMA (Améliorée)</h2>
+                            <h2 style="color: #2c3e50; margin: 0; font-size: 1.8em;">Analyse DIMA</h2>
                         </div>
                         <p style="color: #7f8c8d; margin: 0; font-size: 0.95em;">
                             Détection de manipulation cognitive par 
