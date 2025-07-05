@@ -46,7 +46,7 @@ const DIMA_ENHANCED_KEYWORDS = {
     },
     
     "TE0132": {
-        core: ["catastrophe", "chaos", "disaster", "danger", "menace", "threat", "risque", "risk", "grave", "serious", "crise", "crisis"],
+        core: ["catastrophe", "panique", "chaos", "disaster", "danger", "menace", "threat", "risque", "risk", "grave", "serious", "crise", "crisis"],
         variants: {
             intensity: {
                 weak: ["problème", "difficulté", "souci", "issue", "concern"],
