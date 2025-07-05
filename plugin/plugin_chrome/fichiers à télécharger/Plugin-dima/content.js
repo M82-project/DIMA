@@ -270,7 +270,7 @@ const DIMA_TECHNIQUES = [
         nom: "Généralisation et renforcement de stéréotypes",
         phase: "Informer",
         description: "Utilisation et amplification de clichés pour simplifier",
-        mots_cles: ["tous les", "all the", "stéréotype", "stereotype", "cliché", "généralement", "generally", "typique", "typical"],
+        mots_cles: ["stéréotype", "stereotype", "cliché", "caricature", "généralement", "generally", "typique", "typical"],
         weight: 1.6,
         type: "tactic"
     },
@@ -347,7 +347,7 @@ const DIMA_TECHNIQUES = [
         nom: "Stéréotypes",
         phase: "Informer",
         description: "Généralisation excessive de groupes",
-        mots_cles: ["tous les", "stéréotype", "les étrangers", "les immigrants", "all the", "toujours", "always", "jamais", "never", "en général", "in general", "les français", "americans"],
+        mots_cles: ["stéréotype", "les étrangers", "les immigrants", "all the", "toujours", "always", "jamais", "never", "en général", "in general", "les français", "americans"],
         weight: 1.6,
         type: "technique",
         tactic: "TA0022"
@@ -357,7 +357,7 @@ const DIMA_TECHNIQUES = [
         nom: "Biais d'homogénéité",
         phase: "Informer",
         description: "Perception que tous les membres d'un groupe sont similaires",
-        mots_cles: ["tous les", "Homogène", "tous pareil", "toutes choses égales par ailleurs", "tous"],
+        mots_cles: ["tous les", "Homogène", "tous pareil", "toutes choses égales par ailleurs"],
         weight: 1.2,
         type: "technique",
         tactic: "TA0022"
