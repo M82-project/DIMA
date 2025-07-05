@@ -2,7 +2,7 @@
 
 ## **1. Processus d'analyse d'une page web**
 
-### **Phase 1 : Extraction du contenu** 🔍
+### **Phase 1 : Extraction du contenu** 
 
 #### **A. Extraction du titre**
 ```javascript
@@ -30,7 +30,7 @@
 - <blockquote>, <figcaption>
 ```
 
-#### **C. Filtrage intelligent**
+#### **C. Filtrage "intelligent"**
 ```javascript
 // Éléments ignorés
 - Navigation (nav, menu)
@@ -51,7 +51,7 @@
 - Limitation à 5000 caractères max
 ```
 
-### **Phase 2 : Analyse des techniques** 🎯
+### **Phase 2 : Analyse des techniques** 
 
 #### **A. Sélection des techniques**
 ```javascript
@@ -89,7 +89,7 @@ boosts = analyzeContext(text, techniqueId);
 
 ## **2. Méthode de calcul de l'index DIMA**
 
-### **Étape 1 : Score brut par technique** 📈
+### **Étape 1 : Score brut par technique** 
 
 ```javascript
 // Pour chaque technique détectée
@@ -102,7 +102,7 @@ rawScore = nombreOccurrences * multiplicateurVariante
 // Score brut = 4.1
 ```
 
-### **Étape 2 : Pondération contextuelle** 🎯
+### **Étape 2 : Pondération contextuelle** 
 
 ```javascript
 // Adaptation selon le type de page
@@ -207,12 +207,12 @@ TE0212 (Preuve anecdotique):
 
 ------------------------------------------------------------------------------------------------------------
 
-# ⚖️ Système de pondération DIMA - Guide complet
+# Système de pondération DIMA - Guide complet
 -------------------------------------------------------------------------------------------------------------
 
 ## **1. Architecture du système de poids**
 
-### **Hiérarchie des pondérations** 🏗️
+### **Hiérarchie des pondérations**
 
 ```javascript
 Score Final = Score Brut × Poids Base × Poids Contextuel × Poids Dynamique × Boosts
@@ -232,7 +232,7 @@ Score Final = Score Brut × Poids Base × Poids Contextuel × Poids Dynamique ×
 
 ## **2. Poids de base par technique**
 
-### **Classification par gravité** 📊
+### **Classification par gravité** 
 
 #### **🔴 Très élevé (1.4-1.6)**
 ```javascript
@@ -263,7 +263,7 @@ TE0143: 0.8,  // Effet de contraste - Comparaison normale
 TE0232: 0.9   // Route connue - Préférence naturelle
 ```
 
-### **Justification des poids** 🧠
+### **Justification des poids** 
 
 | Technique | Poids | Justification |
 |-----------|-------|---------------|
@@ -275,7 +275,7 @@ TE0232: 0.9   // Route connue - Préférence naturelle
 
 ## **3. Pondération contextuelle**
 
-### **Adaptation selon le type de page** 🎯
+### **Adaptation selon le type de page** 
 
 #### **Sites d'actualités (news)**
 ```javascript
@@ -316,7 +316,7 @@ case 'blog':
     TE0321 → ×1.1  // Biais confirmation suspect
 ```
 
-### **Exemple concret** 📝
+### **Exemple concret** 
 
 ```javascript
 // TE0500 (Clickbait) détecté
@@ -337,7 +337,7 @@ finalWeight = 1.5 × 1.0 = 1.5
 
 ## **4. Pondération dynamique**
 
-### **Selon la fréquence d'apparition** 📈
+### **Selon la fréquence d'apparition** 
 
 ```javascript
 calculateDynamicWeight(technique, occurrences) {
@@ -351,7 +351,7 @@ calculateDynamicWeight(technique, occurrences) {
 
 ### **Règles spéciales** ⚡
 
-#### **Techniques critiques** 🚨
+#### **Techniques critiques** 
 ```javascript
 const criticalTechniques = ['TE0221', 'TE0500', 'TE0132', 'TE0501'];
 
@@ -361,7 +361,7 @@ if (isCritical && occurrences >= 2) {
 }
 ```
 
-#### **Techniques bénignes** 🟢
+#### **Techniques bénignes** 
 ```javascript
 const benignTechniques = ['TE0143', 'TE0232', 'TE0333'];
 
@@ -371,7 +371,7 @@ if (isBenign && occurrences >= 5) {
 }
 ```
 
-### **Courbe de pondération dynamique** 📊
+### **Courbe de pondération dynamique** 
 
 ```
 Poids dynamique
@@ -386,7 +386,7 @@ Poids dynamique
 
 ## **5. Boosts contextuels**
 
-### **Multiplicateurs selon le contexte détecté** 🚀
+### **Multiplicateurs selon le contexte détecté** 
 
 ```javascript
 const CONTEXT_PATTERNS = {
@@ -419,7 +419,7 @@ const CONTEXT_PATTERNS = {
 };
 ```
 
-### **Application des boosts** ⚡
+### **Application des boosts** 
 
 ```javascript
 // Exemple : TE0501 (FOMO) avec contexte d'urgence
@@ -437,7 +437,7 @@ weightedScore = 3.9 × 1.4 × 1.0 × 1.1 = 6.0
 
 ## **6. Calcul final complet**
 
-### **Exemple détaillé** 📊
+### **Exemple détaillé** 
 
 ```javascript
 // Page d'actualités avec article clickbait
@@ -457,7 +457,7 @@ urgencyBoost = 1.3       // Mots d'urgence détectés
 // Résultat : Cette technique contribue 13.4 points au score global
 ```
 
-### **Impact des pondérations** 📈
+### **Impact des pondérations** 
 
 ```javascript
 // Comparaison avec/sans pondération
@@ -475,20 +475,22 @@ weightedScore = 13.4 points
 
 ## **7. Avantages du système**
 
-### **Précision** 🎯
+### **Précision** 
 - **Réduction des faux positifs** : Techniques marketing normales moins pénalisées
 - **Amplification des vrais positifs** : Manipulation grave détectée avec précision
 
-### **Contextualisation** 🌍  
+### **Contextualisation** 
 - **Adaptation intelligente** : Même technique jugée différemment selon le contexte
 - **Réalisme** : Prise en compte des usages légitimes
 
-### **Granularité** ⚖️
+### **Granularité** 
 - **Nuances fines** : 16 niveaux de poids différents
 - **Évolutivité** : Facile d'ajuster les seuils selon l'expérience
 
-### **Transparence** 🔍
+### **Transparence** 
 - **Traçabilité complète** : Chaque coefficient est visible et justifié
 - **Debug facilité** : Possibilité de suivre chaque étape du calcul
 
-Ce système de pondération transforme un simple compteur de mots-clés en un analyseur sophistiqué capable de distinguer manipulation intentionnelle et usage légitime des techniques de persuasion.
+L'idée du système de pondération c'est de ne pas avoir un simple compteur de mots-clés mais véritablement un analyseur capable de distinguer manipulation intentionnelle et usage légitime des techniques de persuasion. Si vous avez de meilleiures idées :)
+
+
