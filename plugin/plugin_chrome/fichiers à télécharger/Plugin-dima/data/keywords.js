@@ -6,7 +6,7 @@ const DIMA_ENHANCED_KEYWORDS = {
     core: ["exemple", "cas", "témoignage", "example", "case", "testimony"],
     variants: {
       formal: ["illustration", "démonstration", "spécimen"],
-      informal: ["histoire", "vécu", "expérience"],
+      informal: ["vécu", "expérience unique"],
       intensity: {
         weak: ["petit exemple", "simple cas"],
         strong: ["exemple frappant", "cas édifiant", "témoignage bouleversant"],
