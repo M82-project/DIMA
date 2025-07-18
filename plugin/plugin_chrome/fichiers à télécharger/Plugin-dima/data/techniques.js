@@ -9,9 +9,10 @@ const DIMA_TECHNIQUES = [
     phase: "Detect",
     description: "Exploitation d'informations déjà connues ou familières",
     mots_cles: [
-      "déjà",
-      "connu",
-      "already",
+      "déjà vu",
+      "connu de tous",
+      "chacun sait",
+      "already seen",
       "known",
       "familier",
       "familiar",
@@ -30,8 +31,8 @@ const DIMA_TECHNIQUES = [
     description:
       "Répétition d'informations pour créer une familiarité artificielle",
     mots_cles: [
-      "encore",
-      "again",
+      "déjà dit",
+      "déjà vu",
       "répéter",
       "repeat",
       "redire",
@@ -52,6 +53,8 @@ const DIMA_TECHNIQUES = [
       "Utilisation d'informations polarisantes pour attirer l'attention",
     mots_cles: [
       "polémique",
+      "clash",
+      "unpopular",
       "controversial",
       "scandaleux",
       "outrageous",
