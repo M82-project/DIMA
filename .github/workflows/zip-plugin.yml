@@ -1,33 +1,40 @@
-# Nom du workflow qui apparaîtra dans l'onglet "Actions" de votre dépôt GitHub
-name: Créer l'archive du plugin
+# Nom du workflow
+name: Mise à jour du Zip dans les Pull Requests
 
 # --- DÉCLENCHEUR ---
+# Se déclenche quand une Pull Request est ouverte ou mise à jour vers la branche main.
 on:
-  push:
+  pull_request:
     branches:
       - main
+    types: [opened, synchronize]
 
 # --- TÂCHES (JOBS) ---
 jobs:
-  zip-and-commit:
+  add-zip-to-pr:
     runs-on: ubuntu-latest
-
-    # AJOUTEZ CECI : Donne la permission d'écrire dans le dépôt
+    # La permission d'écrire est nécessaire pour commiter sur la branche de la PR.
     permissions:
       contents: write
 
-    # --- ÉTAPES (STEPS) ---
     steps:
-      - name: 1. Récupération du code
+      # Étape 1 : Récupère le code de la branche de la PR.
+      # La 'ref' est cruciale pour récupérer le code de la branche en cours et non 'main'.
+      - name: 1. Récupération du code de la Pull Request
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
-      - name: 2. Compression du répertoire en .zip
+      # Étape 2 : Crée l'archive .zip à partir des derniers changements.
+      - name: 2. Compression du répertoire du plugin
         run: |
           cd "plugin/plugin_chrome/releases/"
           zip -r Plugin-dima.zip Plugin-dima
-      
-      - name: 3. Commit de l'archive sur le dépôt
+
+      # Étape 3 : Ajoute le commit avec le .zip à la PR.
+      # L'action commitera sur la branche actuellement récupérée.
+      - name: 3. Ajout du commit avec le .zip à la PR
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "🤖 CI : Mise à jour automatique de l'archive Plugin-dima.zip"
+          commit_message: "🤖 CI : Ajout de l'archive Plugin-dima.zip mise à jour"
           file_pattern: 'plugin/plugin_chrome/releases/Plugin-dima.zip'
