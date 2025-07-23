@@ -2,7 +2,6 @@
 name: Générer le Zip et créer une PR sur le site web
 
 # --- DÉCLENCHEUR ---
-# Se déclenche sur les Pull Requests vers la branche main du dépôt DIMA
 on:
   pull_request:
     branches:
@@ -14,22 +13,21 @@ jobs:
   build-and-create-pr:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # On a juste besoin de lire le dépôt courant
+      contents: read
 
     steps:
-      # Étape 1 : Récupère le code du dépôt DIMA (celui de la PR)
+      # ... (les étapes 1 à 4 ne changent pas) ...
+
       - name: 1. Récupération du code de DIMA
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
 
-      # Étape 2 : Crée l'archive .zip
       - name: 2. Compression du répertoire du plugin
         run: |
           cd "plugin/plugin_chrome/releases/"
           zip -r Plugin-dima.zip Plugin-dima
 
-      # Étape 3 : Clone le dépôt M82-SiteWeb
       - name: 3. Récupération du dépôt M82-SiteWeb
         uses: actions/checkout@v4
         with:
@@ -37,7 +35,6 @@ jobs:
           token: ${{ secrets.CROSS_REPO_PAT }}
           path: M82-SiteWeb
 
-      # Étape 4 : Copie le zip dans le dépôt du site web
       - name: 4. Copie du fichier .zip
         run: |
           mv plugin/plugin_chrome/releases/Plugin-dima.zip M82-SiteWeb/static/files/
@@ -46,19 +43,14 @@ jobs:
       - name: 5. Création de la Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          # Spécifie le dépôt dans lequel on travaille
           path: ./M82-SiteWeb
-          # Le PAT est indispensable pour créer une PR dans un autre dépôt
           token: ${{ secrets.CROSS_REPO_PAT }}
-          # Nom de la nouvelle branche qui sera créée dans M82-SiteWeb
-          branch: "update/plugin-dima-zip"
-          # Titre de la Pull Request
+          # --- MODIFICATION ICI ---
+          # On crée un nom de branche unique pour chaque exécution
+          branch: "update/plugin-dima-${{ github.run_id }}"
           title: "🤖 Mise à jour automatique du Plugin-dima.zip"
-          # Description de la Pull Request
           body: |
             Mise à jour du fichier `Plugin-dima.zip`.
             Cette modification a été déclenchée automatiquement par un workflow du dépôt `DIMA`.
-          # Message du commit
           commit-message: "feat: Mise à jour du Plugin-dima.zip"
-          # La branche de base sur laquelle la PR doit être faite
           base: master
