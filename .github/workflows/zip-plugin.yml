@@ -30,7 +30,7 @@ jobs:
       # C'est la méthode la plus fiable pour gérer les chemins complexes.
       - name: 2. Compression du répertoire en .zip
         run: |
-          cd "DIMA/plugin/plugin_chrome/releases/"
+          cd "plugin/plugin_chrome/releases/"
           zip -r Plugin-dima.zip Plugin-dima
         
       # Étape 3 : Commiter et pousser le fichier .zip sur le dépôt
@@ -43,4 +43,4 @@ jobs:
           commit_message: "🤖 CI : Mise à jour automatique de l'archive Plugin-dima.zip"
           
           # Le chemin exact du fichier à commiter
-          file_pattern: 'DIMA/plugin/plugin_chrome/releases/Plugin-dima.zip'
+          file_pattern: 'plugin/plugin_chrome/releases/Plugin-dima.zip'
