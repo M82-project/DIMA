@@ -1,0 +1,46 @@
+# Nom du workflow qui apparaîtra dans l'onglet "Actions" de votre dépôt GitHub
+name: Créer l'archive du plugin
+
+# --- DÉCLENCHEUR ---
+# Cette section indique à GitHub de lancer l'action à chaque push sur la branche 'main'.
+# Si votre branche principale s'appelle 'master', remplacez 'main' ci-dessous.
+on:
+  push:
+    branches:
+      - main
+
+# --- TÂCHES (JOBS) ---
+# Un workflow est composé d'une ou plusieurs tâches qui s'exécutent sur des serveurs.
+jobs:
+  # Nom de la tâche
+  zip-and-commit:
+    # Utilise un serveur Ubuntu récent pour exécuter les commandes
+    runs-on: ubuntu-latest
+
+    # --- ÉTAPES (STEPS) ---
+    # Liste des actions à exécuter séquentiellement
+    steps:
+      # Étape 1 : Récupérer le code de votre dépôt sur le serveur
+      # C'est indispensable pour pouvoir accéder à vos fichiers.
+      - name: 1. Récupération du code
+        uses: actions/checkout@v4
+
+      # Étape 2 : Créer l'archive Zip
+      # Cette étape se déplace dans le bon dossier puis lance la compression.
+      # C'est la méthode la plus fiable pour gérer les chemins complexes.
+      - name: 2. Compression du répertoire en .zip
+        run: |
+          cd "plugin/plugin_chrome/releases/"
+          zip -r Plugin-dima.zip Plugin-dima
+        
+      # Étape 3 : Commiter et pousser le fichier .zip sur le dépôt
+      # Utilise une action pré-faite pour commiter le fichier zip généré.
+      # Le commit sera fait automatiquement au nom de "GitHub Actions".
+      - name: 3. Commit de l'archive sur le dépôt
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # Le message du commit qui sera créé
+          commit_message: "🤖 CI : Mise à jour automatique de l'archive Plugin-dima.zip"
+          
+          # Le chemin exact du fichier à commiter
+          file_pattern: 'plugin/plugin_chrome/releases/Plugin-dima.zip'
