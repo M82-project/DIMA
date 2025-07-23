@@ -1,8 +1,8 @@
 # Nom du workflow
-name: Mise à jour du Zip dans les Pull Requests
+name: Générer le Zip et créer une PR sur le site web
 
 # --- DÉCLENCHEUR ---
-# Se déclenche quand une Pull Request est ouverte ou mise à jour vers la branche main.
+# Se déclenche sur les Pull Requests vers la branche main du dépôt DIMA
 on:
   pull_request:
     branches:
@@ -11,30 +11,54 @@ on:
 
 # --- TÂCHES (JOBS) ---
 jobs:
-  add-zip-to-pr:
+  build-and-create-pr:
     runs-on: ubuntu-latest
-    # La permission d'écrire est nécessaire pour commiter sur la branche de la PR.
     permissions:
-      contents: write
+      contents: read # On a juste besoin de lire le dépôt courant
 
     steps:
-      # Étape 1 : Récupère le code de la branche de la PR.
-      # La 'ref' est cruciale pour récupérer le code de la branche en cours et non 'main'.
-      - name: 1. Récupération du code de la Pull Request
+      # Étape 1 : Récupère le code du dépôt DIMA (celui de la PR)
+      - name: 1. Récupération du code de DIMA
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
 
-      # Étape 2 : Crée l'archive .zip à partir des derniers changements.
+      # Étape 2 : Crée l'archive .zip
       - name: 2. Compression du répertoire du plugin
         run: |
           cd "plugin/plugin_chrome/releases/"
           zip -r Plugin-dima.zip Plugin-dima
 
-      # Étape 3 : Ajoute le commit avec le .zip à la PR.
-      # L'action commitera sur la branche actuellement récupérée.
-      - name: 3. Ajout du commit avec le .zip à la PR
-        uses: stefanzweifel/git-auto-commit-action@v5
+      # Étape 3 : Clone le dépôt M82-SiteWeb
+      - name: 3. Récupération du dépôt M82-SiteWeb
+        uses: actions/checkout@v4
         with:
-          commit_message: "🤖 CI : Ajout de l'archive Plugin-dima.zip mise à jour"
-          file_pattern: 'plugin/plugin_chrome/releases/Plugin-dima.zip'
+          repository: M82-project/M82-SiteWeb
+          token: ${{ secrets.CROSS_REPO_PAT }}
+          path: M82-SiteWeb
+
+      # Étape 4 : Copie le zip dans le dépôt du site web
+      - name: 4. Copie du fichier .zip
+        run: |
+          mv plugin/plugin_chrome/releases/Plugin-dima.zip M82-SiteWeb/static/files/
+
+      # Étape 5 : Crée une Pull Request dans M82-SiteWeb
+      - name: 5. Création de la Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          # Spécifie le dépôt dans lequel on travaille
+          path: ./M82-SiteWeb
+          # Le PAT est indispensable pour créer une PR dans un autre dépôt
+          token: ${{ secrets.CROSS_REPO_PAT }}
+          # Nom de la nouvelle branche qui sera créée dans M82-SiteWeb
+          branch: "update/plugin-dima-zip"
+          # Titre de la Pull Request
+          title: "🤖 Mise à jour automatique du Plugin-dima.zip"
+          # Description de la Pull Request
+          body: |
+            Mise à jour du fichier `Plugin-dima.zip`.
+            Cette modification a été déclenchée automatiquement par un workflow du dépôt `DIMA`.
+          # Message du commit
+          commit-message: "feat: Mise à jour du Plugin-dima.zip"
+          # La branche de base sur laquelle la PR doit être faite
+          base: master
