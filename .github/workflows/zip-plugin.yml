@@ -31,7 +31,7 @@ jobs:
       - name: 3. Récupération du dépôt M82-SiteWeb
         uses: actions/checkout@v4
         with:
-          repository: M82-project/M82-SiteWeb
+          repository: sebdraven/M82-SiteWeb
           token: ${{ secrets.CROSS_REPO_PAT }}
           path: M82-SiteWeb
 
