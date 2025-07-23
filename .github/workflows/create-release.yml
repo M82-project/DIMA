@@ -1,0 +1,41 @@
+# Nom du workflow
+name: Créer une Release et y attacher le Zip
+
+# --- DÉCLENCHEUR ---
+# Se déclenche uniquement quand un nouveau tag commençant par 'v' est poussé
+on:
+  push:
+    tags:
+      - 'v*'
+
+# --- TÂCHES (JOBS) ---
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    # --- PERMISSIONS ---
+    # Autorise l'action à créer une Release sur le dépôt
+    permissions:
+      contents: write
+
+    steps:
+      # Étape 1 : Récupération du code
+      - name: 1. Récupération du code
+        uses: actions/checkout@v4
+
+      # Étape 2 : Création de l'archive .zip en utilisant le nouveau chemin
+      - name: 2. Compression du répertoire du plugin
+        run: |
+          cd "plugin/plugin_chrome/releases/"
+          zip -r Plugin-dima.zip Plugin-dima
+
+      # Étape 3 : Création de la Release et ajout du .zip
+      - name: 3. Création de la Release
+        uses: softprops/action-gh-release@v2
+        with:
+          # Le nom de la release sera le nom du tag (ex: "Release v1.1")
+          name: Release ${{ github.ref_name }}
+          # Génère automatiquement les notes de version
+          generate_release_notes: true
+          # Attache le fichier .zip depuis le nouveau chemin
+          files: plugin/plugin_chrome/releases/Plugin-dima.zip
