@@ -1,0 +1,34 @@
+# Nom du workflow qui apparaîtra dans l'onglet "Actions" de GitHub
+name: Zip Plugin Directory
+
+# Déclencheur : cette action se lancera à chaque push sur la branche "main"
+on:
+  push:
+    branches:
+      - main  # Tu peux changer "main" par "master" ou une autre branche si besoin
+
+jobs:
+  zip-and-commit:
+    # L'action tournera sur un serveur Ubuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1: Récupère le code de ton dépôt
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Étape 2: Zippe le répertoire spécifié
+      # L'option -r compresse le dossier et tout son contenu.
+      - name: Zip the plugin directory
+        run: |
+          zip -r "DIMA/plugin/plugin_chrome/fichiers à télécharger/Plugin-dima.zip" "DIMA/plugin/plugin_chrome/fichiers à télécharger/Plugin-dima"
+          
+      # Étape 3: Commit et pousse le fichier .zip sur le dépôt
+      # Cette action va créer un nouveau commit avec le fichier zip généré
+      - name: Commit and push the zip file
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # Message du commit qui sera créé par l'action
+          commit_message: "CI: Auto-generate plugin zip file"
+          # Spécifie le fichier à ajouter au commit
+          file_pattern: 'DIMA/plugin/plugin_chrome/fichiers à télécharger/Plugin-dima.zip'
