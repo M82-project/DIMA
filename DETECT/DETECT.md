@@ -6,7 +6,7 @@ Tactique qui utilise des informations préexistantes ou des croyances établies 
 L’heuristique de disponibilité est un biais cognitif par lequel vous prenez une décision sur la base d’un exemple, d’une information ou d’une expérience récente qui vous est facilement accessible, même si ce n’est pas le meilleur exemple pour éclairer votre décision (Tversky & Kahneman, 1973).
 https://mentorshow.com/blog/heuristique-de-disponibilite
 
-## TE0112: Effet de simple exposition
+## TE0332: Effet de simple exposition
 Décrit par Robert Zajonc (1968), l’effet de simple exposition est un type de biais cognitif qui se caractérise par une augmentation de la probabilité d’avoir un sentiment positif envers quelqu’un ou quelque chose par la simple exposition répétée à cette personne ou cet objet. 
 source : https://monpsychomag.com/index.php/2021/11/05/cest-quoi-leffet-de-simple-exposition-en-psychologie/
 
