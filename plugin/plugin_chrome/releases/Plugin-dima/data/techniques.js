@@ -121,6 +121,8 @@ const DIMA_TECHNIQUES = [
       "case",
       "témoignage",
       "testimony",
+      "histoire vraie", "true story", "vécu", "expérience", "prenons l'exemple",
+      "take the example","illustration", "démonstration", "spécimen", "par exemple", "for example"
     ],
     weight: 1.0,
     type: "technique",
@@ -132,10 +134,8 @@ const DIMA_TECHNIQUES = [
     phase: "Detect",
     description: "Répétition pour créer une familiarité artificielle",
     mots_cles: [
-      "encore",
-      "again",
-      "toujours",
-      "always",
+      "encore et toujours",
+      "again and again",
       "répétition",
       "repetition",
       "familier",
@@ -159,6 +159,8 @@ const DIMA_TECHNIQUES = [
       "frequent",
       "épidémie",
       "epidemic",
+      "sans cesse", "constantly", "en permanence", "all the time", "se répand", "spreading", 
+    "prolifère", "multiplies", "tendance", "trend", "phénomène", "phenomenon", "on en parle partout"
     ],
     weight: 1.1,
     type: "technique",
@@ -198,6 +200,8 @@ const DIMA_TECHNIQUES = [
       "shocking",
       "inhabituel",
       "unusual",
+      "surprenant", "surprising", "inattendu", "unexpected", "anormal", "abnormal", "hors norme", "extraordinary",
+    "stupéfiant", "mind-blowing", "hallucinant", "unbelievable", "jamais vu", "never seen", "renversant"
     ],
     weight: 1.3,
     type: "technique",
@@ -232,8 +236,11 @@ const DIMA_TECHNIQUES = [
     phase: "Detect",
     description: "Mise en avant de l'unicité pour marquer les esprits",
     mots_cles: [
-      "unique",
-      "seul",
+      "uniquement",
+      "seuleument",
+      "rien de comparable",
+      "sans comparaison",
+      "sans équivalent",
       "only",
       "exclusif",
       "exclusive",
@@ -453,6 +460,9 @@ const DIMA_TECHNIQUES = [
       "selon une étude",
       "un témoignage",
       "un témoin",
+      "prenons l'exemple de", "regardez le cas de", "voici l'histoire de", "j'ai un ami qui", "mon voisin",
+      "cela prouve que", "this proves that", "la preuve c'est que", "comme le montre", "cet exemple illustre",
+      "une connaissance", "dans ma famille", "someone I know", "consider the case of"
     ],
     weight: 1.4,
     type: "technique",
@@ -492,6 +502,9 @@ const DIMA_TECHNIQUES = [
       "in general",
       "les français",
       "americans",
+      "tous les", "toutes les", "every single", "sans exception", "généralement", "typically", 
+      "ils sont tous", "comme tous les", "usually they", "systématiquement", "invariablement", 
+      "à chaque fois", "every time", "c'est toujours comme ça", "always the same", "c'est typique des"
     ],
     weight: 1.6,
     type: "technique",
@@ -544,6 +557,9 @@ const DIMA_TECHNIQUES = [
       "suffit de",
       "just need to",
       "solution",
+      "basique", "basic", "élémentaire", "elementary", "logique", "logical", "naturel", "natural",
+      "sans effort", "effortless", "automatique", "automatic", "c'est simple", "it's simple", 
+      "il suffit de", "la solution est simple", "the solution is simple"
     ],
     weight: 1.3,
     type: "technique",
@@ -659,7 +675,9 @@ const DIMA_TECHNIQUES = [
       "sources confirment",
       "rien ne démontre",
       "hasard ?",
-      "les faits",
+      "les faits rapportés",
+      "selon certains", "some say", "il paraît que", "apparently", "on dit que", "they say", 
+    "j'ai entendu dire", "I heard", "des experts", "some experts", "certaines sources", "various sources"
     ],
     weight: 1.2,
     type: "technique",
@@ -692,6 +710,9 @@ const DIMA_TECHNIQUES = [
       "image",
       "imaginez",
       "supposons",
+       "visualisez", "visualize", "pensez à", "think about", "ne trouvez-vous pas", "don't you think",
+      "n'est-ce pas", "isn't it", "si jamais", "what if", "dans l'hypothèse", "hypothetically",
+      "cela rappelle", "this reminds", "picture this"
     ],
     weight: 1.1,
     type: "technique",
@@ -715,6 +736,9 @@ const DIMA_TECHNIQUES = [
       "i was right",
       "évident",
       "obvious",
+        "valide", "validates", "corrobore", "corroborates", "je le savais", "I knew it", "exactement", "exactly",
+      "forcément", "inevitably", "logiquement", "logically", "cela confirme", "this confirms", 
+      "comme attendu", "as anticipated", "évidemment", "obviously"
     ],
     weight: 1.5,
     type: "technique",
@@ -770,6 +794,7 @@ const DIMA_TECHNIQUES = [
     description: "Mise en avant des bénéfices personnels pour motiver l'action",
     mots_cles: [
       "vous bénéficiez",
+      "vous gagnez",
       "you benefit",
       "votre avantage",
       "your advantage",
@@ -833,6 +858,9 @@ const DIMA_TECHNIQUES = [
       "expert",
       "maîtrise",
       "mastery",
+        "assuré", "assured", "convaincu", "convinced", "spécialiste", "specialist", "professionnel", "professional",
+      "indubitable", "undoubtable", "incontestable", "unquestionable", "je suis sûr", "i am sure",
+      "sans aucun doute", "without a doubt", "évidemment", "obviously"
     ],
     weight: 1.2,
     type: "technique",
@@ -852,6 +880,9 @@ const DIMA_TECHNIQUES = [
       "invest more",
       "ne pas abandonner",
       "don't give up",
+      "persévérer", "persevere", "tenir bon", "hold on", "doubler la mise", "double down", 
+      "aller plus loin", "go further", "s'engager", "commit", "ne pas lâcher", "don't quit",
+      "continue à", "continue to", "keep going", "coûte que coûte", "quoi qu'il en coûte"
     ],
     weight: 1.1,
     type: "technique",
@@ -893,6 +924,9 @@ const DIMA_TECHNIQUES = [
       "status quo",
       "comme ça",
       "as is",
+      "stabilité", "stability", "équilibre", "balance", "préserver", "preserve", "garder", "keep",
+      "résister au changement", "resist change", "mieux vaut rester", "better to stay", 
+      "ne changeons rien", "let's not change", "comme avant", "as before"
     ],
     weight: 1.0,
     type: "technique",
