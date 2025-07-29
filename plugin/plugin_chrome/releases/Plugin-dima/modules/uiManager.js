@@ -201,7 +201,7 @@ Contenu: ${this.analysisResults.contentLength} caractères`;
     const advices = {
         'TE0500': 'Méfiez-vous des titres sensationnalistes et vérifiez les sources.',
         'TE0132': 'Prenez du recul face aux messages alarmistes excessifs.',
-        'TE0501': 'Résistez à la pression temporelle et prenez le temps de réfléchir.',
+        'TE0501': 'Résistez à la pression de l\'urgence et prenez le temps de réfléchir.',
         'TE0422': 'Vérifiez les qualifications réelles des "experts" cités.',
         'TE0251': 'Questionnez les affirmations sur ce que "tout le monde" pense.',
         'TE0221': 'Attention aux généralisations excessives sur des groupes.',
@@ -210,7 +210,7 @@ Contenu: ${this.analysisResults.contentLength} caractères`;
     };
     return advices[techniqueIndex] || 'Restez critique et vérifiez les informations.';
     }
-
+  
     showModal() {
         try {
             this.log('Affichage du modal');
@@ -300,7 +300,7 @@ Contenu: ${this.analysisResults.contentLength} caractères`;
                         </div>
                     </div>
 
-                    <!-- NOUVEAU : Répartition par phase DIMA -->
+                    <!-- Répartition par phase DIMA -->
                     ${this.analysisResults.phaseScores && Object.keys(this.analysisResults.phaseScores).length > 0 ? `
                         <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e9ecef;">
                             <h4 style="margin: 0 0 15px 0; color: #2c3e50; font-size: 1.1em;">📊 Répartition par phase DIMA</h4>
