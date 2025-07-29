@@ -12,7 +12,7 @@ Tactique qui favorise la mémorisation d'une information en s'appuyant sur des s
 
 ## TE0321 : [Stéréotype implicite](https://en.wikipedia.org/wiki/Implicit_stereotype)
 ## TE0322 : [Effacement négatif](https://en.wikipedia.org/wiki/Fading_affect_bias)
-## TE0323 : [Effet de contexte](https://books.openedition.org/editionsmsh/14811)
+## TE0122 : [Effet de contexte](https://books.openedition.org/editionsmsh/14811)
 
 # TA0033 Exposition de contenus
 Tactique qui favorise la surexposition à une information pour favoriser sa mémorisation
