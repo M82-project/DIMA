@@ -23,7 +23,7 @@ Ce mécanisme est particulièrement à l’œuvre dans la diffusion des thèses 
 
 source : https://www.psychomedia.qc.ca/psychologie/biais-cognitifs
 
-## T0122: Effet de contexte
+## TE0122: Effet de contexte
 Tendance à analyser une perception par rapport à des situation proches ou similaires.
 
 https://en.wikipedia.org/wiki/Context_effect

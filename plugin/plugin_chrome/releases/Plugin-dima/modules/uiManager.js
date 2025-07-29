@@ -107,6 +107,110 @@ ${techniques.map(t => `• ${t.nom}`).join('\n')}
 Contenu: ${this.analysisResults.contentLength} caractères`;
     }
 
+    getScoreIcon(score) {
+    if (score >= 75) return '🚨'; // Critique
+    if (score >= 50) return '⚠️';  // Élevé
+    if (score >= 30) return '⚡';  // Modéré
+    if (score >= 15) return '👀'; // Faible
+    return '✅'; // Très faible
+    }
+
+    generateExecutiveSummary() {
+    const score = this.analysisResults.globalScore;
+    const techniqueCount = this.analysisResults.detectedTechniques.length;
+    const topTechniques = this.analysisResults.detectedTechniques.slice(0, 3);
+    
+    let summary = "";
+    
+    // Évaluation générale selon le score
+    if (score >= 75) {
+        summary = `🚨 <strong>Manipulation intensive détectée</strong> : Ce contenu présente un niveau critique de techniques manipulatoires (${techniqueCount} technique${techniqueCount > 1 ? 's' : ''}). `;
+    } else if (score >= 50) {
+        summary = `⚠️ <strong>Manipulation significative</strong> : Ce contenu utilise plusieurs techniques suspectes (${techniqueCount} technique${techniqueCount > 1 ? 's' : ''}). `;
+    } else if (score >= 30) {
+        summary = `⚡ <strong>Éléments manipulatoires présents</strong> : Quelques techniques détectées nécessitent votre attention (${techniqueCount} technique${techniqueCount > 1 ? 's' : ''}). `;
+    } else {
+        summary = `👀 <strong>Faible niveau de manipulation</strong> : Peu d'éléments manipulatoires détectés (${techniqueCount} technique${techniqueCount > 1 ? 's' : ''}). `;
+    }
+    
+    // Analyse des phases dominantes
+    if (this.analysisResults.phaseScores && Object.keys(this.analysisResults.phaseScores).length > 0) {
+        const sortedPhases = Object.entries(this.analysisResults.phaseScores)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 2);
+        
+        if (sortedPhases.length > 0) {
+            const dominantPhase = sortedPhases[0][0];
+            summary += `La manipulation se concentre principalement sur la phase "<strong>${dominantPhase}</strong>" (${this.getPhaseExplanation(dominantPhase)}). `;
+        }
+    }
+    
+    // Technique principale
+    if (topTechniques.length > 0) {
+        const mainTechnique = topTechniques[0];
+        summary += `La technique dominante est <strong>${mainTechnique.nom}</strong> avec ${mainTechnique.confidence}% de confiance. `;
+        
+        // Conseil spécifique selon la technique
+        summary += this.getTechniqueAdvice(mainTechnique.index);
+    }
+    
+    return summary; 
+    }
+
+    getPhaseEmoji(phase) {
+    const emojis = {
+        'Detect': '👁️',
+        'Informer': '📢', 
+        'Mémoriser': '🧠',
+        'Act': '⚡'
+    };
+    return emojis[phase] || '📍';
+    }
+
+    getPhaseColor(phase) {
+    const colors = {
+        'Detect': '#e3f2fd',      // Bleu clair
+        'Informer': '#f3e5f5',    // Violet clair
+        'Mémoriser': '#e8f5e8',   // Vert clair
+        'Act': '#fff3e0'          // Orange clair
+    };
+    return colors[phase] || '#f5f5f5';
+    }
+
+    getPhaseDescription(phase) {
+    const descriptions = {
+        'Detect': 'Capter l\'attention',
+        'Informer': 'Influencer ou orienter la compréhension', 
+        'Mémoriser': 'Ancrer l\'information',
+        'Act': 'Provoquer l\'action'
+    };
+    return descriptions[phase] || phase;
+    }
+
+    getPhaseExplanation(phase) {
+    const explanations = {
+        'Detect': 'techniques pour attirer et capter votre attention',
+        'Informer': 'méthodes pour orienter votre interprétation des faits', 
+        'Mémoriser': 'stratégies pour ancrer certaines idées dans votre mémoire',
+        'Act': 'pressions pour vous pousser à agir rapidement'
+    };
+    return explanations[phase] || 'manipulation cognitive';
+    }
+
+    getTechniqueAdvice(techniqueIndex) {
+    const advices = {
+        'TE0500': 'Méfiez-vous des titres sensationnalistes et vérifiez les sources.',
+        'TE0132': 'Prenez du recul face aux messages alarmistes excessifs.',
+        'TE0501': 'Résistez à la pression de l\'urgence et prenez le temps de réfléchir.',
+        'TE0422': 'Vérifiez les qualifications réelles des "experts" cités.',
+        'TE0251': 'Questionnez les affirmations sur ce que "tout le monde" pense.',
+        'TE0221': 'Attention aux généralisations excessives sur des groupes.',
+        'TE0212': 'Ne tirez pas de conclusions générales à partir d\'anecdotes.',
+        'TE0321': 'Cherchez des sources contradictoires pour éviter le biais de confirmation.'
+    };
+    return advices[techniqueIndex] || 'Restez critique et vérifiez les informations.';
+    }
+  
     showModal() {
         try {
             this.log('Affichage du modal');
@@ -173,6 +277,18 @@ Contenu: ${this.analysisResults.contentLength} caractères`;
                         </div>
                     </div>
 
+                    <!-- Résumé exécutif -->
+                    ${this.analysisResults.globalScore > 15 ? `
+                        <div style="background: ${this.analysisResults.globalScore >= 50 ? '#ffebee' : this.analysisResults.globalScore >= 30 ? '#fff3e0' : '#e8f5e8'}; padding: 20px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid ${this.analysisResults.riskColor};">
+                            <h4 style="margin: 0 0 10px 0; color: ${this.analysisResults.riskColor}; font-size: 1.1em;">
+                                ${this.getScoreIcon(this.analysisResults.globalScore)} Résumé de l'analyse
+                            </h4>
+                            <p style="margin: 0; color: #444; line-height: 1.5; font-size: 0.95em;">
+                                ${this.generateExecutiveSummary()}
+                            </p>
+                        </div>
+                    ` : ''}
+
                     <!-- Informations sur la page -->
                     <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e9ecef;">
                         <h4 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 1.1em;">📄 Page analysée</h4>
@@ -183,6 +299,38 @@ Contenu: ${this.analysisResults.contentLength} caractères`;
                             ${this.analysisResults.analyzedText} caractères traités • Type: ${this.pageType}
                         </div>
                     </div>
+
+                    <!-- Répartition par phase DIMA -->
+                    ${this.analysisResults.phaseScores && Object.keys(this.analysisResults.phaseScores).length > 0 ? `
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e9ecef;">
+                            <h4 style="margin: 0 0 15px 0; color: #2c3e50; font-size: 1.1em;">📊 Répartition par phase DIMA</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px;">
+                                ${Object.entries(this.analysisResults.phaseScores).map(([phase, score]) => {
+                                    const maxScore = Math.max(...Object.values(this.analysisResults.phaseScores));
+                                    const percentage = maxScore > 0 ? (score / maxScore) * 100 : 0;
+                                    return `
+                                        <div style="text-align: center;">
+                                            <div style="font-size: 0.85em; color: #666; margin-bottom: 8px; font-weight: 500;">
+                                                ${this.getPhaseEmoji(phase)} ${phase}
+                                            </div>
+                                            <div style="background: ${this.getPhaseColor(phase)}; height: 12px; border-radius: 6px; margin-bottom: 8px; overflow: hidden;">
+                                                <div style="background: ${this.analysisResults.riskColor}; height: 100%; width: ${Math.min(percentage, 100)}%; border-radius: 6px; transition: width 0.8s ease;"></div>
+                                            </div>
+                                            <div style="font-size: 0.8em; font-weight: bold; color: #333;">
+                                                ${score.toFixed(1)} pts
+                                            </div>
+                                            <div style="font-size: 0.7em; color: #888;">
+                                                ${this.getPhaseDescription(phase)}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e9ecef; font-size: 0.8em; color: #666; text-align: center;">
+                                💡 La matrice DIMA analyse comment l'information traverse les 4 phases cognitives
+                            </div>
+                        </div>
+                    ` : ''}
 
                     <!-- Message si aucune technique -->
                     ${this.analysisResults.detectedTechniques.length === 0 ? `
