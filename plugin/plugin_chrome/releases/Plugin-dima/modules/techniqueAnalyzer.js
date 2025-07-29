@@ -378,6 +378,17 @@ class TechniqueAnalyzer {
     return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
 
+  calculatePositionWeight(position, textLength) {
+  const relativePosition = position / textLength;
+  // Boost pour les éléments en début de texte (titres, accroches)
+    if (relativePosition < 0.15) return 1.4;
+  // Boost modéré pour le premier tiers
+    if (relativePosition < 0.33) return 1.1;
+  // Boost pour la fin (conclusions, appels à l'action)
+    if (relativePosition > 0.85) return 1.2;
+  // Poids normal pour le milieu
+    return 1.0;
+  }
   calculateRiskLevel(score) {
     if (score < 15) return "Faible";
     if (score < 30) return "Modéré";

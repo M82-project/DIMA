@@ -86,6 +86,8 @@ const DIMA_ENHANCED_KEYWORDS = {
         ],
       },
       temporal: ["imminent", "proche", "bientôt", "soon", "approaching"],
+      formal: ["situation critique", "état d'urgence", "alerte maximale"],
+      informal: ["c'est la cata", "on est foutu", "ça craint"],
     },
     patterns: [
       /(?:alerte|alert|warning|attention)\s+(?:rouge|red|maximum)/i,
@@ -124,6 +126,43 @@ const DIMA_ENHANCED_KEYWORDS = {
     patterns: [
       /(?:seulement|only)\s+\d+\s+(?:jours?|heures?|minutes?|days?|hours?|minutes?)/i,
       /(?:expire|ends?)\s+(?:bientôt|soon|today|demain|tomorrow)/i,
+    ],
+  },
+  TE0251: {
+    core: ["tout le monde", "consensus", "everyone", "la plupart", "most people", "nous pensons", "we think"],
+    variants: {
+      universal_claims: [
+      "personne ne peut nier",
+      "nobody can deny", 
+      "c'est du bon sens",
+      "it's common sense",
+      "chacun sait que",
+      "everyone knows"
+      ],
+      majority_appeals: [
+      "la majorité pense",
+      "the majority thinks",
+      "l'opinion générale", 
+      "most agree"
+      ]
+    },
+    patterns: [
+      /(?:tout le monde|everyone)\s+(?:sait|knows?|dit|says?)/i,
+      /(?:la plupart|most)\s+(?:des gens|people)\s+(?:pensent|think)/i
+    ],
+  },
+
+  TE0422: {
+    core: ["autorité", "authority", "expert", "spécialiste", "specialist", "professeur", "professor", "docteur", "doctor", "officiel"],
+    variants: {
+      titles: ["Dr.", "Pr.", "Prof.", "PhD", "expert reconnu", "spécialiste renommé"],
+      institutions: ["selon Harvard", "université de", "une étude de", "des chercheurs de"],
+      appeal_phrases: ["selon les experts", "la science prouve", "études montrent", "scientifiquement prouvé"]
+    },
+    patterns: [
+    /(?:selon|according to)\s+(?:les?\s+)?(?:experts?|spécialistes?)/i,
+    /(?:étude|study|research)\s+(?:révèle|shows?|démontre)/i,
+    /(?:Dr\.|Prof\.|PhD)\s+\w+\s+(?:affirme|says?)/i
     ],
   },
 };

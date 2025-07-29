@@ -130,8 +130,21 @@ class ContentExtractor {
       "advertisement",
       "social",
       "share",
+      "cookie", "popup", "modal", "overlay", "banner", "newsletter",
+    "related", "suggest", "recommend", "widget", "promo", "promotion",
+    "comment", "rating", "review", "breadcrumb", "pagination", "tag",
+    "metadata", "byline", "author-bio", "subscription", "paywall"
     ];
-    const skipIds = ["nav", "menu", "footer", "header", "sidebar", "comments"];
+    const skipIds = ["nav", "menu", "footer", "header", "sidebar", "comments","cookie-banner", "newsletter", "popup", "modal", "overlay",
+    "related-articles", "advertisement", "social-sharing"];
+    const skipAttributes = [
+    'data-module="Advertisement"',
+    'data-component="SocialShare"', 
+    'data-track-component="Newsletter"',
+    'role="banner"',
+    'role="navigation"',
+    'role="complementary"'
+    ];
 
     const className = element.className?.toLowerCase() || "";
     const id = element.id?.toLowerCase() || "";
@@ -139,7 +152,10 @@ class ContentExtractor {
     return (
       skipClasses.some((skip) => className.includes(skip)) ||
       skipIds.some((skip) => id.includes(skip)) ||
+      skipAttributes.some((attr) => element.getAttribute(attr.split('=')[0]) === attr.split('=')[1]?.replace(/"/g, '')) ||
       element.getAttribute("aria-hidden") === "true" ||
+      element.getAttribute("role") === "banner" ||
+      element.getAttribute("role") === "navigation" ||
       getComputedStyle(element).display === "none"
     );
   }
