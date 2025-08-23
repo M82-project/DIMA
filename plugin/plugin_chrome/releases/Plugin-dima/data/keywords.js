@@ -18,7 +18,7 @@ const DIMA_ENHANCED_KEYWORDS = {
     ],
   },
 
-  TE0500: {
+  TE0153: {
     core: ["secret", "choquant", "incroyable", "shocking", "amazing"],
     variants: {
       clickbait_formulas: [
@@ -35,7 +35,7 @@ const DIMA_ENHANCED_KEYWORDS = {
       emotional_hooks: [
         "ça va vous surprendre",
         "préparez-vous",
-        "attention",
+        "scandale",
         "exclusif",
         "urgent",
         "will shock you",

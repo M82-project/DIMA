@@ -291,7 +291,7 @@ const DIMA_TECHNIQUES = [
     tactic: "TA0015",
   },
   {
-    index: "TE0500",
+    index: "TE0153",
     nom: "Clickbait",
     phase: "Detect",
     description: "Titres accrocheurs pour générer des clics",
@@ -926,7 +926,7 @@ const DIMA_TECHNIQUES = [
     tactic: "TA0043",
   },
   {
-    index: "TE0501",
+    index: "TE0414",
     nom: "FOMO",
     phase: "Act",
     description: "Peur de rater une opportunité",

@@ -4,6 +4,8 @@ Tactique qui valorisent le jugement personnel et la confiance en soi.
 ## TE0411 : biais d'excès de confiance
 ## TE0412 : Effet Peltzman (compensation du risque)
 ## TE0413 : Supériorité illusoire
+## TE0414 : FOMO (fear of missing out)
+Technique qui exploite une forme d'anxiété sociale caractérisée par la peur constante de manquer une nouvelle importante ou tout autre événement donnant une occasion d'interagir socialement. Cette peur de "rater quelque chose" incite à agir, et intérargir avec les contenus.
 
 # TA0042 Renforcement escalatoire 
 Tactique qui favorise la réalisation d'actions déjà engagées. 
