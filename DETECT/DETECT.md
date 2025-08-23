@@ -56,13 +56,15 @@ https://biais-cognitif.com/biais/effet-de-contraste/
 # TA0015: Détail signifiant
 Tactique qui exploite la propension d'une cible à détecter un détail et à lui donner du sens
 
-## T0151: Biais de distinction
+## TE0151: Biais de distinction
 Technique qui repose sur le fait que nous avons tendance à surévaluer les différences entre deux options lorsque nous les examinons ensemble. Cette technique privilégie donc la proposition d'options à comparer.
 
-## T0152: Loi de Weber-Fechner
+## TE0152: Loi de Weber-Fechner
 Selon cette loi‚ plus l’intensité du stimulus est élevée‚ plus la DJJ (différence juste perceptible) est importante. Autrement dit‚ pour percevoir une différence‚ il faut une variation plus importante de l’intensité du stimulus lorsque celui-ci est déjà intense. 
 Cette technique va donc adapter l'intensité de l'information au contexte initial. Elle peut en outre être utilisée pour "noyer le poisson". En clair en sur exposant les cibles avec un sujet ou une information, vous rendez tout changement plus couteux.
 
+## TE0153: Clickbait
+Un piège à clics (en anglais clickbait: « appât à clics »), appelé vulgairement une pute à clics, pute-à-clics ou putaclic, est un contenu web destiné exclusivement à attirer le maximum de passages d'internautes afin de générer des revenus publicitaires en ligne. Il a pour but de rapporter de l'argent au créateur de l'article. Pour ce faire, celui-ci s'appuie sur un titre racoleur, voire mensonger, et sur des éléments sensationnels ou émotionnels au détriment de la qualité ou de l'exactitude, basculant éventuellement vers la fausse information[7]. Le piège à clics sert à attirer les clics à peu de frais et à encourager le partage de son contenu sur les réseaux sociaux. [source: wikipédia](https://fr.wikipedia.org/wiki/Pi%C3%A8ge_%C3%A0_clics) 
 
 
 
