@@ -1,7 +1,125 @@
-// Plugin DIMA - content.js - Version finale consolidée
+// Plugin DIMA - content.js - Version  consolidée
 // Détection de manipulation cognitive - M82 Project
 // Version: 3.0 Refactored with ContentExtractor
 // Note: All dependencies are loaded via manifest.json in correct order
+
+
+// ============================================================================
+// PARTIE 1: DÉTECTION DE SITES SUSPECTS (NOUVEAU)
+// ============================================================================
+
+/**
+ * Vérifie si le site actuel est dans la liste des sites suspects
+ * Cette fonction est fournie par suspiciousSitesManager.js
+ * et fonctionne automatiquement dès le chargement de la page
+ */
+function checkCurrentSiteInSuspiciousList() {
+  const currentUrl = window.location.href;
+  
+  // Utiliser la fonction fournie par suspiciousSitesManager.js
+  const result = checkSuspiciousSite(currentUrl);
+  
+  if (result.isSuspicious) {
+    console.log('⚠️ DIMA: Site suspect détecté!');
+    console.log('Source:', result.siteInfo.source);
+    console.log('Raison:', result.siteInfo.reason);
+    console.log('Niveau de risque:', result.siteInfo.riskLevel);
+    
+    // Afficher une alerte visuelle
+    showSuspiciousSiteAlert(result);
+  }
+}
+
+/**
+ * Affiche une alerte pour un site suspect
+ */
+function showSuspiciousSiteAlert(result) {
+  // Créer un bandeau d'alerte en haut de la page
+  const alertBanner = document.createElement('div');
+  alertBanner.id = 'dima-suspicious-site-alert';
+  alertBanner.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, ${result.riskConfig.color}, ${result.riskConfig.color}dd);
+    color: white;
+    padding: 15px 20px;
+    z-index: 999999;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: slideDown 0.5s ease-out;
+  `;
+
+  alertBanner.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 15px; flex: 1;">
+      <span style="font-size: 24px;">${result.riskConfig.icon}</span>
+      <div>
+        <div style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">
+          ${result.riskConfig.label} - ${result.siteInfo.source}
+        </div>
+        <div style="font-size: 14px; opacity: 0.95;">
+          ${result.siteInfo.reason}
+        </div>
+        <a href="${result.siteInfo.reportUrl}" target="_blank" 
+           style="color: white; text-decoration: underline; font-size: 13px; margin-top: 5px; display: inline-block;">
+          → Consulter le rapport source
+        </a>
+      </div>
+    </div>
+    <button id="dima-close-alert" style="
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    ">
+      ✕ Fermer
+    </button>
+  `;
+
+  // Animation CSS
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideDown {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    #dima-close-alert:hover {
+      background: rgba(255,255,255,0.3) !important;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Ajouter au body
+  document.body.insertBefore(alertBanner, document.body.firstChild);
+
+  // Gérer la fermeture
+  document.getElementById('dima-close-alert').addEventListener('click', () => {
+    alertBanner.style.animation = 'slideDown 0.3s ease-out reverse';
+    setTimeout(() => alertBanner.remove(), 300);
+  });
+
+  // Ajuster le padding du body pour ne pas cacher le contenu
+  document.body.style.paddingTop = `${alertBanner.offsetHeight}px`;
+}
+
+
+// ============================================================================
+// PARTIE 2: ANALYSE DIMA du site visité
+// ============================================================================
 
 // ===== CLASSE PRINCIPALE DIMA =====
 class DIMAAnalyzer {
