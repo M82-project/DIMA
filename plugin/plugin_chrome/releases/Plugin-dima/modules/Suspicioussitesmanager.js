@@ -67,30 +67,30 @@ class SuspiciousSitesManager {
       console.log(`  ✓ Source RRN chargée: ${rrnDomains.length} domaines`);
     }
 
-    // Source 3: Doppelganger (à venir)
-    if (typeof doppelgangerDomains !== 'undefined' && Array.isArray(doppelgangerDomains)) {
-      this.registerSource('Doppelganger', doppelgangerDomains, {
-        name: 'Opération Doppelganger',
-        description: 'Sites usurpant l\'identité de médias légitimes',
-        organization: 'À définir',
-        reportUrl: '',
-        reportDate: ''
-      });
-      console.log(`  ✓ Source Doppelganger chargée: ${doppelgangerDomains.length} domaines`);
-    }
-
-    // Source 4: Portal Kombat (à venir)
+    // Source 3: Portal Kombat (VIGINUM)
     if (typeof portalKombatDomains !== 'undefined' && Array.isArray(portalKombatDomains)) {
       this.registerSource('PortalKombat', portalKombatDomains, {
         name: 'Opération Portal Kombat',
         description: 'Réseau d\'influence',
-        organization: 'À définir',
-        reportUrl: '',
-        reportDate: ''
+        organization: 'Viginum',
+        reportUrl: 'https://www.sgdsn.gouv.fr/files/files/20240212_NP_SGDSN_VIGINUM_RAPPORT-RESEAU-PORTAL-KOMBAT_VF.pdf',
+        reportDate: '2024-02-01'
       });
       console.log(`  ✓ Source Portal Kombat chargée: ${portalKombatDomains.length} domaines`);
     }
 
+    // Source 4: Baybridge (IRSEM)
+    if (typeof baybridgeDomains !== 'undefined' && Array.isArray(baybridgeDomains)) {
+      this.registerSource('Baybridge', baybridgeDomains, {
+        name: 'Opération Baybridge',
+        description: 'Vaste écosystème d\'influence informationnelle chinoise ',
+        organization: 'IRSEM & TadaWeb',
+        reportUrl: 'https://www.irsem.fr/focus',
+        reportDate: '2025-10-17'
+      });
+      console.log(`  ✓ Source Baybridge chargée: ${baybridgeDomains.length} domaines`);
+    }
+    
     // Avertissement si aucune source n'est chargée
     if (this.sources.size === 0) {
       console.warn('⚠️  DIMA: Aucune base de données de sites suspects n\'a été chargée');

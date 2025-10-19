@@ -19,6 +19,7 @@
         "data/databases/Copycop.js",
         "data/databases/PortalKombat.js",
         "data/databases/RRN.js",
+        "data/databases/Baybridge.js",
         "data/techniques.js",
         "data/keywords.js",
         "modules/contentExtractor.js",
