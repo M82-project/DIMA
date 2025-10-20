@@ -20,6 +20,7 @@
         "data/databases/PortalKombat.js",
         "data/databases/RRN.js",
         "data/databases/Baybridge.js",
+        "data/databases/Storm1516.js",
         "data/techniques.js",
         "data/keywords.js",
         "modules/contentExtractor.js",

@@ -1,10 +1,10 @@
 // DIMA - Gestionnaire Central de Sites Suspects
+// Version 2.2 - Support COMPLET des comptes sociaux (format Storm1516 natif)
 // Ce fichier charge et agrège toutes les bases de données de domaines suspects
 
 /**
  * Gestionnaire centralisé des sites suspects
- * Charge automatiquement toutes les bases de données disponibles
- * et fournit une API unifiée pour vérifier les sites
+ * Compatible avec TOUS les formats de données existants
  */
 class SuspiciousSitesManager {
   constructor() {
@@ -12,9 +12,12 @@ class SuspiciousSitesManager {
     this.allSites = [];
     this.stats = {
       totalSites: 0,
+      totalDomains: 0,
+      totalSocialAccounts: 0,
       byRiskLevel: { high: 0, medium: 0, low: 0 },
       bySources: {},
-      byTags: {}
+      byTags: {},
+      bySocialPlatform: {}
     };
     
     this.init();
@@ -35,7 +38,9 @@ class SuspiciousSitesManager {
     // Calculer les statistiques
     this.calculateStats();
     
-    console.log(`✅ DIMA: ${this.allSites.length} sites suspects chargés depuis ${this.sources.size} source(s)`);
+    console.log(`✅ DIMA: ${this.allSites.length} entrées chargées depuis ${this.sources.size} source(s)`);
+    console.log(`   - ${this.stats.totalDomains} domaines`);
+    console.log(`   - ${this.stats.totalSocialAccounts} comptes de réseaux sociaux`);
     this.logStats();
   }
 
@@ -90,6 +95,31 @@ class SuspiciousSitesManager {
       });
       console.log(`  ✓ Source Baybridge chargée: ${baybridgeDomains.length} domaines`);
     }
+
+    // Source 5: Storm 1516 - Domaines (VIGINUM)
+    if (typeof storm1516Domains !== 'undefined' && Array.isArray(storm1516Domains)) {
+      this.registerSource('Storm1516_Domains', storm1516Domains, {
+        name: 'Opération Storm_1516 (Domaines)',
+        description: 'Mode opératoire informationnel (MOI) russe actif depuis août 2023',
+        organization: 'VIGINUM',
+        reportUrl: 'https://www.defense.gouv.fr/sites/default/files/desinformation/Rapport%20Storm%201516%20-%20SGDSN.pdf',
+        reportDate: '2025-05-02'
+      });
+      console.log(`  ✓ Source Storm 1516 (domaines) chargée: ${storm1516Domains.length} domaines`);
+    }
+
+    // Source 6: Storm 1516 - Comptes sociaux (VIGINUM) - FORMAT NATIF
+    if (typeof storm1516SocialAccounts !== 'undefined' && Array.isArray(storm1516SocialAccounts)) {
+      this.registerSource('Storm1516_Social', storm1516SocialAccounts, {
+        name: 'Opération Storm_1516 (Comptes sociaux)',
+        description: 'Comptes de réseaux sociaux relayant le MOI russe Storm 1516',
+        organization: 'VIGINUM',
+        reportUrl: 'https://www.defense.gouv.fr/sites/default/files/desinformation/Rapport%20Storm%201516%20-%20SGDSN.pdf',
+        reportDate: '2025-05-02'
+      });
+      console.log(`  ✓ Source Storm 1516 (comptes sociaux) chargée: ${storm1516SocialAccounts.length} comptes`);
+    }
+
     
     // Avertissement si aucune source n'est chargée
     if (this.sources.size === 0) {
@@ -125,14 +155,28 @@ class SuspiciousSitesManager {
    */
   calculateStats() {
     this.stats.totalSites = this.allSites.length;
+    this.stats.totalDomains = 0;
+    this.stats.totalSocialAccounts = 0;
     
     // Reset stats
     this.stats.byRiskLevel = { high: 0, medium: 0, low: 0 };
     this.stats.bySources = {};
     this.stats.byTags = {};
+    this.stats.bySocialPlatform = {};
     
     // Compter par niveau de risque et tags
     this.allSites.forEach(site => {
+      // Distinguer domaines et comptes sociaux
+      // Format Storm1516: {platform: "X/Twitter", handle: "@..."}
+      // Format standard: {domain: "...", accountType: "twitter"}
+      if (site.platform || site.accountType) {
+        this.stats.totalSocialAccounts++;
+        const platform = site.platform || site.accountType;
+        this.stats.bySocialPlatform[platform] = (this.stats.bySocialPlatform[platform] || 0) + 1;
+      } else {
+        this.stats.totalDomains++;
+      }
+      
       // Par niveau de risque
       if (site.riskLevel) {
         this.stats.byRiskLevel[site.riskLevel] = (this.stats.byRiskLevel[site.riskLevel] || 0) + 1;
@@ -157,7 +201,15 @@ class SuspiciousSitesManager {
    */
   logStats() {
     console.log('📊 Statistiques:');
-    console.log(`   Total: ${this.stats.totalSites} sites`);
+    console.log(`   Total: ${this.stats.totalSites} entrées`);
+    console.log(`   - Domaines: ${this.stats.totalDomains}`);
+    console.log(`   - Comptes sociaux: ${this.stats.totalSocialAccounts}`);
+    if (this.stats.totalSocialAccounts > 0) {
+      console.log('   Répartition par plateforme:');
+      for (const [platform, count] of Object.entries(this.stats.bySocialPlatform)) {
+        console.log(`     • ${platform}: ${count}`);
+      }
+    }
     console.log(`   Risque élevé: ${this.stats.byRiskLevel.high || 0}`);
     console.log(`   Risque moyen: ${this.stats.byRiskLevel.medium || 0}`);
     console.log(`   Risque faible: ${this.stats.byRiskLevel.low || 0}`);
@@ -165,7 +217,7 @@ class SuspiciousSitesManager {
   }
 
   /**
-   * Vérifie si une URL correspond à un site suspect
+   * Vérifie si une URL correspond à un site suspect OU un compte social suspect
    * @param {string} url - L'URL à vérifier
    * @returns {Object} Résultat de la vérification
    */
@@ -173,36 +225,64 @@ class SuspiciousSitesManager {
     try {
       const urlObj = new URL(url);
       const hostname = urlObj.hostname.toLowerCase();
+      const pathname = urlObj.pathname.toLowerCase();
       
       for (const site of this.allSites) {
         let isMatch = false;
+        let matchType = 'domain';
         
-        switch (site.matchType) {
-          case "exact":
-            isMatch = hostname === site.domain.toLowerCase() || 
-                     hostname === `www.${site.domain.toLowerCase()}`;
-            break;
-            
-          case "contains":
-            isMatch = hostname.includes(site.domain.toLowerCase());
-            break;
-            
-          case "pattern":
-            try {
-              const regex = new RegExp(site.domain, "i");
-              isMatch = regex.test(hostname);
-            } catch (e) {
-              console.error(`DIMA: Pattern regex invalide pour ${site.domain}:`, e);
-            }
-            break;
+        // NOUVEAU: Support du format Storm1516 natif
+        // Format: {platform: "X/Twitter", handle: "@JimFergusonUK", url: "..."}
+        if (site.platform && site.handle) {
+          isMatch = this.checkSocialAccountStorm1516Format(url, site, hostname, pathname);
+          matchType = 'social_account';
+        }
+        // Support du format standard avec accountType
+        else if (site.accountType) {
+          const extractedHandle = this.extractSocialHandle(url, site.accountType);
+          if (extractedHandle) {
+            const dbHandle = site.domain.toLowerCase().replace(/^@/, '');
+            isMatch = extractedHandle === dbHandle;
+            matchType = 'social_account';
+          }
+        }
+        // Vérification classique pour les domaines
+        else {
+          switch (site.matchType) {
+            case "exact":
+              isMatch = hostname === site.domain.toLowerCase() || 
+                       hostname === `www.${site.domain.toLowerCase()}`;
+              break;
+              
+            case "contains":
+              isMatch = hostname.includes(site.domain.toLowerCase());
+              break;
+              
+            case "pattern":
+              try {
+                const regex = new RegExp(site.domain, "i");
+                isMatch = regex.test(hostname);
+              } catch (e) {
+                console.error(`DIMA: Pattern regex invalide pour ${site.domain}:`, e);
+              }
+              break;
+          }
         }
         
         if (isMatch) {
+          console.log(`🎯 DIMA: Match trouvé!`, {
+            type: matchType,
+            site: site.handle || site.domain,
+            url: url
+          });
+          
           return {
             isSuspicious: true,
             siteInfo: site,
             riskConfig: this.getRiskConfig(site.riskLevel),
-            matchedHostname: hostname
+            matchedHostname: hostname,
+            matchType: matchType,
+            matchedIdentifier: matchType === 'social_account' ? (site.handle || site.domain) : hostname
           };
         }
       }
@@ -215,27 +295,167 @@ class SuspiciousSitesManager {
   }
 
   /**
+   * NOUVEAU: Vérifie un compte social au format Storm1516
+   * Format: {platform: "X/Twitter", handle: "@JimFergusonUK"}
+   */
+  checkSocialAccountStorm1516Format(url, site, hostname, pathname) {
+    // Mapping des plateformes Storm1516 vers domaines
+    const platformDomains = {
+      'X/Twitter': ['twitter.com', 'x.com'],
+      'Telegram': ['t.me', 'telegram.me'],
+      'YouTube': ['youtube.com', 'youtu.be'],
+      'Facebook': ['facebook.com', 'fb.com', 'm.facebook.com'],
+      'Instagram': ['instagram.com'],
+      'TikTok': ['tiktok.com'],
+      'VK': ['vk.com'],
+      'Rumble': ['rumble.com']
+    };
+
+    const platform = site.platform;
+    const handle = site.handle.toLowerCase().replace(/^@/, ''); // Enlever @ et lowercase
+    
+    // Vérifier si on est sur la bonne plateforme
+    const domains = platformDomains[platform];
+    if (!domains) {
+      console.warn(`DIMA: Plateforme inconnue: ${platform}`);
+      return false;
+    }
+    
+    const isCorrectDomain = domains.some(domain => hostname.includes(domain));
+    if (!isCorrectDomain) {
+      return false;
+    }
+    
+    // Extraire le handle de l'URL actuelle
+    let extractedHandle = null;
+    
+    if (platform === 'X/Twitter') {
+      // twitter.com/JimFergusonUK ou x.com/JimFergusonUK
+      const match = pathname.match(/^\/([a-zA-Z0-9_]+)(?:\/|$|\?)/);
+      if (match) extractedHandle = match[1].toLowerCase();
+    } else if (platform === 'Telegram') {
+      // t.me/username ou t.me/s/channelname
+      const match = pathname.match(/^\/(?:s\/)?([a-zA-Z0-9_]+)(?:\/|$|\?)/);
+      if (match) extractedHandle = match[1].toLowerCase();
+    } else if (platform === 'YouTube') {
+      // youtube.com/@username ou youtube.com/c/username
+      const match = pathname.match(/^\/([@c]\/)?([a-zA-Z0-9_-]+)(?:\/|$|\?)/);
+      if (match) extractedHandle = match[2].toLowerCase();
+    } else if (platform === 'Facebook') {
+      // facebook.com/username
+      const match = pathname.match(/^\/([a-zA-Z0-9._-]+)(?:\/|$|\?)/);
+      if (match) extractedHandle = match[1].toLowerCase();
+    } else if (platform === 'Rumble') {
+      // rumble.com/c/username
+      const match = pathname.match(/^\/c\/([a-zA-Z0-9_-]+)(?:\/|$|\?)/);
+      if (match) extractedHandle = match[1].toLowerCase();
+    }
+    
+    if (extractedHandle) {
+      console.log(`🔍 DIMA: Comparaison - URL: "${extractedHandle}" vs DB: "${handle}"`);
+      return extractedHandle === handle;
+    }
+    
+    return false;
+  }
+
+  /**
+   * Extrait le handle/username d'une URL de réseau social
+   * @param {string} url - L'URL complète
+   * @param {string} accountType - Type de compte (twitter, facebook, youtube, etc.)
+   * @returns {string|null} Le handle extrait ou null
+   */
+  extractSocialHandle(url, accountType) {
+    try {
+      const urlObj = new URL(url);
+      const hostname = urlObj.hostname.toLowerCase();
+      const pathname = urlObj.pathname;
+      
+      // Patterns pour différents réseaux sociaux
+      const patterns = {
+        twitter: {
+          domains: ['twitter.com', 'x.com'],
+          regex: /^\/([a-zA-Z0-9_]+)(?:\/|$|\?)/
+        },
+        facebook: {
+          domains: ['facebook.com', 'fb.com'],
+          regex: /^\/([a-zA-Z0-9._]+)(?:\/|$|\?)/
+        },
+        instagram: {
+          domains: ['instagram.com'],
+          regex: /^\/([a-zA-Z0-9._]+)(?:\/|$|\?)/
+        },
+        youtube: {
+          domains: ['youtube.com'],
+          regex: /^\/([@c]\/)?([a-zA-Z0-9_-]+)(?:\/|$|\?)/
+        },
+        telegram: {
+          domains: ['t.me', 'telegram.me'],
+          regex: /^\/([a-zA-Z0-9_]+)(?:\/|$|\?)/
+        },
+        tiktok: {
+          domains: ['tiktok.com'],
+          regex: /^\/@?([a-zA-Z0-9._]+)(?:\/|$|\?)/
+        },
+        vk: {
+          domains: ['vk.com'],
+          regex: /^\/([a-zA-Z0-9._]+)(?:\/|$|\?)/
+        }
+      };
+      
+      const pattern = patterns[accountType.toLowerCase()];
+      if (!pattern) {
+        console.warn(`DIMA: Type de compte non supporté: ${accountType}`);
+        return null;
+      }
+      
+      // Vérifier si on est sur le bon domaine
+      const isCorrectDomain = pattern.domains.some(domain => hostname.includes(domain));
+      if (!isCorrectDomain) return null;
+      
+      // Extraire le handle
+      const match = pathname.match(pattern.regex);
+      if (match) {
+        const handle = accountType.toLowerCase() === 'youtube' ? (match[2] || match[1]) : match[1];
+        console.log(`DIMA: Handle extrait de ${accountType}: ${handle}`);
+        return handle;
+      }
+      
+      return null;
+    } catch (error) {
+      console.error("DIMA: Erreur lors de l'extraction du handle social:", error);
+      return null;
+    }
+  }
+
+  /**
    * Retourne la configuration visuelle pour un niveau de risque
    */
   getRiskConfig(riskLevel) {
     const RISK_LEVELS = {
+      critical: {
+        color: "#8b0000",
+        icon: "🚨",
+        label: "Risque Critique",
+        message: "Ce site/compte a été identifié comme un acteur majeur de désinformation."
+      },
       high: {
         color: "#c0392b",
         icon: "⚠️",
         label: "Risque Élevé",
-        message: "Ce site a été identifié comme diffusant de la désinformation de manière systématique."
+        message: "Ce site/compte a été identifié comme diffusant de la désinformation de manière systématique."
       },
       medium: {
         color: "#e67e22",
         icon: "⚡",
         label: "Vigilance Requise",
-        message: "Ce site a été signalé pour des pratiques douteuses."
+        message: "Ce site/compte a été signalé pour des pratiques douteuses."
       },
       low: {
         color: "#f39c12",
         icon: "ℹ️",
         label: "À Surveiller",
-        message: "Ce site présente des caractéristiques suspectes."
+        message: "Ce site/compte présente des caractéristiques suspectes."
       }
     };
     
@@ -279,6 +499,16 @@ class SuspiciousSitesManager {
   searchBySource(sourceName) {
     return this.allSites.filter(site => 
       site.source === sourceName
+    );
+  }
+
+  /**
+   * Recherche des comptes sociaux par plateforme
+   */
+  searchBySocialPlatform(platform) {
+    return this.allSites.filter(site => 
+      site.platform === platform || 
+      (site.accountType && site.accountType.toLowerCase() === platform.toLowerCase())
     );
   }
 }
