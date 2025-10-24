@@ -21,10 +21,12 @@
         "data/databases/RRN.js",
         "data/databases/Baybridge.js",
         "data/databases/Storm1516.js",
+        "data/databases/Pravda.js",
         "data/techniques.js",
+        "data/databases/Doppelganger.js",
         "data/keywords.js",
         "modules/contentExtractor.js",
-        "modules/suspiciousSitesManager.js",
+        "modules/Suspicioussitesmanager.js",
         "modules/techniqueAnalyzer.js",
         "modules/uiManager.js",
         "content.js"
