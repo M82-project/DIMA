@@ -1,5 +1,5 @@
 // DIMA - Gestionnaire Central de Sites Suspects
-// Version 2.2 - Support COMPLET des comptes sociaux (format Storm1516 natif)
+// Version 2.3 - Support COMPLET des comptes sociaux (format Storm1516 natif)
 // Ce fichier charge et agrège toutes les bases de données de domaines suspects
 
 /**
@@ -120,6 +120,29 @@ class SuspiciousSitesManager {
       console.log(`  ✓ Source Storm 1516 (comptes sociaux) chargée: ${storm1516SocialAccounts.length} comptes`);
     }
 
+    // Source 7: Pravda 
+   if (typeof pravdaDomains !== 'undefined' && Array.isArray(pravdaDomains)) {
+      this.registerSource('Pravda_Domains', pravdaDomains, {
+        name: 'Réseau Pravda (Domaines)',
+        description: 'Réseau de désinformation pro-Kremlin actif depuis 2014, Opération exposée en février 2024 par VIGINUM',
+        organization: 'VIGINUM, DFRLab (Atlantic Council), CheckFirst (Finlande),American Sunlight Project',
+        reportUrl: 'https://www.sgdsn.gouv.fr/files/files/20240212_NP_SGDSN_VIGINUM_PORTAL-KOMBAT-NETWORK_ENG_VF.pdf',
+        reportDate: '2024-12-02'
+      });
+      console.log(`  ✓ Source Pravda chargée: ${pravdaDomains.length} domaines`);
+    }
+    
+    // Source 8: Doppelganger - noms de domaines 
+   if (typeof doppelgangerDomains !== 'undefined' && Array.isArray(doppelgangerDomains)) {
+      this.registerSource('Doppelganger_Domains', doppelgangerDomains, {
+        name: 'Opération - réseau Doppelganger',
+        description: 'Réseau de désinformation pro-Kremlin créant des sites Web usurpant l\'identité de sources d\'information légitimes. Opérée par Social Design Agency (SDA)',
+        organization: 'Sources multiples: Wikipedia, Qurium, US DOJ, EU DisinfoLab, DFRLab',
+        reportUrl: 'https://en.wikipedia.org/wiki/List_of_political_disinformation_website_campaigns_in_Russia',
+        reportDate: '2023-11-23'
+      });
+      console.log(`  ✓ Source Doppelganger chargée: ${doppelgangerDomains.length} domaines`);
+    }
     
     // Avertissement si aucune source n'est chargée
     if (this.sources.size === 0) {
