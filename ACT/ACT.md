@@ -13,6 +13,8 @@ Tactique qui favorise la réalisation d'actions déjà engagées.
 ## TE0421 : biais des coûts irrécupérables
 ## TE0422 : biais d'autorité
 Tendance à accorder plus de crédibilité ou à suivre les directives de personnes perçues comme étant en position d'autorité.
+## TE0423 : biais preuve sociale artificielle
+Tendance des individus à adopter les comportements des autres en situation d'incertitude. La preuve sociale artificielle cherche à exploiter cette tendance en donnant l'illusion d'un consencus ou d'un comportement massivement partagé. 
 
 
 # TA0043 : Ozaekomi waza (contrôle par immobilisation)
