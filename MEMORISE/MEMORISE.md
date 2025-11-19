@@ -11,6 +11,7 @@ Tactique qui favorise la mémorisation et la construction de souvenirs par renfo
 Tactique qui favorise la mémorisation d'une information en s'appuyant sur des stéréotypes ou des croyances pré-existantes	
 
 ## TE0321 : [Stéréotype implicite](https://en.wikipedia.org/wiki/Implicit_stereotype)
+Le stéréotype implicite désigne des associations automatiques et inconscientes entre des groupes sociaux et des traits ou comportements spécifiques. Ces biais influencent nos jugements et interactions, souvent sans que nous en soyons conscients, et peuvent perpétuer des inégalités.
 ## TE0322 : [Effacement négatif](https://en.wikipedia.org/wiki/Fading_affect_bias)
 ## TE0122 : [Effet de contexte](https://books.openedition.org/editionsmsh/14811)
 
