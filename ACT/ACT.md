@@ -58,11 +58,11 @@ Tendance à accorder plus de crédibilité ou à suivre les directives de person
 
 **Références:**
 - Expérience de Milgram (1963)
-- Principe d'autorité de Cialdini## TE0423 : biais preuve sociale artificielle
-Tendance des individus à adopter les comportements des autres en situation d'incertitude. La preuve sociale artificielle cherche à exploiter cette tendance en donnant l'illusion d'un consencus ou d'un comportement massivement partagé. 
+- Principe d'autorité de Cialdini
 
 ## TE0423 : Biais de la preuve sociale artificielle
 
+Tendance des individus à adopter les comportements des autres en situation d'incertitude. La preuve sociale artificielle cherche à exploiter cette tendance en donnant l'illusion d'un consencus ou d'un comportement massivement partagé. 
 Création d'une illusion de consensus ou de popularité pour influencer la décision individuelle. Exploitation du fait que les gens ont tendance à suivre les actions de la masse.
 
 **Exemples:**
