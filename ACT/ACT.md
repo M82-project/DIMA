@@ -16,7 +16,6 @@ Tendance à prendre plus de risques lorsqu'on se sent protégé ou en sécurité
 - "Avec cette protection, vous pouvez y aller sans crainte"
 - "C'est sécurisé, alors n'hésitez pas"
 - "Le système vous protège, foncez"
-- 
 ## TE0413 : Supériorité illusoire
 Conviction d'être meilleur, plus intelligent ou plus compétent que la moyenne, créant une confiance excessive dans ses propres jugements.
 
