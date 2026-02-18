@@ -1,0 +1,667 @@
+% ============================================================================
+% DIMA: A Cognitive Attack Framework for Identifying Bias Exploitation
+%       in Information Flows
+% LaTeX version -- formatted for Frontiers / MDPI-style submission
+% ============================================================================
+\documentclass[11pt,a4paper]{article}
+
+% -- Packages ----------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{mathptmx}              % Times Roman
+\usepackage[margin=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage[numbers]{natbib}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{abstract}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{hyperref}
+
+% -- Colors ------------------------------------------------------------------
+\definecolor{dimaBlue}{HTML}{1a1a2e}
+\definecolor{linkBlue}{HTML}{2E5090}
+\definecolor{headerGray}{HTML}{555555}
+
+% -- Hyperref setup ----------------------------------------------------------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=dimaBlue,
+    citecolor=dimaBlue,
+    urlcolor=linkBlue,
+    pdftitle={DIMA: A Cognitive Attack Framework},
+    pdfauthor={Bertrand Boyer},
+}
+
+% -- Headers / Footers ------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\textit{DIMA: A Cognitive Attack Framework}}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% -- Section formatting -----------------------------------------------------
+\titleformat{\section}{\large\bfseries\color{dimaBlue}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{dimaBlue}}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\itshape\color{dimaBlue}}{\thesubsubsection.}{0.5em}{}
+
+% -- Column type for tables -------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+% -- Document ----------------------------------------------------------------
+\begin{document}
+
+% -- Title page (single column) ---------------------------------------------
+\begin{center}
+
+\vspace{1cm}
+{\LARGE\bfseries DIMA: A Cognitive Attack Framework for Identifying\\
+Bias Exploitation in Information Flows\par}
+\vspace{0.5cm}
+{\large\itshape\color{headerGray} DIMA~: Un framework d'attaque cognitive pour l'identification\\
+de l'exploitation des biais dans les flux d'information\par}
+\vspace{0.8cm}
+{\large\textbf{Bertrand Boyer}\par}
+\vspace{0.2cm}
+{\normalsize\textit{M82 Project --- An independent think tank promoting awareness of digital security challenges}\\
+\href{mailto:contact@m82-project.org}{contact@m82-project.org}\par}
+\vspace{0.5cm}
+{\small\textit{Received:} [13 Fev 2026] \quad|\quad \textit{Revised:} [Date] \quad|\quad \textit{Accepted:} [Date]\par}
+ 
+\vspace{0.5cm}
+\rule{\textwidth}{0.5pt}
+\vspace{0.3cm}
+
+% -- Abstract ---------------------------------------------------------------
+\parbox{0.92\textwidth}{
+\textbf{\large Abstract}\\[6pt]
+\small
+The proliferation of digital information flows has created an environment in which cognitive biases can be systematically exploited to manipulate public perception and decision-making. While existing frameworks such as MITRE ATT\&CK address cybersecurity threats at the technical level and DISARM characterizes disinformation campaigns through their operational tactics, techniques, and procedures (TTPs), neither provides a structured methodology for analyzing how cognitive biases are weaponized at the individual information-processing level. This paper introduces DIMA (Detect, Inform, Memorize, Act), an open-source framework inspired by cybersecurity threat modeling that maps the cognitive attack surface exploited during information consumption. DIMA organizes 15 tactics and 41 techniques across four sequential phases corresponding to the cognitive processing of information: detection, sense-making, memorization, and action. The framework's sequential architecture draws explicitly on McGuire's information processing model of persuasion (1968, 1969), adapting the attention--comprehension--yielding--retention--behavior chain to the context of deliberate cognitive exploitation, while its content draws on the foundational work of Kahneman and Tversky on dual-process theory and heuristic biases. The defensive dimension of the framework is informed by McGuire's inoculation theory, which provides the theoretical basis for building cognitive resistance. We position DIMA as a complementary layer to existing frameworks, bridging the gap between technical threat intelligence, persuasion science, and cognitive psychology.
+
+\vspace{6pt}
+\textbf{Keywords:} cognitive warfare, cognitive bias exploitation, information manipulation, MITRE ATT\&CK, DISARM, threat framework, dual-process theory, heuristics, information processing model, inoculation theory, information security
+}
+
+\vspace{0.4cm}
+\rule{\textwidth}{0.2pt}
+\vspace{0.3cm}
+
+% -- R\'esum\'e -------------------------------------------------------------
+\parbox{0.92\textwidth}{
+\textbf{\large R\'esum\'e}\\[6pt]
+\small
+La prolif\'eration des flux d'information num\'eriques a cr\'e\'e un environnement dans lequel les biais cognitifs peuvent \^etre syst\'ematiquement exploit\'es pour manipuler la perception publique et la prise de d\'ecision. Si les frameworks existants tels que MITRE ATT\&CK traitent des menaces de cybers\'ecurit\'e au niveau technique et que DISARM caract\'erise les campagnes de d\'esinformation par leurs tactiques, techniques et proc\'edures (TTP) op\'erationnelles, aucun ne fournit de m\'ethodologie structur\'ee pour analyser la mani\`ere dont les biais cognitifs sont instrumentalis\'es au niveau du traitement individuel de l'information. Cet article pr\'esente DIMA (Detect, Inform, Memorize, Act), un framework open-source inspir\'e de la mod\'elisation des menaces en cybers\'ecurit\'e qui cartographie la surface d'attaque cognitive exploit\'ee lors de la consommation d'information. DIMA organise 15 tactiques et 41 techniques selon quatre phases s\'equentielles correspondant au traitement cognitif de l'information~: d\'etection, mise en sens, m\'emorisation et action. L'architecture s\'equentielle du framework s'inscrit explicitement dans la filiation du mod\`ele de traitement de l'information persuasive de McGuire (1968, 1969), adaptant la cha\^ine attention--compr\'ehension--acceptation--r\'etention--comportement au contexte de l'exploitation cognitive d\'elib\'er\'ee. La dimension d\'efensive du framework est inform\'ee par la th\'eorie de l'inoculation de McGuire, qui fournit les bases th\'eoriques de la construction d'une r\'esilience cognitive.
+
+\vspace{6pt}
+\textbf{Mots-cl\'es~:} guerre cognitive, exploitation des biais cognitifs, manipulation de l'information, MITRE ATT\&CK, DISARM, framework de menaces, th\'eorie du double processus, heuristiques, mod\`ele de traitement de l'information, th\'eorie de l'inoculation
+}
+
+\vspace{0.4cm}
+\rule{\textwidth}{0.2pt}
+\vspace{0.6cm}
+
+\end{center}
+
+\twocolumn
+
+% ============================================================================
+\section{Introduction}
+% ============================================================================
+
+The contemporary information environment is characterized by an unprecedented volume and velocity of data flows. Citizens no longer wait for the evening news broadcast; instead, they are continuously exposed to information streams through social media platforms, messaging applications, and algorithmically curated content feeds. This permanent exposure creates structural vulnerabilities that can be systematically exploited by actors seeking to manipulate public perception, polarize societies, or influence decision-making processes~\cite{wardle2017, benkler2018}.
+
+The concept of cognitive warfare has resurfaced in strategic studies as a critical area of concern. As Pappalardo~\cite{pappalardo2023} articulates, cognitive warfare aims to ``directly alter the mechanisms of understanding the real world and decision-making in order to destabilize or paralyze an adversary.'' Unlike conventional information warfare, which focuses on the content of messages, cognitive warfare targets the very cognitive processes through which individuals receive, interpret, store, and act upon information. The human brain, with its well-documented cognitive biases and heuristic shortcuts, constitutes a primary attack surface~\cite{kahneman2011, claverie2022}.
+
+The cybersecurity community has developed mature frameworks for characterizing technical threats. The MITRE ATT\&CK framework~\cite{strom2020}, introduced in 2013, provides a comprehensive knowledge base of adversary tactics and techniques based on real-world observations, enabling structured threat modeling and intelligence sharing. Similarly, the DISARM framework~\cite{terp2022} adapts the ATT\&CK methodology to disinformation analysis, describing the operational TTPs employed by malicious actors conducting influence operations. These frameworks have proven invaluable for their respective domains: ATT\&CK for technical cyber threats and DISARM for the operational mechanics of disinformation campaigns.
+
+However, a significant gap exists in the current landscape of analytical frameworks. While ATT\&CK addresses how systems are technically compromised and DISARM describes how disinformation campaigns are operationally conducted, neither framework provides a structured methodology for analyzing how cognitive biases are deliberately exploited at the individual information-processing level. The question is not merely ``what false information is being spread?'' or ``how is it being disseminated?'' but rather: ``to what extent is a given piece of information constructed to exploit one or more cognitive biases in its target audience?''
+
+This paper introduces DIMA (Detect, Inform, Memorize, Act), a framework developed within the M82 Project~\cite{boyer2024} that addresses this gap. Inspired by the structural methodology of cybersecurity threat frameworks, DIMA maps the cognitive attack surface by organizing tactics and techniques according to four sequential phases of information processing. Rather than detecting ``fake news'' or determining the veracity of content, DIMA provides an ``auto-diagnostic'' tool that enables individuals and analysts to evaluate how information they encounter may be designed to exploit their cognitive vulnerabilities.
+
+The remainder of this paper is organized as follows. Section~\ref{sec:related} reviews related work, including McGuire's information processing model and inoculation theory, the dual-process cognitive bias literature, and existing threat frameworks. Section~\ref{sec:framework} presents the DIMA framework architecture in detail, including the explicit mapping to McGuire's stages. Section~\ref{sec:comparative} provides a comparative analysis positioning DIMA relative to MITRE ATT\&CK and DISARM. Section~\ref{sec:discussion} discusses contributions, the operationalization through a browser extension, limitations, and future directions. Section~\ref{sec:conclusion} concludes. The complete taxonomy of phases, tactics, and techniques is provided in Appendix~\ref{app:taxonomy}.
+
+% ============================================================================
+\section{Related Work and Theoretical Foundations}
+\label{sec:related}
+% ============================================================================
+
+\subsection{Information Processing Models and Cognitive Biases}
+
+The theoretical foundations of DIMA rest on two complementary pillars: stage models of persuasive information processing and the cognitive bias literature rooted in dual-process theory.
+
+\subsubsection{McGuire's Information Processing Model of Persuasion}
+
+A foundational precursor to DIMA is William McGuire's information processing model of persuasion~\cite{mcguire1968, mcguire1969, mcguire1985}. Emerging from the Yale Communication Research Program initiated by Hovland et al.~\cite{hovland1953}, McGuire proposed that the persuasive impact of a message is the joint product of success at each of several sequential stages. In its initial formulation, the model identified five stages: (1)~attention, (2)~comprehension, (3)~acceptance (or yielding), (4)~retention, and (5)~behavior~\cite{mcguire1969}. McGuire later expanded the model to six stages by distinguishing presentation (exposure) from attention~\cite{mcguire1985}.
+
+The critical insight of McGuire's model is that ``the receiver must go through each of these steps if the communication is to have an ultimate persuasive impact, and each depends on the occurrence of the preceding step''~\cite[p.~173]{mcguire1969}. This sequential dependency means that a failure at any stage---the message is not noticed, not understood, not accepted, not retained, or not acted upon---breaks the persuasion chain. This stochastic framework explains why inducing behavior change through information campaigns is so difficult: the overall probability of success is the product of probabilities at each stage, each of which is less than one.
+
+McGuire's model also introduced a second foundational idea: that determinants of persuasion can have opposing effects at different stages. Using a simplified two-factor model of reception and acceptance, McGuire~\cite{mcguire1968} demonstrated that personality variables such as intelligence or self-esteem may facilitate reception (understanding the message) while simultaneously hindering acceptance (critically evaluating it), producing curvilinear relationships between personality traits and persuasion susceptibility. This insight is directly relevant to DIMA's analytical framework, where a given cognitive mechanism may operate differently depending on the processing phase.
+
+The structural parallel between McGuire's five-stage model and DIMA's four-phase architecture is explicit and intentional. DIMA's \textit{Detect} phase corresponds to McGuire's attention stage; the \textit{Inform} phase integrates comprehension and acceptance (or yielding); the \textit{Memorize} phase corresponds to retention; and the \textit{Act} phase maps to behavior. This mapping is summarized in Table~\ref{tab:mcguire}. By adapting McGuire's stage model to the specific context of deliberate cognitive bias exploitation, DIMA transposes a persuasion-science framework into the vocabulary and methodology of cybersecurity threat analysis.
+
+\subsubsection{McGuire's Inoculation Theory}
+
+Beyond the processing model, McGuire's inoculation theory~\cite{mcguire1961, mcguire1964} provides a crucial theoretical foundation for DIMA's defensive applications. Drawing an analogy with biological immunization, McGuire proposed that pre-exposure to weakened forms of persuasive arguments---combined with refutations---builds resistance to subsequent, stronger persuasive attacks. The inoculation process involves two key components: threat (awareness that one's attitudes are vulnerable to attack) and refutational preemption (pre-prepared counterarguments)~\cite{mcguire1964, pfau1988}.
+
+Inoculation theory has been validated across diverse contexts including health communication, political persuasion, and consumer behavior~\cite{compton2013}. Recent applications to the domain of misinformation resistance, notably through ``prebunking'' interventions and serious games~\cite{roozenbeek2019, basol2020}, have demonstrated the theory's relevance to contemporary information manipulation challenges. DIMA can be understood as providing the diagnostic component that inoculation theory requires: by identifying which cognitive biases are being targeted, DIMA enables the design of specific inoculation interventions tailored to the exploitation techniques employed. This connection between diagnosis (DIMA) and treatment (inoculation) is further developed in Sections~\ref{sec:plugin} and~\ref{sec:future}.
+
+\subsubsection{Dual-Process Theory and the Heuristic Bias Program}
+
+The second theoretical pillar is the dual-process theory of cognition, most prominently articulated by Daniel Kahneman~\cite{kahneman2011} in his distinction between System~1 (fast, intuitive, automatic) and System~2 (slow, deliberate, analytical) thinking. System~1 operates continuously and effortlessly, relying on heuristics---cognitive shortcuts that enable rapid judgment under uncertainty. While these heuristics are generally adaptive, they produce systematic and predictable errors known as cognitive biases~\cite{gigerenzer2011}. The dual-process framework extends McGuire's model by explaining \textit{why} the sequential processing stages are vulnerable: System~1's automatic heuristics, which dominate much of everyday information processing, are precisely the mechanisms that cognitive attackers seek to exploit.
+
+The seminal work of Tversky and Kahneman~\cite{tversky1974} identified three fundamental heuristics---representativeness, availability, and anchoring---that underlie a wide range of biases. The availability heuristic, for instance, leads individuals to estimate the frequency or probability of events based on how easily examples come to mind, rather than on statistical evidence. The anchoring heuristic causes disproportionate reliance on the first piece of information encountered. These mechanisms are not merely academic curiosities; they constitute exploitable vulnerabilities in the context of information warfare.
+
+Subsequent research has expanded the catalog of documented biases. The ``cognitive bias codex'' compiled by Benson~\cite{benson2016} lists over 180~biases, organized into four categories: information overload filtering, meaning construction from ambiguity, rapid recall mechanisms, and action triggers under time pressure. This quadripartite organization, while developed independently, shares a structural affinity with both McGuire's stage model and the four phases of the DIMA framework.
+
+The framing effect, first demonstrated by Tversky and Kahneman~\cite{tversky1981}, shows that the same information presented differently leads to systematically different decisions---a phenomenon directly exploitable in information manipulation. Similarly, the confirmation bias~\cite{nickerson1998} leads individuals to preferentially seek and interpret information that confirms pre-existing beliefs, creating a fertile ground for targeted content delivery.
+
+\subsection{Cognitive Warfare: An Emerging Domain}
+
+The concept of cognitive warfare has gained renewed attention within NATO and allied strategic communities. Du~Cluzel~\cite{ducluzel2020} defined cognitive warfare as ``an unconventional form of warfare that uses cyber tools to alter enemy cognitive processes, exploit mental biases or reflexive thinking, and provoke thought distortions, influence decision-making and hinder action.'' The NATO Allied Command Transformation (ACT) published an exploratory concept~\cite{natoact2023} recognizing cognitive attacks as ``deliberate offensive maneuvers aimed at influencing perceptions, beliefs, interests, decisions, and behavior by directly targeting the human mind.''
+
+Beauchamp-Mustafaga and Chase~\cite{beauchamp2020} have documented how state actors, particularly Russia and China, have integrated cognitive warfare capabilities into their military doctrines. Russian doctrine emphasizes ``information-psychological operations'' that target the cognitive processes of adversary populations, while Chinese military theorists discuss ``cognitive confrontation'' (\textit{r\`enzh\={\i} du\`ik\`ang}) as a decisive domain of future conflict. The 2016 U.S. presidential election interference~\cite{mueller2019} provided a prominent case study of cognitive warfare techniques deployed at scale through social media platforms.
+
+Recent academic contributions have sought to formalize cognitive warfare analysis. Brangetto and Veenendaal~\cite{brangetto2016} proposed a cognitive warfare taxonomy, while Gioe et al.~\cite{gioe2020} examined the convergence of neuroscience and information warfare. However, these contributions remain largely descriptive and lack the structured, actionable format characteristic of cybersecurity threat frameworks.
+
+\subsection{MITRE ATT\&CK: The Cybersecurity Reference Framework}
+
+MITRE ATT\&CK~\cite{strom2020}, created in 2013 from the Fort Meade Experiment, has become the de facto standard for cyber threat analysis. The framework organizes adversary behaviors into a matrix of tactics (the ``why''---the adversary's tactical objective) and techniques (the ``how''---the specific method used to achieve it). Tactics are arranged sequentially to reflect typical attack progression: Initial Access, Execution, Persistence, Privilege Escalation, through to Impact~\cite{mitre2024}.
+
+The power of ATT\&CK lies in several design principles that have informed DIMA's development. First, its structured taxonomy enables consistent documentation and sharing of threat intelligence. Second, the sequential organization of tactics reflects a realistic attack lifecycle. Third, the framework is empirically grounded in observed adversary behaviors rather than theoretical possibilities. Fourth, its open-source nature encourages community contribution and continuous improvement.
+
+However, ATT\&CK operates exclusively at the technical level: it characterizes how computer systems and networks are compromised. It does not address the cognitive dimension of information threats, even though social engineering---which inherently exploits cognitive biases---is acknowledged as a major attack vector.
+
+\subsection{DISARM: Extending the Framework Approach to Disinformation}
+
+The DISARM framework~\cite{terp2022, disarm2024}, developed by Terp et al.\ and supported by the DISARM Foundation, extends the ATT\&CK methodology to disinformation operations. DISARM provides a ``Red Framework'' describing the TTPs of disinformation creators and a ``Blue Framework'' for countermeasures. The Red Framework organizes disinformation behaviors into tactical phases including Plan Strategy, Develop Narratives, Establish Assets, Maximize Exposure, and Drive Online Harms.
+
+DISARM has been adopted within the European Digital Media Observatory (EDMO) and recognized in the EU's Strengthened Code of Practice on Disinformation. Its integration with the STIX2 standard enables structured intelligence sharing. The framework excels at describing the operational mechanics of disinformation campaigns: the creation of fake accounts, the amplification of narratives, the exploitation of platform algorithms.
+
+Yet DISARM's analytical focus remains operational. It describes \textit{what} disinformation actors do (create fake accounts, amplify content, manipulate search engines) rather than \textit{why} their content is cognitively effective. The question of which specific cognitive biases are targeted by a given piece of manipulated information, and through what cognitive mechanisms it achieves its effect, falls outside DISARM's scope. This is the gap that DIMA is designed to address.
+
+% ============================================================================
+\section{The DIMA Framework}
+\label{sec:framework}
+% ============================================================================
+
+\subsection{Design Principles}
+
+DIMA was developed according to several guiding principles. First, the framework adopts the Cyber Threat Intelligence (CTI) methodology of structured decomposition into phases, tactics, and techniques, following the proven model of MITRE ATT\&CK. Second, its sequential phase structure draws explicitly on McGuire's information processing model of persuasion~\cite{mcguire1968, mcguire1969}, adapting the attention--comprehension--yielding--retention--behavior chain to the specific context of deliberate cognitive bias exploitation in information warfare. Third, the content of each phase is grounded in the cognitive science literature on bias and heuristics, ensuring that each technique corresponds to a documented cognitive phenomenon. Fourth, it models the information-processing sequence from the perspective of the target (the ``defender'') rather than the attacker, making it a self-diagnostic tool---an approach conceptually aligned with McGuire's inoculation theory~\cite{mcguire1961}, which emphasizes building the target's resistance. Fifth, it is designed to be complementary to existing frameworks rather than a replacement.
+
+A key conceptual distinction must be emphasized: DIMA does not seek to determine whether information is true or false. Instead, it evaluates the degree to which a piece of information appears constructed to exploit cognitive biases. A factually accurate piece of information can nonetheless be framed, timed, or contextualized in ways that exploit cognitive vulnerabilities. This distinction positions DIMA as a cognitive hygiene tool rather than a fact-checking mechanism.
+
+\subsection{Architecture Overview}
+
+DIMA is structured around four sequential phases that map the cognitive processing of information from initial detection to behavioral response. Each phase groups multiple tactics, and each tactic encompasses specific techniques corresponding to identified cognitive biases or heuristic effects. The framework currently comprises 4~phases, 15~tactics, and 41~techniques. The four phases are:
+
+\begin{description}[style=nextline, leftmargin=1.5em]
+\item[\textbf{Detect (D)}] Why did this information attract my attention? This phase addresses the initial cognitive filtering that causes certain information to stand out from the continuous data stream.
+\item[\textbf{Inform (I)}] Why does this information make sense to me? This phase covers the sense-making process through which new information is integrated into existing mental models and beliefs.
+\item[\textbf{Memorize (M)}] Why should I retain this information? This phase addresses the mechanisms that cause information to be encoded in memory and resist cognitive rejection.
+\item[\textbf{Act (A)}] Why does this information provoke a reaction from me? This phase covers the biases that drive behavioral responses based on processed and retained information.
+\end{description}
+
+As noted in Section~\ref{sec:related}, this four-phase structure has a direct lineage to McGuire's information processing model of persuasion~\cite{mcguire1969}. Table~\ref{tab:mcguire} presents the explicit mapping between the two models.
+
+\begin{table}[htbp]
+\centering
+\caption{Mapping between McGuire's information processing stages and DIMA phases.}
+\label{tab:mcguire}
+\small
+\begin{tabular}{L{2.2cm}L{1.8cm}L{3.8cm}}
+\toprule
+\textbf{McGuire Stage} & \textbf{DIMA Phase} & \textbf{Cognitive Focus} \\
+\midrule
+(1) Attention & D --- Detect & Selective filtering from information flow; salience and novelty exploitation \\
+(2) Comprehension + (3) Yielding & I --- Inform & Sense-making, narrative construction, integration into existing schemas \\
+(4) Retention & M --- Memorize & Encoding in memory, resistance to cognitive rejection, reinforcement \\
+(5) Behavior & A --- Act & Behavioral response triggers: action, inaction, or escalation \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The consolidation of McGuire's comprehension and yielding stages into a single \textit{Inform} phase reflects the observation that, in the context of cognitive warfare, the processes of understanding information and integrating it into one's belief system are often inseparable---particularly when the target's own cognitive biases actively construct the narrative. As Kahneman~\cite{kahneman2011} observed, ``it is often not the manipulator who constructs the narrative, but the target who fills the gaps between two pieces of information.'' McGuire's own two-factor simplification of reception (combining attention and comprehension) and acceptance provides precedent for such consolidation when analytical parsimony serves the framework's purpose~\cite{mcguire1968}.
+
+\subsection{Phase~1: Detect}
+
+The \textit{Detect} phase models the initial cognitive filtering through which certain information items capture attention. In an environment of permanent information overload, the capacity to ``stand out'' from the flow is a prerequisite for any manipulation attempt. This phase draws heavily on research in selective attention and perceptual salience~\cite{broadbent1958}. The phase comprises five tactics:
+
+\subsubsection{TA0011: Pre-existing Information}
+This tactic exploits pre-existing information or established beliefs to capture the target's attention. Techniques include the \textit{availability heuristic} (TE0111), which leads to decisions based on readily accessible examples rather than representative evidence~\cite{tversky1974}, and the \textit{mere exposure effect} (TE0332), whereby repeated exposure to a stimulus increases positive attitudes toward it~\cite{zajonc1968}.
+
+\subsubsection{TA0012: Repeated Exposure Information}
+This tactic exploits information repetition to facilitate detection. The \textit{frequency illusion} (TE0121), also known as the Baader-Meinhof phenomenon, is a combination of biases producing selective attention: once something is noticed for the first time, there is a tendency to notice it more frequently~\cite{zwicky2006}. The \textit{context effect} (TE0122) exploits the tendency to interpret perceptions relative to similar or proximate situations.
+
+\subsubsection{TA0013: Divisive Information}
+This tactic favors strange, surprising, or divisive information to capture attention. The \textit{bizarreness effect} (TE0131) exploits the tendency to notice unusual things more easily, while the \textit{negativity bias} (TE0132) exploits the tendency to give more attention and weight to negative experiences than positive ones~\cite{baumeister2001}.
+
+\subsubsection{TA0014: Deviation from the Norm}
+This tactic exploits the human capacity to detect changes in the environment. The \textit{Von Restorff effect} (TE0141) predicts that an item that stands out from its peers is more likely to be remembered~\cite{vonrestorff1933}. The \textit{anchoring bias} (TE0142) exploits the difficulty of departing from a first impression~\cite{tversky1974}. The \textit{contrast effect} (TE0143) modifies perception of a fact by facilitating comparison with a previously observed one.
+
+\subsubsection{TA0015: Significant Detail}
+This tactic exploits the propensity to detect a detail and assign it meaning. The \textit{distinction bias} (TE0151) relies on the tendency to overvalue differences between two options when examined simultaneously. \textit{Weber-Fechner's law} (TE0152) describes how the intensity of a stimulus affects the just-noticeable difference. The \textit{clickbait} technique (TE0153) represents the deliberate use of sensational or misleading headlines to capture attention at the expense of accuracy~\cite{potthast2016}.
+
+\subsection{Phase~2: Inform}
+
+The \textit{Inform} phase models the sense-making process through which detected information is integrated into existing cognitive schemas. The human brain seeks coherent narratives and will naturally complete information to maintain consistency with pre-existing beliefs~\cite{kahneman2011}. This phase comprises six tactics:
+
+\subsubsection{TA0021: Pattern Creation}
+This tactic enables the target to weave detected information into a narrative. Techniques include the \textit{illusory correlation bias} (TE0211), the \textit{anecdotal evidence bias} (TE0212), and the \textit{illusion of series} (TE0213). These biases lead individuals to perceive meaningful patterns in random or unrelated data, a mechanism particularly effective in conspiracy theory propagation.
+
+\subsubsection{TA0022: Generalization and Stereotype Reinforcement}
+This tactic simplifies perceived information to make it acceptable or intelligible. The \textit{backfire effect} (TE0221) describes the tendency to reinforce pre-existing beliefs when confronted with contradictory information~\cite{nyhan2010}---a counterintuitive phenomenon with significant implications for counter-narrative strategies.
+
+\subsubsection{TA0023: Familiar Superiority}
+This tactic valorizes information through exploitation of cognitive proximities. The \textit{homogeneity bias} (TE0231) and the \textit{known-route bias} (TE0232) lead individuals to favor information that aligns with familiar patterns.
+
+\subsubsection{TA0024: Simplification}
+This tactic simplifies concepts and favors orders of magnitude to facilitate information acceptance. The \textit{zero-sum bias} (TE0241) leads to interpreting situations as necessarily involving winners and losers, while the \textit{normalcy bias} (TE0242) causes individuals to underestimate the probability of exceptional events.
+
+\subsubsection{TA0025: Self-Reference}
+This tactic exploits the assumption that interlocutors share the same level of knowledge. The \textit{false consensus effect} (TE0251) leads individuals to overestimate the extent to which their beliefs are shared by the general population~\cite{ross1977}, strengthening self-confidence and reducing critical examination.
+
+\subsubsection{TA0026: Temporal Projection}
+This tactic relies on memories---real or fabricated---to legitimize discourse. The \textit{hindsight bias} (TE0261) describes the tendency to perceive past events as more predictable than they were~\cite{fischhoff1975}, a mechanism extensively exploited in conspiracy theorizing.
+
+\subsection{Phase~3: Memorize}
+
+The \textit{Memorize} phase addresses the mechanisms through which manipulated information resists cognitive rejection and becomes encoded in the target's memory. The framing effect~\cite{tversky1981} and the positivity bias interact to shape how information is stored. This phase comprises three tactics:
+
+\subsubsection{TA0031: Indirect Reinforcement}
+Techniques include the \textit{source confusion bias} (TE0312), the \textit{spacing effect} (TE0313), the \textit{suggestion effect} (TE0314), and the \textit{generation effect} (TE0315). These biases exploit misattribution of information sources and the memory-strengthening effect of distributed repetition~\cite{cepeda2006}.
+
+\subsubsection{TA0032: Pre-existing Reinforcement}
+The \textit{implicit stereotype} (TE0321) and the \textit{fading affect bias} (TE0322) work in conjunction with the \textit{context effect} (TE0122, also present in the Detect phase) to anchor new information within established cognitive frameworks.
+
+\subsubsection{TA0033: Content Exposure}
+The \textit{recency effect} (TE0331) gives disproportionate weight to the most recently received information~\cite{murdock1962}. The \textit{mere exposure effect} (TE0332) increases preference through repeated exposure~\cite{zajonc1968}. The \textit{primacy effect} (TE0333) gives disproportionate influence to the first information received~\cite{murdock1962}. These three effects create a temporal dynamic in which both initial framing and most recent exposure shape memory encoding.
+
+\subsection{Phase~4: Act}
+
+The \textit{Act} phase models the biases that drive behavioral responses. This phase comprises three tactics:
+
+\subsubsection{TA0041: Individual Valorization}
+The \textit{overconfidence bias} (TE0411), the \textit{Peltzman effect} (TE0412), \textit{illusory superiority} (TE0413), and \textit{FOMO---Fear of Missing Out} (TE0414)~\cite{przybylski2013} exploit social anxiety and self-confidence to drive engagement.
+
+\subsubsection{TA0042: Escalatory Reinforcement}
+The \textit{sunk cost bias} (TE0421)~\cite{arkes1985} and the \textit{authority bias} (TE0422) promote continuation of already-initiated actions and exploit perceived authority figures.
+
+\subsubsection{TA0043: Ozaekomi Waza (Immobilization Control)}
+Borrowing terminology from martial arts, this tactic promotes immobility and inaction. The \textit{omission bias} (TE0431)~\cite{spranca1991} leads to judging harmful action as worse than harmful inaction. The \textit{status quo bias} (TE0432)~\cite{samuelson1988} reflects preference for maintaining the current state. \textit{Information saturation} (TE0433) overwhelms processing capacity, triggering ``analysis paralysis.''
+
+% ============================================================================
+\section{Comparative Analysis}
+\label{sec:comparative}
+% ============================================================================
+
+\subsection{Analytical Dimensions}
+
+To position DIMA within the existing framework ecosystem, we propose a comparative analysis along seven dimensions. Table~\ref{tab:comparison} summarizes this comparison.
+
+\onecolumn
+\begin{table}[htbp]
+\centering
+\caption{Comparative analysis of MITRE ATT\&CK, DISARM, and DIMA frameworks.}
+\label{tab:comparison}
+\small
+\begin{tabular}{L{2.5cm}L{3.5cm}L{3.5cm}L{4.5cm}}
+\toprule
+\textbf{Dimension} & \textbf{MITRE ATT\&CK} & \textbf{DISARM} & \textbf{DIMA} \\
+\midrule
+Scope & Technical cyber threats & Disinformation operations & Cognitive bias exploitation \\
+Unit of analysis & System / Network & Campaign / Operation & Individual cognition \\
+Perspective & Attacker behavior & Attacker behavior & Target (defender) processing \\
+Sequential logic & Kill chain / attack lifecycle & Campaign lifecycle & Cognitive processing stages \\
+Theoretical basis & Empirical (observed attacks) & Empirical (observed campaigns) & Cognitive psychology (Kahneman, Tversky, McGuire) \\
+Primary use case & Threat detection \& defense & Campaign analysis \& response & Cognitive auto-diagnostic \& awareness \\
+Format & Matrix (tactics $\times$ techniques) & Matrix (tactics $\times$ techniques, STIX2) & Matrix (phases $\times$ tactics $\times$ techniques) \\
+\bottomrule
+\end{tabular}
+\end{table}
+\twocolumn
+
+\subsection{Complementarity and Layered Analysis}
+
+The three frameworks operate at distinct but complementary levels of analysis. MITRE ATT\&CK characterizes the \textit{technical infrastructure layer}: how systems are compromised, what software tools are used, and what technical artifacts are left behind. DISARM characterizes the \textit{operational layer}: how disinformation campaigns are planned, resourced, and executed. DIMA characterizes the \textit{cognitive layer}: how the content produced and disseminated through these operations exploits the target's information-processing vulnerabilities.
+
+This complementarity suggests a layered analytical model for comprehensive threat assessment. A given influence operation might be analyzed through ATT\&CK for its technical components (compromised accounts, bot networks), through DISARM for its operational tactics (narrative seeding, cross-platform amplification), and through DIMA for its cognitive targeting (which biases are exploited at each stage of information processing). The October~2023 ``bed bugs'' case in France, documented in the DIMA~V4 presentation~\cite{boyer2024}, illustrates how frequency illusion (TE0121) is combined with illusory correlation (TE0211), suggestion effects (TE0314), and authority bias (TE0422) across all four DIMA phases in a single narrative.
+
+\subsection{Key Differentiators}
+
+Several features distinguish DIMA from existing approaches. First, the \textit{target-centric perspective} is unique: while ATT\&CK and DISARM model attacker behavior, DIMA models the defender's cognitive processing, enabling self-diagnosis. Second, DIMA's sequential structure mirrors the actual cognitive processing pathway rather than an operational campaign lifecycle. Third, the framework reveals the \textit{cumulative and compounding nature} of bias exploitation---certain biases (confirmation bias, anchoring) appear across multiple phases, illustrating how their effects reinforce one another. Fourth, certain techniques are intentionally duplicated across phases (e.g., TE0332 ``Mere Exposure Effect'' appears in both Detect and Memorize; TE0122 ``Context Effect'' in both Detect and Memorize), reflecting the reality that the same cognitive mechanism can be exploited at different stages of information processing.
+
+% ============================================================================
+\section{Discussion}
+\label{sec:discussion}
+% ============================================================================
+
+\subsection{Contributions}
+
+DIMA makes several contributions to the growing field of cognitive security. It provides the first structured framework that systematically maps cognitive bias exploitation to the information-processing lifecycle using a cybersecurity-inspired methodology. By adopting the familiar tactical matrix format, it bridges the cultural gap between cybersecurity practitioners---who are accustomed to structured threat frameworks---and cognitive scientists studying bias and heuristics. The framework's open-source nature and GitHub-based development model~\cite{boyer2024} facilitate community contribution and peer review.
+
+The framework's practical applications extend beyond academic analysis. The DIMA Index, implemented as a Chrome browser extension (detailed in Section~\ref{sec:plugin}), demonstrates the feasibility of automated real-time analysis of web content for cognitive bias exploitation patterns. This operationalization provides users with a cognitive ``vigilance score'' for the pages they visit, contributing to digital critical thinking and cognitive hygiene at scale.
+
+\subsection{Operationalization: The DIMA Index Browser Extension}
+\label{sec:plugin}
+
+Beyond its analytical function, the DIMA framework has been operationalized through the development of the DIMA Index, a Chrome browser extension designed for real-time cognitive bias detection in web content~\cite{dimaplugin2025}. The plugin, released as open-source software under the Apache~2.0 license (\url{https://github.com/M82-project/DIMA_Plugin_Chrome}), implements an automated scoring engine that analyzes the textual and structural features of web pages visited by the user and maps them against the DIMA technique taxonomy.
+
+The extension operates as a passive analysis layer: when a user navigates to a web page, the plugin parses the content and evaluates it against a set of heuristic indicators associated with each DIMA technique. These indicators include linguistic markers (sensationalist vocabulary, emotional valence, rhetorical structures associated with specific biases), structural features (clickbait title patterns, repetition frequency, source attribution patterns), and contextual signals (publication timing, cross-referencing with trending topics). The analysis produces a composite ``DIMA Index'' score reflecting the estimated density of cognitive bias exploitation techniques detected in the content.
+
+This operationalization serves three purposes. First, it provides an \textit{empirical validation pathway} for the framework: by collecting anonymized scoring data across a large corpus of web content, it becomes possible to assess the prevalence and co-occurrence patterns of DIMA techniques in real-world information environments. Second, it functions as a \textit{cognitive hygiene tool} for individual users, providing a ``vigilance indicator'' that prompts critical reflection before information is accepted and shared---operationalizing the self-diagnostic function that is central to DIMA's design philosophy. Third, and in line with McGuire's inoculation theory~\cite{mcguire1961, mcguire1964}, the plugin acts as a form of \textit{continuous micro-inoculation}: by repeatedly exposing users to the identification of manipulation techniques in the content they consume, it builds progressive awareness and cognitive resistance to these techniques.
+
+The plugin architecture follows a modular design that mirrors the DIMA framework structure: detection modules are organized by phase, with each module implementing the heuristic indicators for the tactics and techniques of its corresponding phase. This modularity facilitates iterative improvement as the framework evolves and new techniques are documented. The current implementation represents a proof-of-concept (V.1) and is being progressively refined through user feedback and empirical testing.
+
+\subsection{Limitations}
+
+Several limitations must be acknowledged. First, the current taxonomy of 41~techniques, while grounded in the cognitive science literature, does not claim to be exhaustive. The catalog of documented cognitive biases exceeds 180~\cite{benson2016}, and the selection of biases included in DIMA reflects editorial judgment about those most frequently exploited in information manipulation contexts. This selection process would benefit from systematic empirical validation.
+
+Second, the framework currently lacks a formal severity or confidence scoring system. While ATT\&CK benefits from extensive real-world incident data for technique attribution, DIMA's assessments remain largely qualitative. The development of quantitative metrics for ``cognitive exploitation intensity'' represents a significant research challenge.
+
+Third, the individualistic focus of the current framework does not fully account for collective cognitive phenomena. Group polarization, social proof dynamics, and network effects in opinion formation operate at a different level of analysis than individual bias exploitation. Extending DIMA to model group-level cognitive dynamics represents an important future direction.
+
+Fourth, the boundaries between bias categories are not always clear-cut. Cognitive biases interact in complex ways, and the assignment of a given phenomenon to a specific phase may be debatable. The intentional duplication of certain techniques across phases partially addresses this issue but does not fully resolve taxonomic ambiguity.
+
+\subsection{Future Research Directions}
+\label{sec:future}
+
+Several promising research avenues emerge from this work. First, empirical validation through structured case studies of documented influence operations would strengthen the framework's evidentiary basis. Annotating known campaigns (such as the Russian Internet Research Agency operations documented in the Mueller Report~\cite{mueller2019}) with DIMA techniques would test the framework's descriptive adequacy and inter-rater reliability.
+
+Second, the development of automated detection capabilities, building on the DIMA Index prototype, could leverage natural language processing and machine learning to identify textual and structural markers associated with specific cognitive bias exploitation techniques. Recent work on computational approaches to information disorder analysis~\cite{demeo2025} suggests promising technical pathways.
+
+Third, the integration of DIMA with DISARM through a formal mapping of DISARM techniques to DIMA techniques would create a multi-layered analytical capability. A DISARM technique such as ``Seed Kernel of Truth'' (T0042) could be systematically linked to the DIMA techniques it exploits (e.g., TE0121 Frequency Illusion, TE0211 Illusory Correlation), enabling analysts to trace the cognitive impact chain of operational disinformation tactics.
+
+Fourth, extending the framework to include a ``Blue'' defensive layer---analogous to DISARM's Blue Framework---would provide structured cognitive countermeasures. McGuire's inoculation theory~\cite{mcguire1961, mcguire1964} offers a particularly promising foundation for this endeavor. Just as inoculation involves pre-exposing individuals to weakened persuasive attacks to build resistance, a DIMA Blue Framework could map specific defensive interventions (debiasing techniques, prebunking messages, critical thinking exercises) to each DIMA technique. The diagnostic specificity of DIMA---identifying which bias is being exploited at which processing stage---would enable the design of targeted inoculation protocols rather than generic media literacy interventions. Recent empirical work on ``prebunking''~\cite{roozenbeek2019, basol2020} and serious games for misinformation resistance has validated the inoculation approach, and DIMA provides the analytical granularity needed to scale these interventions systematically.
+
+% ============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+% ============================================================================
+
+The DIMA framework addresses a critical gap in the analytical toolkit available for understanding and countering cognitive threats in the information age. By structuring the analysis of cognitive bias exploitation into a systematic, phased framework inspired by cybersecurity threat modeling, DIMA provides analysts, researchers, and policymakers with a practical tool for cognitive self-assessment and threat characterization.
+
+The framework's four phases---Detect, Inform, Memorize, Act---map the complete cognitive processing lifecycle from initial information detection to behavioral response. Its 15~tactics and 41~techniques, grounded in the cognitive science literature, provide a granular vocabulary for describing how information can be constructed to exploit specific cognitive vulnerabilities.
+
+Positioned as a complementary layer to MITRE ATT\&CK and DISARM, DIMA completes a three-level analytical model spanning technical infrastructure, operational campaign mechanics, and cognitive exploitation. The operationalization of the framework through the DIMA Index browser extension demonstrates that automated cognitive bias detection in real-world content is feasible, opening pathways for empirical validation and large-scale cognitive hygiene. The complete taxonomy of the framework is provided in Appendix~\ref{app:taxonomy}. As cognitive warfare continues to evolve in sophistication and scale, frameworks such as DIMA that bridge cybersecurity methodology, persuasion science, and cognitive psychology will be essential for building societal resilience against information manipulation.
+
+\vspace{0.3cm}
+\noindent\textit{The DIMA framework is available as open source:} \url{https://github.com/M82-project/DIMA}
+
+% ============================================================================
+% REFERENCES
+% ============================================================================
+
+\begin{thebibliography}{48}
+\small
+
+\bibitem{wardle2017}
+Wardle, C., \& Derakhshan, H. (2017). Information Disorder: Toward an Interdisciplinary Framework for Research and Policy Making. \textit{Council of Europe}.
+
+\bibitem{benkler2018}
+Benkler, Y., Faris, R., \& Roberts, H. (2018). \textit{Network Propaganda: Manipulation, Disinformation, and Radicalization in American Politics}. Oxford University Press.
+
+\bibitem{pappalardo2023}
+Pappalardo, D. (2023). La guerre cognitive. \textit{Le Rubicon --- \'Etudes de s\'ecurit\'e internationale}. \url{https://lerubicon.org/la-guerre-cognitive/}
+
+\bibitem{kahneman2011}
+Kahneman, D. (2011). \textit{Thinking, Fast and Slow}. Farrar, Straus and Giroux.
+
+\bibitem{claverie2022}
+Claverie, B., \& Du~Cluzel, F. (2022). Cognitive Warfare: The Advent of the Concept of ``Cognitics'' in the Field of Warfare. In B.~Claverie et al.\ (Eds.), \textit{Cognitive Warfare: The Future of Cognitive Dominance}. NATO Collaboration Support Office.
+
+\bibitem{strom2020}
+Strom, B.~E., Applebaum, A., Miller, D.~P., Nickels, K.~C., Pennington, A.~G., \& Thomas, C.~B. (2020). MITRE ATT\&CK: Design and Philosophy. \textit{MITRE Technical Report}.
+
+\bibitem{terp2022}
+Terp, S.~J., \& Breuer, J. (2022). DISARM: A Framework for Analysis of Disinformation Campaigns. In \textit{Proceedings of the International Conference on Social Media and Society}.
+
+\bibitem{boyer2024}
+Boyer, B. (2024). S'armer pour la guerre cognitive~: le mod\`ele DIMA. \textit{M82 Project}. \url{https://m82-project.org/articles/dima/dima/}
+
+\bibitem{gigerenzer2011}
+Gigerenzer, G., \& Gaissmaier, W. (2011). Heuristic Decision Making. \textit{Annual Review of Psychology}, 62, 451--482.
+
+\bibitem{tversky1974}
+Tversky, A., \& Kahneman, D. (1974). Judgment under Uncertainty: Heuristics and Biases. \textit{Science}, 185(4157), 1124--1131.
+
+\bibitem{benson2016}
+Benson, B. (2016). Cognitive Bias Codex. \textit{Design Hacks / Wikipedia contributors}.
+
+\bibitem{tversky1981}
+Tversky, A., \& Kahneman, D. (1981). The Framing of Decisions and the Psychology of Choice. \textit{Science}, 211(4481), 453--458.
+
+\bibitem{nickerson1998}
+Nickerson, R.~S. (1998). Confirmation Bias: A Ubiquitous Phenomenon in Many Guises. \textit{Review of General Psychology}, 2(2), 175--220.
+
+\bibitem{ducluzel2020}
+Du~Cluzel, F. (2020). \textit{Cognitive Warfare}. NATO Allied Command Transformation Innovation Hub.
+
+\bibitem{natoact2023}
+NATO Allied Command Transformation. (2023). \textit{Cognitive Warfare Exploratory Concept}. NATO ACT.
+
+\bibitem{beauchamp2020}
+Beauchamp-Mustafaga, N., \& Chase, M.~S. (2020). Borrowing a Boat Out to Sea: The Chinese Military's Use of Social Media for Influence Operations. \textit{RAND Corporation}.
+
+\bibitem{mueller2019}
+Mueller, R.~S. (2019). \textit{Report on the Investigation into Russian Interference in the 2016 Presidential Election}. U.S. Department of Justice.
+
+\bibitem{brangetto2016}
+Brangetto, P., \& Veenendaal, M.~A. (2016). Influence Cyber Operations: The Use of Cyberattacks in Support of Influence Operations. In \textit{Proceedings of the 8th International Conference on Cyber Conflict (CyCon)}, NATO CCD COE.
+
+\bibitem{gioe2020}
+Gioe, D.~V., Hatfield, J.~M., \& Seymour, A. (2020). Cognitive Warfare and Intelligence Ethics. \textit{Intelligence and National Security}, 35(5), 681--697.
+
+\bibitem{mitre2024}
+MITRE Corporation. (2024). MITRE ATT\&CK\textsuperscript{\textregistered}. \url{https://attack.mitre.org/}
+
+\bibitem{disarm2024}
+DISARM Foundation. (2024). DISARM Framework. \url{https://www.disarm.foundation/framework}
+
+\bibitem{broadbent1958}
+Broadbent, D.~E. (1958). \textit{Perception and Communication}. Pergamon Press.
+
+\bibitem{zajonc1968}
+Zajonc, R.~B. (1968). Attitudinal Effects of Mere Exposure. \textit{Journal of Personality and Social Psychology}, 9(2, Pt.2), 1--27.
+
+\bibitem{zwicky2006}
+Zwicky, A. (2006). Why Are We So Illuded? \textit{Stanford University Linguistics Blog}.
+
+\bibitem{baumeister2001}
+Baumeister, R.~F., Bratslavsky, E., Finkenauer, C., \& Vohs, K.~D. (2001). Bad Is Stronger Than Good. \textit{Review of General Psychology}, 5(4), 323--370.
+
+\bibitem{vonrestorff1933}
+Von Restorff, H. (1933). \"Uber die Wirkung von Bereichsbildungen im Spurenfeld. \textit{Psychologische Forschung}, 18, 299--342.
+
+\bibitem{potthast2016}
+Potthast, M., K\"opsel, S., Stein, B., \& Hagen, M. (2016). Clickbait Detection. In \textit{Proceedings of the 38th European Conference on Information Retrieval (ECIR)}, Springer.
+
+\bibitem{nyhan2010}
+Nyhan, B., \& Reifler, J. (2010). When Corrections Fail: The Persistence of Political Misperceptions. \textit{Political Behavior}, 32(2), 303--330.
+
+\bibitem{ross1977}
+Ross, L., Greene, D., \& House, P. (1977). The ``False Consensus Effect'': An Egocentric Bias in Social Perception. \textit{Journal of Experimental Social Psychology}, 13(3), 279--301.
+
+\bibitem{fischhoff1975}
+Fischhoff, B. (1975). Hindsight $\neq$ Foresight: The Effect of Outcome Knowledge on Judgment under Uncertainty. \textit{Journal of Experimental Psychology: Human Perception and Performance}, 1(3), 288--299.
+
+\bibitem{cepeda2006}
+Cepeda, N.~J., Pashler, H., Vul, E., Wixted, J.~T., \& Rohrer, D. (2006). Distributed Practice in Verbal Recall Tasks. \textit{Review of Educational Research}, 76(3), 354--380.
+
+\bibitem{murdock1962}
+Murdock, B.~B. (1962). The Serial Position Effect of Free Recall. \textit{Journal of Experimental Psychology}, 64(5), 482--488.
+
+\bibitem{przybylski2013}
+Przybylski, A.~K., Murayama, K., DeHaan, C.~R., \& Gladwell, V. (2013). Motivational, Emotional, and Behavioral Correlates of Fear of Missing Out. \textit{Computers in Human Behavior}, 29(4), 1841--1848.
+
+\bibitem{arkes1985}
+Arkes, H.~R., \& Blumer, C. (1985). The Psychology of Sunk Cost. \textit{Organizational Behavior and Human Decision Processes}, 35(1), 124--140.
+
+\bibitem{spranca1991}
+Spranca, M., Minsk, E., \& Baron, J. (1991). Omission and Commission in Judgment and Choice. \textit{Journal of Experimental Social Psychology}, 27(1), 76--95.
+
+\bibitem{samuelson1988}
+Samuelson, W., \& Zeckhauser, R. (1988). Status Quo Bias in Decision Making. \textit{Journal of Risk and Uncertainty}, 1, 7--59.
+
+\bibitem{demeo2025}
+De~Meo, P., Ferrara, E., Rosaci, D., \& Sarn\'e, G.~M.~L. (2025). Computational Analysis of Information Disorder in Cognitive Warfare. \textit{ScienceDirect}.
+
+\bibitem{roozenbeek2019}
+Roozenbeek, J., \& Van~der~Linden, S. (2019). Fake News Game Confers Psychological Resistance against Online Misinformation. \textit{Palgrave Communications}, 5, Article~65.
+
+\bibitem{mcguire1968}
+McGuire, W.~J. (1968). Personality and Susceptibility to Social Influence. In E.~F.~Borgatta \& W.~W.~Lambert (Eds.), \textit{Handbook of Personality Theory and Research} (pp.~1130--1187). Rand McNally.
+
+\bibitem{mcguire1969}
+McGuire, W.~J. (1969). The Nature of Attitudes and Attitude Change. In G.~Lindzey \& E.~Aronson (Eds.), \textit{The Handbook of Social Psychology} (2nd ed., Vol.~3, pp.~136--314). Addison-Wesley.
+
+\bibitem{mcguire1985}
+McGuire, W.~J. (1985). Attitudes and Attitude Change. In G.~Lindzey \& E.~Aronson (Eds.), \textit{The Handbook of Social Psychology} (3rd ed., Vol.~2, pp.~233--346). Random House.
+
+\bibitem{hovland1953}
+Hovland, C.~I., Janis, I.~L., \& Kelley, H.~H. (1953). \textit{Communication and Persuasion: Psychological Studies of Opinion Change}. Yale University Press.
+
+\bibitem{mcguire1961}
+McGuire, W.~J. (1961). The Effectiveness of Supportive and Refutational Defenses in Immunizing and Restoring Beliefs against Persuasion. \textit{Sociometry}, 24(2), 184--197.
+
+\bibitem{mcguire1964}
+McGuire, W.~J. (1964). Inducing Resistance to Persuasion: Some Contemporary Approaches. In L.~Berkowitz (Ed.), \textit{Advances in Experimental Social Psychology} (Vol.~1, pp.~191--229). Academic Press.
+
+\bibitem{pfau1988}
+Pfau, M., \& Burgoon, M. (1988). Inoculation in Political Campaign Communication. \textit{Human Communication Research}, 15(1), 91--111.
+
+\bibitem{compton2013}
+Compton, J. (2013). Inoculation Theory. In J.~P.~Dillard \& L.~Shen (Eds.), \textit{The SAGE Handbook of Persuasion} (2nd ed., pp.~220--237). SAGE.
+
+\bibitem{basol2020}
+Basol, M., Roozenbeek, J., \& Van~der~Linden, S. (2020). Good News about Bad News: Gamified Inoculation Boosts Confidence and Cognitive Immunity against Fake News. \textit{Journal of Cognition}, 3(1), Article~2.
+
+\bibitem{dimaplugin2025}
+M82 Project. (2025). DIMA Index --- Chrome Browser Extension for Cognitive Bias Detection. \url{https://github.com/M82-project/DIMA_Plugin_Chrome}
+
+\end{thebibliography}
+
+% ============================================================================
+% APPENDIX
+% ============================================================================
+
+\clearpage
+\onecolumn
+
+\appendix
+\section{DIMA Framework --- Complete Taxonomy}
+\label{app:taxonomy}
+
+The following table presents the complete inventory of phases, tactics, and techniques comprising the DIMA framework~(V.1). Technique identifiers follow the convention \texttt{TExxxx}, where the first two digits encode the tactic and the last two the technique. Techniques marked with an asterisk~(*) appear in multiple phases, reflecting the cross-phase exploitability of the underlying cognitive mechanism.
+
+\vspace{0.5cm}
+
+\begin{small}
+\begin{longtable}{C{1.2cm}L{3.2cm}C{1.2cm}L{3cm}L{5.5cm}}
+\caption{Complete DIMA taxonomy: 4~phases, 15~tactics, 41~techniques.}
+\label{tab:taxonomy}\\
+\toprule
+\textbf{Phase} & \textbf{Tactic} & \textbf{ID} & \textbf{Technique} & \textbf{Cognitive Mechanism} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Phase} & \textbf{Tactic} & \textbf{ID} & \textbf{Technique} & \textbf{Cognitive Mechanism} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{\textit{Continued on next page}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+
+% -- DETECT ----------------------------------------------
+\multirow{12}{*}{\rotatebox{90}{\textbf{D --- Detect}}}
+ & TA0011 Pre-existing Information & TE0111 & Availability Heuristic & Decisions based on readily accessible examples rather than representative evidence \\
+ & & TE0332* & Mere Exposure Effect & Increased positive attitude through repeated exposure to a stimulus \\
+\cmidrule(l){2-5}
+ & TA0012 Repeated Exposure & TE0121 & Frequency Illusion & Selective attention: noticing something more after first encounter (Baader-Meinhof) \\
+ & & TE0122* & Context Effect & Interpreting perceptions relative to similar or proximate situations \\
+\cmidrule(l){2-5}
+ & TA0013 Divisive Information & TE0131 & Bizarreness Effect & Tendency to notice unusual or strange items more easily \\
+ & & TE0132 & Negativity Bias & Greater weight given to negative experiences over positive ones \\
+\cmidrule(l){2-5}
+ & TA0014 Deviation from the Norm & TE0141 & Von Restorff Effect & Isolated or distinctive items are better remembered \\
+ & & TE0142 & Anchoring Bias & Disproportionate reliance on first information encountered \\
+ & & TE0143 & Contrast Effect & Modified perception through comparison with a previously observed item \\
+\cmidrule(l){2-5}
+ & TA0015 Significant Detail & TE0151 & Distinction Bias & Overvaluation of differences when options examined simultaneously \\
+ & & TE0152 & Weber-Fechner Law & Just-noticeable difference scales with stimulus intensity \\
+ & & TE0153 & Clickbait & Sensational or misleading headlines to capture attention \\
+
+\midrule
+
+% -- INFORM ----------------------------------------------
+\multirow{10}{*}{\rotatebox{90}{\textbf{I --- Inform}}}
+ & TA0021 Pattern Creation & TE0211 & Illusory Correlation & Perceiving a relationship between unrelated variables \\
+ & & TE0212 & Anecdotal Evidence Bias & Generalizing from individual cases rather than statistics \\
+ & & TE0213 & Illusion of Series & Perceiving meaningful patterns in random sequences \\
+\cmidrule(l){2-5}
+ & TA0022 Generalization \& Stereotypes & TE0221 & Backfire Effect & Reinforcing beliefs when confronted with contradictory evidence \\
+\cmidrule(l){2-5}
+ & TA0023 Familiar Superiority & TE0231 & Homogeneity Bias & Perceiving out-group members as more similar than they are \\
+ & & TE0232 & Known-Route Bias & Preference for familiar cognitive pathways \\
+\cmidrule(l){2-5}
+ & TA0024 Simplification & TE0241 & Zero-Sum Bias & Interpreting situations as necessarily win/lose \\
+ & & TE0242 & Normalcy Bias & Underestimating the probability of exceptional events \\
+\cmidrule(l){2-5}
+ & TA0025 Self-Reference & TE0251 & False Consensus Effect & Overestimating extent to which one's beliefs are shared \\
+\cmidrule(l){2-5}
+ & TA0026 Temporal Projection & TE0261 & Hindsight Bias & Perceiving past events as more predictable than they were \\
+
+\midrule
+
+% -- MEMORIZE --------------------------------------------
+\multirow{10}{*}{\rotatebox{90}{\textbf{M --- Memorize}}}
+ & TA0031 Indirect Reinforcement & TE0312 & Source Confusion Bias & Misattributing the origin of remembered information \\
+ & & TE0313 & Spacing Effect & Better retention through distributed repetition \\
+ & & TE0314 & Suggestion Effect & Encoding influenced by external suggestion or leading questions \\
+ & & TE0315 & Generation Effect & Better retention of self-generated vs.\ passively received information \\
+\cmidrule(l){2-5}
+ & TA0032 Pre-existing Reinforcement & TE0321 & Implicit Stereotype & Unconscious attribution of qualities to social groups \\
+ & & TE0322 & Fading Affect Bias & Faster fading of negative emotional memories \\
+ & & TE0122* & Context Effect & (Cross-phase) Interpreting perceptions relative to proximate situations \\
+\cmidrule(l){2-5}
+ & TA0033 Content Exposure & TE0331 & Recency Effect & Disproportionate influence of most recently received information \\
+ & & TE0332* & Mere Exposure Effect & (Cross-phase) Increased preference through repeated exposure \\
+ & & TE0333 & Primacy Effect & Disproportionate influence of first information on long-term memory \\
+
+\midrule
+
+% -- ACT -------------------------------------------------
+\multirow{9}{*}{\rotatebox{90}{\textbf{A --- Act}}}
+ & TA0041 Individual Valorization & TE0411 & Overconfidence Bias & Overestimation of one's own abilities or judgment accuracy \\
+ & & TE0412 & Peltzman Effect & Risk compensation: increased risk-taking when safety perceived \\
+ & & TE0413 & Illusory Superiority & Overestimating one's qualities relative to others \\
+ & & TE0414 & FOMO & Social anxiety about missing important events driving engagement \\
+\cmidrule(l){2-5}
+ & TA0042 Escalatory Reinforcement & TE0421 & Sunk Cost Bias & Continued investment due to prior resources spent \\
+ & & TE0422 & Authority Bias & Greater credibility attributed to perceived authority figures \\
+\cmidrule(l){2-5}
+ & TA0043 Ozaekomi Waza & TE0431 & Omission Bias & Judging harmful action as worse than equally harmful inaction \\
+ & & TE0432 & Status Quo Bias & Preference for maintaining the current state of affairs \\
+ & & TE0433 & Information Saturation & Overwhelming processing capacity to trigger analysis paralysis \\
+
+\end{longtable}
+\end{small}
+
+\vspace{0.3cm}
+\noindent\textit{Note:} Techniques marked with * (TE0122, TE0332) appear in multiple phases. The total count of unique techniques is 41; the total number of technique--phase assignments is 43 due to these cross-phase duplicates. Technique identifiers follow the DIMA numbering convention where the first two digits after TE encode the tactic (e.g., TE04xx belongs to the Act phase) and the last two digits identify the specific technique.
+
+\end{document}
