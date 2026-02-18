@@ -25,7 +25,7 @@ Conviction d'être meilleur, plus intelligent ou plus compétent que la moyenne,
 - "Les gens ordinaires ne comprennent pas, mais vous si"
 
 ## TE0414 : FOMO (fear of missing out)
-Technique qui exploite une forme d'anxiété sociale caractérisée par la peur constante de manquer une nouvelle importante ou tout autre événement donnant une occasion d'interagir socialement. Cette peur de "rater quelque chose" incite à agir, et intérargir avec les contenus.
+Technique qui exploite une forme d'anxiété sociale caractérisée par la peur constante de manquer une nouvelle importante ou tout autre événement donnant une occasion d'interagir socialement. Cette peur de "rater quelque chose" incite à agir, et interagir avec les contenus.
 
 **Exemples:**
 - "Ne ratez pas cette opportunité unique"
