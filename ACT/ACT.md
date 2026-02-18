@@ -164,7 +164,7 @@ Sentiment psychologique d'obligation de rendre une faveur, un cadeau ou un servi
 1. Don initial (sollicité ou non)
 2. Création d'une dette psychologique
 3. Malaise si "dette" non remboursée
-4. Pression pour agir en retour (souvent disproportionné)
+4. Pression pour agir en retour (souvent disproportionnée)
 
 **Contextes fréquents:**
 - Marketing (échantillons gratuits → achat)
