@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIMA Navigator — M82 Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0e13;
+  --surface: #13161d;
+  --surface-2: #1a1e28;
+  --border: #252a36;
+  --border-light: #323848;
+  --text: #e2e6ef;
+  --text-muted: #8a92a6;
+  --text-dim: #5a6178;
+
+  --detect: #e85d3a;
+  --detect-bg: rgba(232,93,58,0.08);
+  --detect-border: rgba(232,93,58,0.25);
+
+  --inform: #4aa8d8;
+  --inform-bg: rgba(74,168,216,0.08);
+  --inform-border: rgba(74,168,216,0.25);
+
+  --memorise: #9b6dd7;
+  --memorise-bg: rgba(155,109,215,0.08);
+  --memorise-border: rgba(155,109,215,0.25);
+
+  --act: #3cc77a;
+  --act-bg: rgba(60,199,122,0.08);
+  --act-border: rgba(60,199,122,0.25);
+
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Source Sans 3', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { font-size: 14px; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: auto;
+}
+
+/* ── HEADER ── */
+.header {
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  backdrop-filter: blur(12px);
+}
+
+.header-left { display: flex; align-items: center; gap: 16px; }
+
+.logo {
+  font-family: var(--font-mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, var(--detect), var(--inform), var(--memorise), var(--act));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.search-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 14px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-box:focus { border-color: var(--text-dim); }
+.search-box::placeholder { color: var(--text-dim); }
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.m82-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.m82-link:hover { color: var(--text); }
+
+/* ── LEGEND BAR ── */
+.legend {
+  display: flex;
+  gap: 24px;
+  padding: 12px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.2s;
+}
+.legend-item.dimmed { opacity: 0.3; }
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+.legend-count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+/* ── MATRIX ── */
+.matrix-wrapper {
+  padding: 24px 32px;
+  overflow-x: auto;
+}
+
+.phase-row {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.phase-label {
+  min-width: 120px;
+  max-width: 120px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px 0 0 6px;
+  text-align: center;
+  position: sticky;
+  left: 0;
+  z-index: 10;
+}
+.phase-label .phase-name {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+}
+.phase-label .phase-desc {
+  font-size: 0.72rem;
+  opacity: 0.7;
+  line-height: 1.3;
+}
+
+.phase-label.detect { background: var(--detect-bg); border: 1px solid var(--detect-border); color: var(--detect); }
+.phase-label.inform { background: var(--inform-bg); border: 1px solid var(--inform-border); color: var(--inform); }
+.phase-label.memorise { background: var(--memorise-bg); border: 1px solid var(--memorise-border); color: var(--memorise); }
+.phase-label.act { background: var(--act-bg); border: 1px solid var(--act-border); color: var(--act); }
+
+.tactics-row {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+}
+
+.tactic-col {
+  flex: 1;
+  min-width: 180px;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.tactic-header {
+  padding: 10px 12px;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tactic-header .tactic-id {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  opacity: 0.6;
+}
+
+.tactic-header.detect { background: var(--detect-bg); color: var(--detect); border-bottom: 2px solid var(--detect); }
+.tactic-header.inform { background: var(--inform-bg); color: var(--inform); border-bottom: 2px solid var(--inform); }
+.tactic-header.memorise { background: var(--memorise-bg); color: var(--memorise); border-bottom: 2px solid var(--memorise); }
+.tactic-header.act { background: var(--act-bg); color: var(--act); border-bottom: 2px solid var(--act); }
+
+.techniques-list {
+  flex: 1;
+  background: var(--surface);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.technique-card {
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  border: 1px solid transparent;
+}
+.technique-card:hover {
+  transform: translateX(2px);
+}
+.technique-card.active {
+  transform: translateX(2px);
+}
+
+.technique-card.detect:hover, .technique-card.detect.active { background: var(--detect-bg); border-color: var(--detect-border); }
+.technique-card.inform:hover, .technique-card.inform.active { background: var(--inform-bg); border-color: var(--inform-border); }
+.technique-card.memorise:hover, .technique-card.memorise.active { background: var(--memorise-bg); border-color: var(--memorise-border); }
+.technique-card.act:hover, .technique-card.act.active { background: var(--act-bg); border-color: var(--act-border); }
+
+.technique-id {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  margin-bottom: 2px;
+}
+.technique-name {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.3;
+}
+.technique-card.search-hidden { display: none; }
+
+/* ── DETAIL PANEL ── */
+.detail-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.15s ease;
+}
+.detail-overlay.open { display: flex; justify-content: flex-end; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+.detail-panel {
+  width: 520px;
+  max-width: 90vw;
+  height: 100vh;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  padding: 0;
+  overflow-y: auto;
+  animation: slideIn 0.2s ease;
+}
+
+.detail-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.detail-close {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.detail-close:hover { background: var(--surface-2); color: var(--text); }
+
+.detail-title-block { flex: 1; }
+.detail-phase-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.detail-phase-badge.detect { background: var(--detect-bg); color: var(--detect); border: 1px solid var(--detect-border); }
+.detail-phase-badge.inform { background: var(--inform-bg); color: var(--inform); border: 1px solid var(--inform-border); }
+.detail-phase-badge.memorise { background: var(--memorise-bg); color: var(--memorise); border: 1px solid var(--memorise-border); }
+.detail-phase-badge.act { background: var(--act-bg); color: var(--act); border: 1px solid var(--act-border); }
+
+.detail-tech-id {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.detail-tech-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.detail-body { padding: 28px; }
+
+.detail-section {
+  margin-bottom: 24px;
+}
+.detail-section-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.detail-section p {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+.detail-section a {
+  color: var(--inform);
+  text-decoration: none;
+}
+.detail-section a:hover { text-decoration: underline; }
+
+.detail-tactic-info {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 24px;
+}
+.detail-tactic-id {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+.detail-tactic-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 2px;
+}
+.detail-tactic-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.cross-ref {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin: 2px;
+}
+.cross-ref:hover { border-color: var(--text-dim); color: var(--text); }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  display: flex;
+  gap: 32px;
+  padding: 14px 32px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+.stat-item span { color: var(--text); font-weight: 600; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .header { padding: 16px; flex-wrap: wrap; gap: 12px; }
+  .search-box { width: 100%; }
+  .matrix-wrapper { padding: 12px; }
+  .phase-label { min-width: 80px; max-width: 80px; }
+  .tactic-col { min-width: 150px; }
+  .detail-panel { width: 100vw; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div>
+      <div class="logo">DIMA</div>
+      <div class="logo-sub">Detect · Inform · Memorise · Act</div>
+    </div>
+    <span class="badge">NAVIGATOR v1.0</span>
+  </div>
+  <div class="header-right">
+    <input type="text" class="search-box" id="searchInput" placeholder="Rechercher une technique ou un biais…">
+    <a href="https://github.com/M82-project/DIMA" class="m82-link" target="_blank">GitHub ↗</a>
+    <a href="mailto:contact@M82-project.org" class="m82-link">M82 Project</a>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-item">Phases: <span>4</span></div>
+  <div class="stat-item">Tactiques: <span>17</span></div>
+  <div class="stat-item">Techniques: <span>41</span></div>
+  <div class="stat-item">Framework: <span>M82 Project / ARIN</span></div>
+</div>
+
+<div class="legend" id="legend"></div>
+
+<div class="matrix-wrapper" id="matrix"></div>
+
+<!-- Detail panel -->
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-panel" id="detailPanel"></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// DIMA DATA
+// ══════════════════════════════════════════
+const DIMA = [
+  {
+    phase: "detect",
+    phaseLabel: "DETECT",
+    phaseDesc: "Captation de l'attention",
+    tactics: [
+      {
+        id: "TA0011", name: "Information préexistante",
+        desc: "Tactique qui utilise des informations préexistantes ou des croyances établies pour capter l'attention de la cible.",
+        techniques: [
+          { id: "TE0111", name: "Heuristique de disponibilité",
+            desc: "Biais cognitif par lequel une décision est prise sur la base d'un exemple, d'une information ou d'une expérience récente facilement accessible en mémoire, même si ce n'est pas le meilleur exemple pour éclairer la décision.",
+            sources: "Tversky & Kahneman (1973)", ref: "https://mentorshow.com/blog/heuristique-de-disponibilite" },
+          { id: "TE0332", name: "Effet de simple exposition",
+            desc: "Augmentation de la probabilité d'avoir un sentiment positif envers quelqu'un ou quelque chose par la simple exposition répétée à cette personne ou cet objet. Décrit par Robert Zajonc (1968).",
+            sources: "Zajonc (1968)", ref: "https://biais-cognitif.com/biais/effet-de-simple-exposition/",
+            crossPhase: ["memorise"] }
+        ]
+      },
+      {
+        id: "TA0012", name: "Information à exposition répétée",
+        desc: "Tactique qui repose sur l'exploitation de la répétition de l'information en vue de faciliter sa détection par la cible.",
+        techniques: [
+          { id: "TE0121", name: "Illusion de la fréquence",
+            desc: "Aussi connu sous le nom de phénomène Baader-Meinhof. Après avoir remarqué une chose une première fois, on a tendance à la remarquer plus souvent, ce qui conduit à croire qu'elle se produit plus fréquemment. Ce mécanisme est particulièrement à l'œuvre dans la diffusion des thèses complotistes.",
+            sources: "Psychomedia", ref: "https://www.psychomedia.qc.ca/psychologie/biais-cognitifs" },
+          { id: "TE0122", name: "Effet de contexte",
+            desc: "Tendance à analyser une perception par rapport à des situations proches ou similaires.",
+            sources: "Psychologie cognitive", ref: "https://en.wikipedia.org/wiki/Context_effect",
+            crossPhase: ["memorise"] }
+        ]
+      },
+      {
+        id: "TA0013", name: "Information clivante",
+        desc: "Tactique qui favorise les informations clivantes, étranges ou surprenantes pour capter l'attention de la cible.",
+        techniques: [
+          { id: "TE0131", name: "Effet de bizarrerie",
+            desc: "Tendance à remarquer plus facilement les choses étranges ou inhabituelles, exploitée pour capter l'attention sur un contenu spécifique.",
+            sources: "Von Restorff (1933)" },
+          { id: "TE0132", name: "Biais de négativité",
+            desc: "Tendance à accorder plus d'attention et de poids aux expériences négatives qu'aux expériences positives.",
+            sources: "Baumeister et al. (2001)" }
+        ]
+      },
+      {
+        id: "TA0014", name: "Écart à la norme",
+        desc: "Tactique qui repose sur la capacité à détecter les changements dans l'environnement.",
+        techniques: [
+          { id: "TE0141", name: "Effet von Restorff",
+            desc: "Un objet qui se détache des autres est plus susceptible d'être retenu. Il engendre un biais cognitif retenant ce qui est inhabituel, ce qui s'écarte de la normalité attendue.",
+            sources: "Von Restorff (1933)", ref: "https://fr.wikipedia.org/wiki/Effet_von_Restorff" },
+          { id: "TE0142", name: "Biais d'ancrage",
+            desc: "Difficulté à se départir d'une première impression. Biais de jugement qui pousse à se fier à l'information reçue en premier dans une prise de décision.",
+            sources: "Tversky & Kahneman (1974)", ref: "https://fr.wikipedia.org/wiki/Ancrage_(psychologie)" },
+          { id: "TE0143", name: "Effet de contraste",
+            desc: "Modification de la perception d'un fait en favorisant la comparaison avec un autre précédemment observé.",
+            sources: "Psychologie de la perception", ref: "https://biais-cognitif.com/biais/effet-de-contraste/" }
+        ]
+      },
+      {
+        id: "TA0015", name: "Détail signifiant",
+        desc: "Tactique qui exploite la propension d'une cible à détecter un détail et à lui donner du sens.",
+        techniques: [
+          { id: "TE0151", name: "Biais de distinction",
+            desc: "Tendance à surévaluer les différences entre deux options lorsqu'on les examine ensemble. Cette technique privilégie la proposition d'options à comparer.",
+            sources: "Psychologie cognitive" },
+          { id: "TE0152", name: "Loi de Weber-Fechner",
+            desc: "Pour percevoir une différence, il faut une variation plus importante de l'intensité du stimulus lorsque celui-ci est déjà intense. Peut être utilisée pour « noyer le poisson ».",
+            sources: "Weber (1834), Fechner (1860)" },
+          { id: "TE0153", name: "Clickbait",
+            desc: "Contenu web dont le titre racoleur, voire mensonger, et les éléments sensationnels ou émotionnels visent à attirer le maximum de clics au détriment de la qualité ou de l'exactitude.",
+            sources: "Pratiques numériques", ref: "https://fr.wikipedia.org/wiki/Pi%C3%A8ge_%C3%A0_clics" }
+        ]
+      }
+    ]
+  },
+  {
+    phase: "inform",
+    phaseLabel: "INFORM",
+    phaseDesc: "Interprétation et mise en sens",
+    tactics: [
+      {
+        id: "TA0021", name: "Création d'un motif",
+        desc: "Tactique qui permet de mettre en récit une information reçue, de l'intégrer dans un contexte préexistant.",
+        techniques: [
+          { id: "TE0211", name: "Biais de corrélation illusoire",
+            desc: "Tendance à percevoir une relation entre deux événements non liés, en raison de biais de mémoire ou de croyances préexistantes.",
+            sources: "Chapman & Chapman (1967)" },
+          { id: "TE0212", name: "Biais de la preuve anecdotique",
+            desc: "Tendance à accorder un poids excessif à un témoignage individuel ou une anecdote plutôt qu'à des données statistiques.",
+            sources: "Psychologie du jugement" },
+          { id: "TE0213", name: "Illusion des séries",
+            desc: "Tendance à percevoir des patterns ou séquences significatives dans des données aléatoires.",
+            sources: "Gilovich et al. (1985)" }
+        ]
+      },
+      {
+        id: "TA0022", name: "Généralisation et stéréotypes",
+        desc: "Tactique qui vise à simplifier des informations perçues pour les rendre acceptables et/ou intelligibles par la cible.",
+        techniques: [
+          { id: "TE0221", name: "Effet de retournement",
+            desc: "Tendance à renforcer ses croyances préexistantes lorsqu'on est confronté à des informations contradictoires, malgré des preuves contraires.",
+            sources: "Nyhan & Reifler (2010)" }
+        ]
+      },
+      {
+        id: "TA0023", name: "Supériorité familière",
+        desc: "Tactique qui permet de valoriser une information aux yeux de la cible par exploitation des proximités.",
+        techniques: [
+          { id: "TE0231", name: "Biais d'homogénéité",
+            desc: "Tendance à percevoir les membres d'un groupe extérieur comme plus semblables entre eux qu'ils ne le sont réellement.",
+            sources: "Psychologie sociale" },
+          { id: "TE0232", name: "Biais de la route connue",
+            desc: "Tendance à préférer les chemins familiers et à sous-estimer les alternatives, même quand celles-ci sont objectivement meilleures.",
+            sources: "Psychologie de la décision" }
+        ]
+      },
+      {
+        id: "TA0024", name: "Simplification",
+        desc: "Tactique qui simplifie les concepts et favorise les ordres de grandeur pour faciliter l'acceptabilité d'une information.",
+        techniques: [
+          { id: "TE0241", name: "Biais de la somme nulle",
+            desc: "Tendance à percevoir une situation comme un jeu à somme nulle, où le gain de l'un est nécessairement la perte de l'autre.",
+            sources: "Psychologie sociale" },
+          { id: "TE0242", name: "Biais de normalité",
+            desc: "Tendance à sous-estimer la probabilité et les effets d'une catastrophe ou d'un événement extrême.",
+            sources: "Omer & Alon (1994)" }
+        ]
+      },
+      {
+        id: "TA0025", name: "Auto-référence",
+        desc: "Tactique qui exploite le fait que la cible pense que ses interlocuteurs partagent son niveau de connaissance et ses références.",
+        techniques: [
+          { id: "TE0251", name: "Effet de faux consensus",
+            desc: "Tendance à surestimer le degré auquel les autres partagent nos opinions, croyances et comportements. Ce faux consensus augmente l'estime de soi et peut découler d'un désir de conformité sociale.",
+            sources: "Ross et al. (1977)", ref: "https://en.wikipedia.org/wiki/False_consensus_effect" }
+        ]
+      },
+      {
+        id: "TA0026", name: "Projection temporelle",
+        desc: "Tactique qui s'appuie sur les souvenirs (réels ou forgés) pour crédibiliser un discours ou une information.",
+        techniques: [
+          { id: "TE0261", name: "Biais rétrospectif",
+            desc: "Tendance à percevoir les événements passés comme ayant été plus prévisibles qu'ils ne l'étaient. Utilisé dans la diffusion de théories conspirationnistes pour expliquer un événement a posteriori.",
+            sources: "Fischhoff (1975)", ref: "https://en.wikipedia.org/wiki/Hindsight_bias" }
+        ]
+      }
+    ]
+  },
+  {
+    phase: "memorise",
+    phaseLabel: "MEMORISE",
+    phaseDesc: "Ancrage mémoriel",
+    tactics: [
+      {
+        id: "TA0031", name: "Renforcement indirect",
+        desc: "Tactique qui favorise la mémorisation et la construction de souvenirs par renforcement de sources secondaires.",
+        techniques: [
+          { id: "TE0312", name: "Biais de confusion de source",
+            desc: "Difficulté à se souvenir de l'origine d'une information, conduisant à attribuer une information à une source erronée.",
+            sources: "Johnson et al. (1993)" },
+          { id: "TE0313", name: "Effet d'espacement",
+            desc: "L'apprentissage est plus efficace lorsque les sessions d'étude sont espacées dans le temps plutôt que concentrées. Exploité pour ancrer progressivement un narratif.",
+            sources: "Ebbinghaus (1885)" },
+          { id: "TE0314", name: "Effet de suggestion",
+            desc: "Intégration dans la mémoire d'informations trompeuses provenant de sources externes, modifiant le souvenir d'un événement.",
+            sources: "Loftus & Palmer (1974)" },
+          { id: "TE0315", name: "Effet de génération",
+            desc: "L'information est mieux mémorisée si elle est générée par l'individu lui-même plutôt que simplement lue. Exploité en incitant la cible à reformuler le message.",
+            sources: "Slamecka & Graf (1978)", ref: "https://en.wikipedia.org/wiki/Generation_effect" }
+        ]
+      },
+      {
+        id: "TA0032", name: "Renforcement préexistant",
+        desc: "Tactique qui favorise la mémorisation d'une information en s'appuyant sur des stéréotypes ou des croyances préexistantes.",
+        techniques: [
+          { id: "TE0321", name: "Stéréotype implicite",
+            desc: "Associations inconscientes entre des groupes sociaux et des attributs, influençant le jugement et le comportement sans que l'individu en ait conscience.",
+            sources: "Greenwald & Banaji (1995)", ref: "https://en.wikipedia.org/wiki/Implicit_stereotype" },
+          { id: "TE0322", name: "Effacement négatif",
+            desc: "Tendance pour les souvenirs associés à des émotions négatives à perdre leur intensité émotionnelle plus rapidement que ceux associés à des émotions positives.",
+            sources: "Walker et al. (2003)", ref: "https://en.wikipedia.org/wiki/Fading_affect_bias" },
+          { id: "TE0122b", name: "Effet de contexte",
+            desc: "Tendance à analyser une perception par rapport à des situations proches ou similaires. Opère aussi en phase DETECT.",
+            sources: "Psychologie cognitive", ref: "https://books.openedition.org/editionsmsh/14811",
+            crossPhase: ["detect"] }
+        ]
+      },
+      {
+        id: "TA0033", name: "Exposition de contenus",
+        desc: "Tactique qui favorise la surexposition à une information pour favoriser sa mémorisation.",
+        techniques: [
+          { id: "TE0331", name: "Effet de récence",
+            desc: "Les informations les plus récentes ont un impact disproportionné sur la mémoire et les décisions, reflétant la persistance des dernières informations dans la mémoire à court terme.",
+            sources: "Murdock (1962)", ref: "https://biais-cognitif.com/biais/effet-de-recence/" },
+          { id: "TE0332b", name: "Effet de simple exposition",
+            desc: "La répétition d'exposition à un stimulus augmente la préférence pour celui-ci, liée à la perception de familiarité comme indicateur de sécurité. Opère aussi en phase DETECT.",
+            sources: "Zajonc (1968)", ref: "https://biais-cognitif.com/biais/effet-de-simple-exposition/",
+            crossPhase: ["detect"] },
+          { id: "TE0333", name: "Effet de primauté",
+            desc: "Les premières informations reçues exercent une influence disproportionnée sur la perception et le jugement. La façon dont un sujet est initialement présenté oriente durablement la manière dont il est reçu.",
+            sources: "Asch (1946), Murdock (1962)", ref: "https://biais-cognitif.com/biais/effet-de-primaute/" }
+        ]
+      }
+    ]
+  },
+  {
+    phase: "act",
+    phaseLabel: "ACT",
+    phaseDesc: "Déclenchement de l'action",
+    tactics: [
+      {
+        id: "TA0041", name: "Valorisation individuelle",
+        desc: "Tactique qui valorise le jugement personnel et la confiance en soi pour pousser à l'action.",
+        techniques: [
+          { id: "TE0411", name: "Biais d'excès de confiance",
+            desc: "Tendance à surestimer ses propres capacités, connaissances ou la précision de ses prédictions.",
+            sources: "Fischhoff et al. (1977)" },
+          { id: "TE0412", name: "Effet Peltzman",
+            desc: "Tendance à compenser une réduction de risque perçue par un comportement plus risqué (compensation du risque).",
+            sources: "Peltzman (1975)" },
+          { id: "TE0413", name: "Supériorité illusoire",
+            desc: "Tendance à surévaluer ses propres qualités et capacités par rapport aux autres.",
+            sources: "Hoorens (1993)" },
+          { id: "TE0414", name: "FOMO",
+            desc: "Anxiété sociale caractérisée par la peur constante de manquer une nouvelle importante ou un événement donnant une occasion d'interagir socialement. Cette peur incite à agir et interagir avec les contenus.",
+            sources: "Przybylski et al. (2013)" }
+        ]
+      },
+      {
+        id: "TA0042", name: "Renforcement escalatoire",
+        desc: "Tactique qui favorise la réalisation d'actions déjà engagées.",
+        techniques: [
+          { id: "TE0421", name: "Biais des coûts irrécupérables",
+            desc: "Tendance à poursuivre un investissement en raison des ressources déjà engagées, plutôt que sur la base des bénéfices futurs attendus.",
+            sources: "Arkes & Blumer (1985)" },
+          { id: "TE0422", name: "Biais d'autorité",
+            desc: "Tendance à accorder plus de crédibilité ou à suivre les directives de personnes perçues comme étant en position d'autorité.",
+            sources: "Milgram (1963), Cialdini (1984)" }
+        ]
+      },
+      {
+        id: "TA0043", name: "Contrôle par immobilisation",
+        desc: "Tactique qui consiste à favoriser chez une cible l'immobilisme et l'absence d'action (Osaekomi waza).",
+        techniques: [
+          { id: "TE0431", name: "Biais d'omission",
+            desc: "Tendance à considérer que causer un tort par une action est pire que causer un tort par l'inaction. Peut contribuer à expliquer certains refus de vaccination.",
+            sources: "Spranca et al. (1991)", ref: "https://www.psychomedia.qc.ca/psychologie/biais-cognitifs" },
+          { id: "TE0432", name: "Biais du statu quo",
+            desc: "Tendance à préférer laisser les choses telles qu'elles sont, un changement apparaissant comme apportant plus de risques et d'inconvénients que d'avantages.",
+            sources: "Samuelson & Zeckhauser (1988)" },
+          { id: "TE0433", name: "Saturation informationnelle",
+            desc: "Technique qui consiste à saturer la cible d'information afin de limiter sa capacité de traitement et paralyser la décision (paralysie de l'analyse).",
+            sources: "Pratiques info-opérationnelles", ref: "https://fourweekmba.com/fr/paralysie-d%27analyse/" }
+        ]
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════
+
+const phaseColors = { detect: 'var(--detect)', inform: 'var(--inform)', memorise: 'var(--memorise)', act: 'var(--act)' };
+
+// Legend
+const legendEl = document.getElementById('legend');
+DIMA.forEach(p => {
+  const count = p.tactics.reduce((s, t) => s + t.techniques.length, 0);
+  legendEl.innerHTML += `
+    <div class="legend-item" data-phase="${p.phase}" onclick="togglePhase('${p.phase}')">
+      <div class="legend-dot" style="background:${phaseColors[p.phase]}"></div>
+      <span>${p.phaseLabel}</span>
+      <span class="legend-count">${p.tactics.length} tactiques · ${count} techniques</span>
+    </div>`;
+});
+
+// Matrix
+const matrixEl = document.getElementById('matrix');
+DIMA.forEach(p => {
+  let tacticsHTML = '';
+  p.tactics.forEach(tac => {
+    let techsHTML = '';
+    tac.techniques.forEach(tech => {
+      techsHTML += `
+        <div class="technique-card ${p.phase}" data-id="${tech.id}" data-phase="${p.phase}" data-tactic="${tac.id}"
+             data-search="${(tech.id + ' ' + tech.name + ' ' + (tech.desc||'')).toLowerCase()}"
+             onclick="showDetail('${p.phase}','${tac.id}','${tech.id}')">
+          <div class="technique-id">${tech.id}</div>
+          <div class="technique-name">${tech.name}</div>
+        </div>`;
+    });
+    tacticsHTML += `
+      <div class="tactic-col" data-phase="${p.phase}">
+        <div class="tactic-header ${p.phase}">
+          <span>${tac.name}</span>
+          <span class="tactic-id">${tac.id}</span>
+        </div>
+        <div class="techniques-list">${techsHTML}</div>
+      </div>`;
+  });
+
+  matrixEl.innerHTML += `
+    <div class="phase-row" data-phase="${p.phase}">
+      <div class="phase-label ${p.phase}">
+        <div class="phase-name">${p.phaseLabel}</div>
+        <div class="phase-desc">${p.phaseDesc}</div>
+      </div>
+      <div class="tactics-row">${tacticsHTML}</div>
+    </div>`;
+});
+
+// ══════════════════════════════════════════
+// INTERACTIONS
+// ══════════════════════════════════════════
+
+// Search
+document.getElementById('searchInput').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  document.querySelectorAll('.technique-card').forEach(card => {
+    if (!q || card.dataset.search.includes(q)) {
+      card.classList.remove('search-hidden');
+    } else {
+      card.classList.add('search-hidden');
+    }
+  });
+});
+
+// Phase toggle
+const hiddenPhases = new Set();
+function togglePhase(phase) {
+  if (hiddenPhases.has(phase)) {
+    hiddenPhases.delete(phase);
+  } else {
+    hiddenPhases.add(phase);
+  }
+  document.querySelectorAll(`.phase-row[data-phase="${phase}"]`).forEach(el => {
+    el.style.display = hiddenPhases.has(phase) ? 'none' : '';
+  });
+  document.querySelectorAll(`.legend-item[data-phase="${phase}"]`).forEach(el => {
+    el.classList.toggle('dimmed', hiddenPhases.has(phase));
+  });
+}
+
+// Detail panel
+function findTech(phaseId, tacId, techId) {
+  const phase = DIMA.find(p => p.phase === phaseId);
+  const tactic = phase.tactics.find(t => t.id === tacId);
+  const tech = tactic.techniques.find(t => t.id === techId);
+  return { phase, tactic, tech };
+}
+
+function showDetail(phaseId, tacId, techId) {
+  const { phase, tactic, tech } = findTech(phaseId, tacId, techId);
+
+  // Mark active
+  document.querySelectorAll('.technique-card.active').forEach(c => c.classList.remove('active'));
+  const card = document.querySelector(`.technique-card[data-id="${techId}"][data-tactic="${tacId}"]`);
+  if (card) card.classList.add('active');
+
+  let crossHTML = '';
+  if (tech.crossPhase && tech.crossPhase.length) {
+    crossHTML = `<div class="detail-section">
+      <div class="detail-section-title">Apparaît aussi dans</div>
+      <div>${tech.crossPhase.map(cp => `<span class="cross-ref">${cp.toUpperCase()}</span>`).join('')}</div>
+    </div>`;
+  }
+
+  let refHTML = '';
+  if (tech.ref) {
+    refHTML = `<div class="detail-section">
+      <div class="detail-section-title">Référence</div>
+      <p><a href="${tech.ref}" target="_blank">${tech.ref}</a></p>
+    </div>`;
+  }
+
+  document.getElementById('detailPanel').innerHTML = `
+    <div class="detail-header">
+      <div class="detail-title-block">
+        <div class="detail-phase-badge ${phase.phase}">${phase.phaseLabel}</div>
+        <div class="detail-tech-id">${tech.id}</div>
+        <div class="detail-tech-name">${tech.name}</div>
+      </div>
+      <button class="detail-close" onclick="closeDetail()">✕</button>
+    </div>
+    <div class="detail-body">
+      <div class="detail-tactic-info">
+        <div class="detail-tactic-id">${tactic.id}</div>
+        <div class="detail-tactic-name">${tactic.name}</div>
+        <div class="detail-tactic-desc">${tactic.desc}</div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">Description</div>
+        <p>${tech.desc}</p>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">Sources</div>
+        <p>${tech.sources}</p>
+      </div>
+      ${crossHTML}
+      ${refHTML}
+    </div>`;
+
+  document.getElementById('detailOverlay').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('open');
+  document.querySelectorAll('.technique-card.active').forEach(c => c.classList.remove('active'));
+}
+
+document.getElementById('detailOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeDetail();
+});
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+</script>
+</body>
+</html>
