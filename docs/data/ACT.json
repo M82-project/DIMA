@@ -1,0 +1,385 @@
+{
+  "phase": "ACT",
+  "tactics": [
+    {
+      "id": "TA0041",
+      "separator": " ",
+      "name": "Valorisation individuelle",
+      "techniques": [
+        {
+          "id": "TE0411",
+          "separator": " : ",
+          "name": "biais d'excès de confiance",
+          "description": "Surestimation de ses propres capacités ou connaissances conduisant à des prises de décision trop rapides ou insuffisamment réfléchies.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Vous êtes assez intelligent pour comprendre\"",
+                "\"Avec vos compétences, c'est évident\"",
+                "\"Vous savez mieux que quiconque ce qu'il faut faire\""
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TE0412",
+          "separator": " : ",
+          "name": "Effet Peltzman (compensation du risque)",
+          "description": "Tendance à prendre plus de risques lorsqu'on se sent protégé ou en sécurité, compensant ainsi les mesures de sécurité mises en place.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Avec cette protection, vous pouvez y aller sans crainte\"",
+                "\"C'est sécurisé, alors n'hésitez pas\"",
+                "\"Le système vous protège, foncez\""
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TE0413",
+          "separator": " : ",
+          "name": "Supériorité illusoire",
+          "description": "Conviction d'être meilleur, plus intelligent ou plus compétent que la moyenne, créant une confiance excessive dans ses propres jugements.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Vous n'êtes pas comme les autres\"",
+                "\"Vous êtes au-dessus de la moyenne\"",
+                "\"Les gens ordinaires ne comprennent pas, mais vous si\""
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TE0414",
+          "separator": " : ",
+          "name": "FOMO (fear of missing out)",
+          "description": "Technique qui exploite une forme d'anxiété sociale caractérisée par la peur constante de manquer une nouvelle importante ou tout autre événement donnant une occasion d'interagir socialement. Cette peur de \"rater quelque chose\" incite à agir, et interagir avec les contenus.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Ne ratez pas cette opportunité unique\"",
+                "\"Tout le monde en parle, rejoignez le mouvement\"",
+                "\"Dernière chance de participer\""
+              ]
+            }
+          ]
+        }
+      ],
+      "description": "Tactique qui valorisent le jugement personnel et la confiance en soi.",
+      "sections": []
+    },
+    {
+      "id": "TA0042",
+      "separator": " ",
+      "name": "Renforcement escalatoire",
+      "techniques": [
+        {
+          "id": "TE0421",
+          "separator": " : ",
+          "name": "biais des coûts irrécupérables",
+          "description": "Tendance à continuer une activité ou un investissement en raison des ressources (temps, argent, effort) déjà investies, même si l'abandon serait plus rationnel.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Après tout le temps qu'on y a passé, on ne peut pas abandonner\"",
+                "\"Vu l'argent déjà investi, il faut continuer\"",
+                "\"Trop tard pour faire marche arrière maintenant\""
+              ]
+            },
+            {
+              "title": "Références",
+              "items": [
+                "Principe fondamental en économie comportementale",
+                "Lié à l'aversion aux pertes (Kahneman & Tversky)"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TE0422",
+          "separator": " : ",
+          "name": "biais d'autorité",
+          "description": "Tendance à accorder plus de crédibilité ou à suivre les directives de personnes perçues comme étant en position d'autorité, même quand ces directives sont questionnables.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Les experts recommandent...\"",
+                "\"Selon les autorités...\"",
+                "\"Des spécialistes renommés affirment...\""
+              ]
+            },
+            {
+              "title": "Références",
+              "items": [
+                "Expérience de Milgram (1963)",
+                "Principe d'autorité de Cialdini"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TE0423",
+          "separator": " : ",
+          "name": "Biais de la preuve sociale artificielle",
+          "description": "Tendance des individus à adopter les comportements des autres en situation d'incertitude. La preuve sociale artificielle cherche à exploiter cette tendance en donnant l'illusion d'un consencus ou d'un comportement massivement partagé.\nCréation d'une illusion de consensus ou de popularité pour influencer la décision individuelle. Exploitation du fait que les gens ont tendance à suivre les actions de la masse.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Des millions de personnes nous font confiance\"",
+                "\"Le plus populaire de sa catégorie\"",
+                "\"Tout le monde utilise ce produit/service\"",
+                "\"Tendance virale sur les réseaux\""
+              ]
+            },
+            {
+              "title": "Références",
+              "items": [
+                "Principe de preuve sociale de Cialdini",
+                "Expériences d'Asch sur le conformisme (1951)"
+              ]
+            },
+            {
+              "title": "Note",
+              "text": "Différent de la preuve sociale authentique - ici il y a manipulation ou fabrication des données de popularité."
+            }
+          ]
+        },
+        {
+          "id": "TE0424",
+          "separator": " : ",
+          "name": "Biais de rareté",
+          "description": "Valorisation accrue d'une opportunité ou d'un objet perçu comme rare, limité ou difficile à obtenir. La perception de rareté crée un sentiment d'urgence et pousse à l'action immédiate.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Stock limité : plus que 3 articles disponibles\"",
+                "\"Offre valable pour les 50 premiers clients\"",
+                "\"Édition limitée numérotée\"",
+                "\"Tant que les stocks durent\"",
+                "\"Accès exclusif réservé aux membres\""
+              ]
+            },
+            {
+              "title": "Fondements psychologiques",
+              "items": [
+                "Principe de rareté de Cialdini (1984)",
+                "Théorie de la réactance psychologique (Brehm, 1966)",
+                "Aversion aux pertes (Kahneman & Tversky)"
+              ]
+            },
+            {
+              "title": "Références",
+              "items": [
+                "Cialdini, R. B. (2006). *Influence: The Psychology of Persuasion*",
+                "Worchel, S., Lee, J., & Adewole, A. (1975). \"Effects of supply and demand on ratings of object value\"",
+                "Lynn, M. (1991). \"Scarcity effects on value: A quantitative review\""
+              ]
+            },
+            {
+              "title": "Contextes fréquents",
+              "items": [
+                "Marketing et e-commerce",
+                "Collecte de fonds",
+                "Propagande politique (\"dernière chance de sauver...\")",
+                "Manipulation sectaire (\"accès limité à la connaissance\")"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TE0425",
+          "separator": " : ",
+          "name": "Pied dans la porte",
+          "description": "Obtenir d'abord un petit engagement initial (facile, peu coûteux) pour ensuite solliciter un engagement plus important. La personne ayant accepté la première demande sera plus encline à accepter la seconde par besoin de cohérence comportementale.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Commencez par un essai gratuit sans engagement\"",
+                "\"Il suffit de créer un compte - c'est rapide\"",
+                "\"Première étape : inscrivez-vous simplement\"",
+                "\"Juste regarder ne vous engage à rien\"",
+                "\"Testez gratuitement pendant 7 jours\""
+              ]
+            },
+            {
+              "title": "Fondements psychologiques",
+              "items": [
+                "Étude fondatrice: Freedman & Fraser (1966)",
+                "Principe de cohérence (Cialdini)",
+                "Théorie de l'auto-perception (Bem, 1972)",
+                "Escalade d'engagement progressive"
+              ]
+            },
+            {
+              "title": "Références",
+              "items": [
+                "Freedman, J. L., & Fraser, S. C. (1966). \"Compliance without pressure: The foot-in-the-door technique\". *Journal of Personality and Social Psychology*, 4(2), 195-202",
+                "Burger, J. M. (1999). \"The foot-in-the-door compliance procedure: A multiple-process analysis and review\". *Personality and Social Psychology Review*, 3(4), 303-325"
+              ]
+            },
+            {
+              "title": "Processus type",
+              "text": "1. Demande initiale minime (acceptée facilement)\n2. Sentiment d'engagement/cohérence créé\n3. Demande progressive plus importante\n4. Acceptation facilitée par besoin de cohérence"
+            },
+            {
+              "title": "Contextes fréquents",
+              "items": [
+                "Marketing digital (compte gratuit → essai → abonnement)",
+                "Recrutement sectaire (conférence → weekend → engagement total)",
+                "Propagande politique (pétition → meeting → militantisme)",
+                "Collecte de fonds (micro-don → don régulier → engagement majeur)"
+              ]
+            },
+            {
+              "title": "Technique opposée",
+              "text": "Porte au nez (Door-in-the-face) - demande énorme refusée suivie d'une demande raisonnable."
+            }
+          ]
+        },
+        {
+          "id": "TE0426",
+          "separator": " : ",
+          "name": "Biais de réciprocité",
+          "description": "Sentiment psychologique d'obligation de rendre une faveur, un cadeau ou un service reçu, même s'il n'a pas été sollicité. Cette norme sociale universelle est exploitée pour créer une dette psychologique qui pousse la personne à agir en retour.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Après tout ce qu'on a fait pour vous\"",
+                "\"On vous a offert X gratuitement, maintenant...\"",
+                "\"Nous vous avons aidé, à votre tour de nous soutenir\"",
+                "\"En retour, vous pourriez faire ce petit geste\"",
+                "\"C'est la moindre des choses après ce qu'on vous a donné\""
+              ]
+            },
+            {
+              "title": "Fondements psychologiques",
+              "items": [
+                "Premier principe de Cialdini (le plus puissant)",
+                "Norme sociale universelle (Gouldner, 1960)",
+                "Dette sociale et obligation psychologique",
+                "Réciprocité souvent disproportionnée"
+              ]
+            },
+            {
+              "title": "Références",
+              "items": [
+                "Cialdini, R. B. (2006). *Influence: The Psychology of Persuasion*",
+                "Gouldner, A. W. (1960). \"The norm of reciprocity: A preliminary statement\". *American Sociological Review*, 25(2), 161-178",
+                "Regan, D. T. (1971). \"Effects of a favor and liking on compliance\". *Journal of Experimental Social Psychology*, 7(6), 627-639"
+              ]
+            },
+            {
+              "title": "Mécanismes",
+              "text": "1. Don initial (sollicité ou non)\n2. Création d'une dette psychologique\n3. Malaise si \"dette\" non remboursée\n4. Pression pour agir en retour (souvent disproportionnée)"
+            },
+            {
+              "title": "Contextes fréquents",
+              "items": [
+                "Marketing (échantillons gratuits → achat)",
+                "Collecte de fonds (cadeau dans courrier → don)",
+                "Propagande (\"on vous a défendus → soutenez-nous\")",
+                "Manipulation sectaire (aide initiale → engagement total)",
+                "Contexte professionnel (\"j'ai couvert ton absence...\")"
+              ]
+            },
+            {
+              "title": "Signes de manipulation",
+              "items": [
+                "Don non sollicité créant dette artificielle",
+                "Rappels constants de ce qui a été donné",
+                "Culpabilisation si refus",
+                "Demande disproportionnée par rapport au don"
+              ]
+            }
+          ]
+        }
+      ],
+      "description": "Tactique qui favorise la réalisation d'actions déjà engagées.",
+      "sections": []
+    },
+    {
+      "id": "TA0043",
+      "separator": " : ",
+      "name": "Ozaekomi waza (contrôle par immobilisation)",
+      "techniques": [
+        {
+          "id": "TE0431",
+          "separator": " : ",
+          "name": "Biais d'omission",
+          "description": "Le biais d'omission consiste à considérer que causer éventuellement un tort par une action est pire que causer un tort par l'inaction. Ainsi, le biais d'omission pourrait contribuer à expliquer que, dans l'incertitude, certains choisiront de refuser la vaccination pour leurs enfants.",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Ne rien faire est plus sûr\"",
+                "\"Mieux vaut laisser faire les choses naturellement\"",
+                "\"L'inaction évite les erreurs\""
+              ]
+            },
+            {
+              "title": "Référence",
+              "text": "<https://www.psychomedia.qc.ca/psychologie/biais-cognitifs>"
+            }
+          ]
+        },
+        {
+          "id": "TE0432",
+          "separator": " : ",
+          "name": "Biais du statu quo",
+          "description": "Le biais de statu quo est la tendance à préférer laisser les choses telles qu'elles sont, un changement apparaissant comme apportant plus de risques et d'inconvénients que d'avantages possibles. Dans divers domaines, ce biais explique des choix qui ne sont pas les plus rationnels. (Un biais se rapprochant du biais de statu quo est celui de la tendance à la justification du système.)",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "\"Restons-en là, c'est plus sûr\"",
+                "\"Mieux vaut ne pas changer ce qui marche\"",
+                "\"Le changement est trop risqué\""
+              ]
+            },
+            {
+              "title": "Référence",
+              "text": "<https://www.psychomedia.qc.ca/psychologie/biais-cognitifs>"
+            }
+          ]
+        },
+        {
+          "id": "TE0433",
+          "separator": " : ",
+          "name": "Saturation informationnelle",
+          "description": "Technique qui consiste à saturer la cible d'information afin de limiter sa capacité de traitement et in fine paralyser la décision.\n\nLa saturation informationnelle vise à déclencher le processus de \"paralysie de l'analyse\".",
+          "sections": [
+            {
+              "title": "Exemples",
+              "items": [
+                "Trop d'options présentées simultanément",
+                "Informations contradictoires en masse",
+                "Complexité artificielle créant confusion"
+              ]
+            },
+            {
+              "title": "Références",
+              "items": [
+                "<https://fourweekmba.com/fr/paralysie-d%27analyse/>",
+                "<https://www.psychomedia.qc.ca/>"
+              ]
+            }
+          ]
+        }
+      ],
+      "description": "Tactique qui consiste à favoriser chez une cible, l'immobilisme et l'absence d'action.",
+      "sections": []
+    }
+  ]
+}

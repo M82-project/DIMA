@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIMA Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0e13;
+  --surface: #13161d;
+  --surface-2: #1a1e28;
+  --border: #252a36;
+  --border-light: #323848;
+  --text: #e2e6ef;
+  --text-muted: #8a92a6;
+  --text-dim: #5a6178;
+
+  --detect: #e85d3a;
+  --detect-bg: rgba(232,93,58,0.10);
+  --detect-border: rgba(232,93,58,0.35);
+
+  --inform: #4aa8d8;
+  --inform-bg: rgba(74,168,216,0.10);
+  --inform-border: rgba(74,168,216,0.35);
+
+  --memorise: #9b6dd7;
+  --memorise-bg: rgba(155,109,215,0.10);
+  --memorise-border: rgba(155,109,215,0.35);
+
+  --act: #3cc77a;
+  --act-bg: rgba(60,199,122,0.10);
+  --act-border: rgba(60,199,122,0.35);
+
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Source Sans 3', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 14px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+}
+
+a { color: var(--inform); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* HEADER */
+.header {
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(12,14,19,0.92);
+  backdrop-filter: blur(10px);
+}
+.logo {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  background: linear-gradient(135deg, var(--detect), var(--inform), var(--memorise), var(--act));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.logo-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-left: 12px;
+  letter-spacing: 0.05em;
+}
+.header-right { display: flex; align-items: center; gap: 14px; }
+.search-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 14px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  width: 280px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-box:focus { border-color: var(--text-dim); }
+.search-box::placeholder { color: var(--text-dim); }
+.match-count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  min-width: 70px;
+}
+
+/* MAIN GRID */
+.matrix {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  padding: 22px 28px 60px;
+}
+@media (max-width: 1100px) { .matrix { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px)  { .matrix { grid-template-columns: 1fr; } }
+
+.column { display: flex; flex-direction: column; gap: 14px; }
+
+.phase-header {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid;
+  text-transform: uppercase;
+  position: sticky;
+  top: 78px;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+.column.detect   .phase-header { color: var(--detect);   background: var(--detect-bg);   border-color: var(--detect-border); }
+.column.inform   .phase-header { color: var(--inform);   background: var(--inform-bg);   border-color: var(--inform-border); }
+.column.memorise .phase-header { color: var(--memorise); background: var(--memorise-bg); border-color: var(--memorise-border); }
+.column.act      .phase-header { color: var(--act);      background: var(--act-bg);      border-color: var(--act-border); }
+
+/* TACTIC CARD */
+.tactic {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: 6px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.column.detect   .tactic { border-left-color: var(--detect); }
+.column.inform   .tactic { border-left-color: var(--inform); }
+.column.memorise .tactic { border-left-color: var(--memorise); }
+.column.act      .tactic { border-left-color: var(--act); }
+
+.tactic-header { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.tactic-id {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+.tactic-name { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.tactic-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+
+.techniques { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+.technique {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 7px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.technique:hover { border-color: var(--border-light); background: #1f2330; }
+.technique-id {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.technique-name { color: var(--text); flex: 1; }
+
+.hidden { display: none !important; }
+
+/* DETAIL PANEL */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.overlay.open { display: flex; }
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 720px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 22px 26px;
+  position: relative;
+}
+.panel-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  width: 28px; height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1;
+}
+.panel-close:hover { color: var(--text); border-color: var(--border-light); }
+
+.panel-meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.panel-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 14px; }
+.panel-desc { font-size: 0.95rem; color: var(--text); line-height: 1.55; margin-bottom: 18px; white-space: pre-wrap; }
+
+.section { margin-top: 16px; }
+.section-title {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.section-text { font-size: 0.9rem; color: var(--text); line-height: 1.5; white-space: pre-wrap; }
+.section-list { list-style: none; padding-left: 0; }
+.section-list li {
+  font-size: 0.9rem;
+  color: var(--text);
+  padding: 4px 0 4px 16px;
+  position: relative;
+  line-height: 1.45;
+}
+.section-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--text-dim);
+}
+
+.error {
+  padding: 28px;
+  color: var(--detect);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+}
+.empty {
+  padding: 8px 14px;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <span class="logo">DIMA</span>
+    <span class="logo-sub">Detect · Inform · Memorise · Act</span>
+  </div>
+  <div class="header-right">
+    <span class="match-count" id="match-count"></span>
+    <input type="search" class="search-box" id="search" placeholder="Rechercher (id, nom, description)…" />
+  </div>
+</header>
+
+<main class="matrix" id="matrix"></main>
+
+<div class="overlay" id="overlay">
+  <div class="panel" id="panel">
+    <button class="panel-close" id="panel-close" aria-label="Fermer">×</button>
+    <div class="panel-meta" id="panel-meta"></div>
+    <h2 class="panel-title" id="panel-title"></h2>
+    <p class="panel-desc" id="panel-desc"></p>
+    <div id="panel-sections"></div>
+  </div>
+</div>
+
+<script>
+const PHASES = [
+  { key: "DETECT",   label: "Detect",   className: "detect"   },
+  { key: "INFORM",   label: "Inform",   className: "inform"   },
+  { key: "MEMORISE", label: "Memorise", className: "memorise" },
+  { key: "ACT",      label: "Act",      className: "act"      },
+];
+
+const matrixEl = document.getElementById("matrix");
+const searchEl = document.getElementById("search");
+const matchCountEl = document.getElementById("match-count");
+const overlay = document.getElementById("overlay");
+const panelMeta = document.getElementById("panel-meta");
+const panelTitle = document.getElementById("panel-title");
+const panelDesc = document.getElementById("panel-desc");
+const panelSections = document.getElementById("panel-sections");
+
+const allTechniques = []; // index aplati pour resoudre un id depuis la barre de recherche
+
+function autoLink(text) {
+  // Markdown-style links [label](url) deja dans le contenu, plus URLs nues
+  const md = /\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g;
+  let escaped = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  escaped = escaped.replace(md, (_, label, url) =>
+    `<a href="${url}" target="_blank" rel="noopener">${label}</a>`
+  );
+  // URLs nues qui n'etaient pas dans un [..](..)
+  const bare = /(^|[^"'>])(https?:\/\/[^\s<)]+)(?![^<]*<\/a>)/g;
+  escaped = escaped.replace(bare, (_, prefix, url) =>
+    `${prefix}<a href="${url}" target="_blank" rel="noopener">${url}</a>`
+  );
+  return escaped;
+}
+
+function renderSection(sec) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "section";
+  const title = document.createElement("div");
+  title.className = "section-title";
+  title.textContent = sec.title;
+  wrapper.appendChild(title);
+
+  if (sec.text) {
+    const p = document.createElement("div");
+    p.className = "section-text";
+    p.innerHTML = autoLink(sec.text);
+    wrapper.appendChild(p);
+  }
+  if (Array.isArray(sec.items) && sec.items.length) {
+    const ul = document.createElement("ul");
+    ul.className = "section-list";
+    for (const item of sec.items) {
+      const li = document.createElement("li");
+      li.innerHTML = autoLink(item);
+      ul.appendChild(li);
+    }
+    wrapper.appendChild(ul);
+  }
+  return wrapper;
+}
+
+function openPanel(tech, tactic, phase) {
+  panelMeta.textContent = `${phase.label} · ${tactic.id} ${tactic.name}`;
+  panelTitle.textContent = `${tech.id} · ${tech.name}`;
+  panelDesc.innerHTML = tech.description ? autoLink(tech.description) : "";
+  panelSections.innerHTML = "";
+  for (const sec of tech.sections || []) {
+    panelSections.appendChild(renderSection(sec));
+  }
+  overlay.classList.add("open");
+}
+
+function closePanel() { overlay.classList.remove("open"); }
+
+overlay.addEventListener("click", (e) => { if (e.target === overlay) closePanel(); });
+document.getElementById("panel-close").addEventListener("click", closePanel);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
+
+function buildPhaseColumn(phase, data) {
+  const col = document.createElement("section");
+  col.className = `column ${phase.className}`;
+  col.dataset.phase = phase.key;
+
+  const header = document.createElement("div");
+  header.className = "phase-header";
+  const tacCount = data.tactics.length;
+  const techCount = data.tactics.reduce((n, t) => n + (t.techniques?.length || 0), 0);
+  header.textContent = `${phase.label} — ${tacCount} TA · ${techCount} TE`;
+  col.appendChild(header);
+
+  for (const tactic of data.tactics) {
+    const card = document.createElement("article");
+    card.className = "tactic";
+    card.dataset.id = tactic.id;
+    card.dataset.name = (tactic.name || "").toLowerCase();
+    card.dataset.desc = (tactic.description || "").toLowerCase();
+
+    const head = document.createElement("div");
+    head.className = "tactic-header";
+    const idEl = document.createElement("span");
+    idEl.className = "tactic-id";
+    idEl.textContent = tactic.id;
+    const nameEl = document.createElement("span");
+    nameEl.className = "tactic-name";
+    nameEl.textContent = tactic.name;
+    head.append(idEl, nameEl);
+    card.appendChild(head);
+
+    if (tactic.description) {
+      const desc = document.createElement("div");
+      desc.className = "tactic-desc";
+      desc.innerHTML = autoLink(tactic.description);
+      card.appendChild(desc);
+    }
+
+    const techs = document.createElement("div");
+    techs.className = "techniques";
+    if (!tactic.techniques?.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "(aucune technique)";
+      techs.appendChild(empty);
+    }
+    for (const tech of tactic.techniques || []) {
+      const item = document.createElement("div");
+      item.className = "technique";
+      item.dataset.id = tech.id;
+      item.dataset.name = (tech.name || "").toLowerCase();
+      item.dataset.desc = (tech.description || "").toLowerCase();
+
+      const tid = document.createElement("span");
+      tid.className = "technique-id";
+      tid.textContent = tech.id;
+      const tname = document.createElement("span");
+      tname.className = "technique-name";
+      tname.textContent = tech.name;
+      item.append(tid, tname);
+      item.addEventListener("click", () => openPanel(tech, tactic, phase));
+
+      techs.appendChild(item);
+      allTechniques.push({ tech, tactic, phase, el: item });
+    }
+    card.appendChild(techs);
+    col.appendChild(card);
+  }
+
+  return col;
+}
+
+function applyFilter(query) {
+  const q = query.trim().toLowerCase();
+  let visibleTechs = 0;
+  let visibleTacs = 0;
+
+  for (const card of document.querySelectorAll(".tactic")) {
+    const tacMatch = !q ||
+      card.dataset.id.toLowerCase().includes(q) ||
+      card.dataset.name.includes(q) ||
+      card.dataset.desc.includes(q);
+
+    let anyTechVisible = false;
+    for (const item of card.querySelectorAll(".technique")) {
+      const techMatch = !q ||
+        tacMatch ||
+        item.dataset.id.toLowerCase().includes(q) ||
+        item.dataset.name.includes(q) ||
+        item.dataset.desc.includes(q);
+      item.classList.toggle("hidden", !techMatch);
+      if (techMatch) { anyTechVisible = true; visibleTechs += 1; }
+    }
+
+    const showCard = tacMatch || anyTechVisible;
+    card.classList.toggle("hidden", !showCard);
+    if (showCard) visibleTacs += 1;
+  }
+
+  matchCountEl.textContent = q ? `${visibleTacs} TA · ${visibleTechs} TE` : "";
+}
+
+searchEl.addEventListener("input", (e) => applyFilter(e.target.value));
+
+async function load() {
+  try {
+    const results = await Promise.all(
+      PHASES.map((p) =>
+        fetch(`data/${p.key}.json`).then((r) => {
+          if (!r.ok) throw new Error(`${p.key}: HTTP ${r.status}`);
+          return r.json();
+        })
+      )
+    );
+    matrixEl.innerHTML = "";
+    PHASES.forEach((phase, i) => matrixEl.appendChild(buildPhaseColumn(phase, results[i])));
+  } catch (err) {
+    matrixEl.innerHTML = `<div class="error">Erreur de chargement: ${err.message}<br>Servir le dossier <code>docs/</code> via un serveur HTTP (les fetch ne fonctionnent pas en file://).</div>`;
+  }
+}
+
+load();
+</script>
+</body>
+</html>
