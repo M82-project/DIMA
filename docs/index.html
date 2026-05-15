@@ -268,6 +268,118 @@ a:hover { text-decoration: underline; }
   font-size: 0.85rem;
   font-style: italic;
 }
+
+.print-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 7px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.print-btn:hover { border-color: var(--text-dim); color: var(--text); }
+
+/* Details inlined into each technique, hidden on screen, revealed in print */
+.technique-details { display: none; }
+
+/* PRINT */
+@media print {
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #ffffff;
+    --border: #cccccc;
+    --border-light: #999999;
+    --text: #111111;
+    --text-muted: #444444;
+    --text-dim: #666666;
+  }
+  html { font-size: 11pt; }
+  body { background: #fff; color: #111; }
+  .header,
+  .overlay { display: none !important; }
+  a { color: #0a4a8a; text-decoration: underline; }
+
+  .matrix {
+    display: block;
+    padding: 0;
+    gap: 0;
+  }
+  .column {
+    display: block;
+    page-break-before: always;
+    padding-top: 12mm;
+  }
+  .column:first-child { page-break-before: auto; }
+
+  .phase-header {
+    position: static;
+    backdrop-filter: none;
+    font-size: 16pt;
+    margin-bottom: 12pt;
+    padding: 8pt 10pt;
+    border-width: 2pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .column.detect   .phase-header { color: #b03c1c; background: #fff3ee; border-color: #b03c1c; }
+  .column.inform   .phase-header { color: #1c6a96; background: #eef7fc; border-color: #1c6a96; }
+  .column.memorise .phase-header { color: #6843a8; background: #f4eefb; border-color: #6843a8; }
+  .column.act      .phase-header { color: #1f8a4f; background: #ecfaf1; border-color: #1f8a4f; }
+
+  .tactic {
+    background: #fff;
+    border: 1pt solid #888;
+    border-left-width: 3pt;
+    padding: 8pt 10pt;
+    margin-bottom: 8pt;
+    page-break-inside: avoid;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .column.detect   .tactic { border-left-color: #b03c1c; }
+  .column.inform   .tactic { border-left-color: #1c6a96; }
+  .column.memorise .tactic { border-left-color: #6843a8; }
+  .column.act      .tactic { border-left-color: #1f8a4f; }
+
+  .tactic-id { color: #555; font-size: 9pt; }
+  .tactic-name { font-size: 12pt; }
+  .tactic-desc { color: #333; font-size: 10pt; }
+
+  .technique {
+    background: #fff;
+    border: 1pt solid #ccc;
+    page-break-inside: avoid;
+    cursor: default;
+    display: block;
+    padding: 6pt 8pt;
+    margin-top: 4pt;
+  }
+  .technique-id { color: #555; font-size: 9pt; }
+  .technique-name { color: #111; font-weight: 600; }
+
+  .technique-details {
+    display: block;
+    padding-top: 4pt;
+    color: #222;
+  }
+  .technique-details .desc { font-size: 10pt; line-height: 1.4; margin-top: 4pt; }
+  .technique-details .section { margin-top: 6pt; }
+  .technique-details .section-title { color: #444; font-size: 8.5pt; }
+  .technique-details .section-text { color: #222; font-size: 9.5pt; }
+  .technique-details .section-list li { color: #222; font-size: 9.5pt; }
+  .technique-details .section-list li::before { color: #666; }
+
+  .hidden { display: block !important; } /* en print on ignore le filtre */
+
+  @page {
+    size: A4;
+    margin: 14mm 12mm 16mm;
+  }
+}
 </style>
 </head>
 <body>
@@ -280,6 +392,7 @@ a:hover { text-decoration: underline; }
   <div class="header-right">
     <span class="match-count" id="match-count"></span>
     <input type="search" class="search-box" id="search" placeholder="Rechercher (id, nom, description)…" />
+    <button class="print-btn" id="print-btn" title="Imprimer ou enregistrer en PDF">⎙ PDF</button>
   </div>
 </header>
 
@@ -376,6 +489,11 @@ overlay.addEventListener("click", (e) => { if (e.target === overlay) closePanel(
 document.getElementById("panel-close").addEventListener("click", closePanel);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePanel(); });
 
+document.getElementById("print-btn").addEventListener("click", () => {
+  closePanel();
+  window.print();
+});
+
 function buildPhaseColumn(phase, data) {
   const col = document.createElement("section");
   col.className = `column ${phase.className}`;
@@ -436,6 +554,20 @@ function buildPhaseColumn(phase, data) {
       tname.textContent = tech.name;
       item.append(tid, tname);
       item.addEventListener("click", () => openPanel(tech, tactic, phase));
+
+      // Details rendus inline (caches a l'ecran, reveles a l'impression)
+      const details = document.createElement("div");
+      details.className = "technique-details";
+      if (tech.description) {
+        const desc = document.createElement("div");
+        desc.className = "desc";
+        desc.innerHTML = autoLink(tech.description);
+        details.appendChild(desc);
+      }
+      for (const sec of tech.sections || []) {
+        details.appendChild(renderSection(sec));
+      }
+      item.appendChild(details);
 
       techs.appendChild(item);
       allTechniques.push({ tech, tactic, phase, el: item });
