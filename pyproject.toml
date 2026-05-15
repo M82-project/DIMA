@@ -1,0 +1,19 @@
+[project]
+name = "dima"
+version = "0.1.0"
+description = "Outils pour la matrice DIMA (conversion Markdown <-> JSON)."
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+dima-convert = "dima_convert:main"
+
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["src/tests"]
