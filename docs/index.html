@@ -302,6 +302,43 @@ a:hover { text-decoration: underline; }
   border-color: var(--inform-border);
 }
 
+.tactic-check {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border-light);
+  border-radius: 3px;
+  background: var(--surface);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-left: auto;
+  position: relative;
+  transition: background 0.12s, border-color 0.12s;
+}
+.tactic-check:hover { border-color: var(--text-dim); }
+.tactic-check:checked,
+.tactic-check:indeterminate {
+  background: var(--inform);
+  border-color: var(--inform);
+}
+.tactic-check:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px; top: 1px;
+  width: 5px; height: 9px;
+  border: solid #0c0e13;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.tactic-check:indeterminate::after {
+  content: "";
+  position: absolute;
+  left: 3px; top: 7px;
+  width: 9px; height: 2px;
+  background: #0c0e13;
+}
+
 .campaign-chip {
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -657,6 +694,26 @@ function autoLink(text) {
   return escaped;
 }
 
+function syncTacticCheck(tacticCheck, techChecks) {
+  if (!techChecks.length) {
+    tacticCheck.checked = false;
+    tacticCheck.indeterminate = false;
+    return;
+  }
+  const total = techChecks.length;
+  const checked = techChecks.reduce((n, c) => n + (c.checked ? 1 : 0), 0);
+  tacticCheck.checked = checked === total;
+  tacticCheck.indeterminate = checked > 0 && checked < total;
+}
+
+function syncAllTacticChecks() {
+  for (const card of document.querySelectorAll(".tactic")) {
+    const tac = card.querySelector(".tactic-check");
+    const techs = [...card.querySelectorAll(".tech-check")];
+    if (tac) syncTacticCheck(tac, techs);
+  }
+}
+
 function renderSection(sec) {
   const wrapper = document.createElement("div");
   wrapper.className = "section";
@@ -732,8 +789,14 @@ function buildPhaseColumn(phase, data) {
     const nameEl = document.createElement("span");
     nameEl.className = "tactic-name";
     nameEl.textContent = tactic.name;
-    head.append(idEl, nameEl);
+    const tacticCheck = document.createElement("input");
+    tacticCheck.type = "checkbox";
+    tacticCheck.className = "tactic-check";
+    tacticCheck.title = "Cocher toutes les techniques de cette tactique";
+    head.append(idEl, nameEl, tacticCheck);
     card.appendChild(head);
+
+    const techChecks = [];
 
     if (tactic.description) {
       const desc = document.createElement("div");
@@ -767,6 +830,7 @@ function buildPhaseColumn(phase, data) {
         if (check.checked) selected.add(tech.id);
         else selected.delete(tech.id);
         item.classList.toggle("selected", check.checked);
+        syncTacticCheck(tacticCheck, techChecks);
         saveSelection();
         updateCampaignUI();
       });
@@ -782,10 +846,23 @@ function buildPhaseColumn(phase, data) {
       if (selected.has(tech.id)) item.classList.add("selected");
 
       techs.appendChild(item);
+      techChecks.push(check);
       allTechniques.push({ tech, tactic, phase, el: item, check });
     }
     card.appendChild(techs);
     col.appendChild(card);
+
+    syncTacticCheck(tacticCheck, techChecks);
+    tacticCheck.addEventListener("click", (e) => e.stopPropagation());
+    tacticCheck.addEventListener("change", () => {
+      const target = tacticCheck.checked;
+      for (const c of techChecks) {
+        if (c.checked === target) continue;
+        c.checked = target;
+        c.dispatchEvent(new Event("change"));
+      }
+      syncTacticCheck(tacticCheck, techChecks);
+    });
   }
 
   return col;
@@ -856,6 +933,7 @@ clearBtn.addEventListener("click", () => {
     t.check.checked = false;
     t.el.classList.remove("selected");
   }
+  syncAllTacticChecks();
   saveSelection();
   updateCampaignUI();
 });
@@ -894,6 +972,7 @@ function openReport() {
       delete techNotes[tech.id];
       const ref = allTechniques.find((t) => t.tech.id === tech.id);
       if (ref) { ref.check.checked = false; ref.el.classList.remove("selected"); }
+      syncAllTacticChecks();
       saveSelection();
       updateCampaignUI();
       row.remove();
@@ -1063,6 +1142,7 @@ importFile.addEventListener("change", async () => {
       t.check.checked = sel;
       t.el.classList.toggle("selected", sel);
     }
+    syncAllTacticChecks();
     saveSelection();
     updateCampaignUI();
     openReport();
