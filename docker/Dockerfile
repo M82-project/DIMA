@@ -12,11 +12,29 @@ COPY MEMORISE/ ./MEMORISE/
 COPY ACT/      ./ACT/
 COPY docs/     ./docs/
 
-RUN python src/dima_convert.py md2json --all -o docs/data \
- && rm -rf docs/data/.gitkeep 2>/dev/null || true
+RUN python src/dima_convert.py md2json --all -o docs/data
 
-# ---- Stage 2: serve the SPA via nginx (unprivileged image, listens on 8080) ----
-FROM nginxinc/nginx-unprivileged:alpine
+# ---- Stage 2: pytest runner (build standalone with --target tests) ----
+FROM python:3.12-alpine AS tests
+WORKDIR /app
+
+COPY pyproject.toml ./
+COPY src/      ./src/
+COPY DETECT/   ./DETECT/
+COPY INFORM/   ./INFORM/
+COPY MEMORISE/ ./MEMORISE/
+COPY ACT/      ./ACT/
+
+RUN pip install --no-cache-dir pytest
+
+# Run the suite at build time so `docker build --target tests` fails on regression.
+RUN pytest
+
+# And keep the same entrypoint for interactive runs (docker run --rm <image>).
+CMD ["pytest", "-v"]
+
+# ---- Stage 3: nginx runtime (default target) ----
+FROM nginxinc/nginx-unprivileged:alpine AS runtime
 
 LABEL org.opencontainers.image.title="DIMA Navigator" \
       org.opencontainers.image.description="Static SPA serving the DIMA matrix (Detect/Inform/Memorise/Act)." \
