@@ -1,0 +1,54 @@
+name: MISP galaxy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "DETECT/**"
+      - "INFORM/**"
+      - "MEMORISE/**"
+      - "ACT/**"
+      - "src/dima_convert.py"
+      - "misp/**"
+      - ".github/workflows/misp.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "DETECT/**"
+      - "INFORM/**"
+      - "MEMORISE/**"
+      - "ACT/**"
+      - "src/dima_convert.py"
+      - "misp/**"
+      - ".github/workflows/misp.yml"
+
+jobs:
+  sync-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Regenerate MISP galaxy from current Markdown
+        run: uv run src/dima_convert.py md2misp -o _regen_misp
+
+      - name: Verify committed misp/ matches regenerated output
+        run: |
+          if ! diff -ru misp _regen_misp; then
+            echo ""
+            echo "::error::misp/ est desynchronise des .md sources."
+            echo "Lance localement: uv run src/dima_convert.py md2misp -o misp"
+            echo "puis commit les fichiers misp/galaxies/dima.json et misp/clusters/dima.json."
+            exit 1
+          fi
+          echo "OK: misp/ est synchrone avec les fichiers markdown."
+
+      - name: Validate JSON
+        run: |
+          python -c "import json, sys; json.load(open('misp/galaxies/dima.json', encoding='utf-8')); json.load(open('misp/clusters/dima.json', encoding='utf-8')); print('JSON OK')"
