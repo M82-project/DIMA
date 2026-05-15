@@ -577,6 +577,7 @@ a:hover { text-decoration: underline; }
 
     <div class="report-actions">
       <button class="btn" id="report-cancel">Fermer</button>
+      <button class="btn" id="report-json">Exporter JSON</button>
       <button class="btn primary" id="report-print">Imprimer / PDF</button>
     </div>
   </div>
@@ -986,6 +987,57 @@ function buildPrintableReport() {
 
   reportPrintable.innerHTML = parts.join("");
 }
+
+function slugify(s) {
+  return (s || "campagne-dima")
+    .toString()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60) || "campagne-dima";
+}
+
+function buildCampaignJSON() {
+  const items = allTechniques
+    .filter((t) => selected.has(t.tech.id))
+    .sort((a, b) => a.tech.id.localeCompare(b.tech.id));
+
+  return {
+    title: campaignName || "Rapport DIMA",
+    date: campaignDate,
+    notes: campaignNotes,
+    generated_at: new Date().toISOString(),
+    techniques: items.map(({ tech, tactic, phase }) => ({
+      id: tech.id,
+      name: tech.name,
+      phase: phase.key,
+      tactic_id: tactic.id,
+      tactic_name: tactic.name,
+      description: tech.description || "",
+      sections: tech.sections || [],
+      observation: techNotes[tech.id] || "",
+    })),
+  };
+}
+
+document.getElementById("report-json").addEventListener("click", () => {
+  campaignName  = repName.value;
+  campaignDate  = repDate.value;
+  campaignNotes = repNotes.value;
+  saveSelection();
+
+  const payload = buildCampaignJSON();
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${slugify(payload.title)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
 
 document.getElementById("report-print").addEventListener("click", () => {
   campaignName  = repName.value;
