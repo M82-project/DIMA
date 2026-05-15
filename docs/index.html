@@ -310,10 +310,13 @@ a:hover { text-decoration: underline; }
   }
   .column {
     display: block;
+    break-before: page;
     page-break-before: always;
-    padding-top: 12mm;
   }
-  .column:first-child { page-break-before: auto; }
+  .column:first-child {
+    break-before: auto;
+    page-break-before: auto;
+  }
 
   .phase-header {
     position: static;
