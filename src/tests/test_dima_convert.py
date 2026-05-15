@@ -319,6 +319,48 @@ def test_cli_md2json_all(tmp_path: Path) -> None:
         assert payload["phase"] == phase
 
 
+def test_cli_md2json_all_writes_next_to_source_when_no_output(tmp_path: Path) -> None:
+    for phase in ("DETECT", "INFORM", "MEMORISE", "ACT"):
+        d = tmp_path / phase
+        d.mkdir()
+        (d / f"{phase}.md").write_text(f"# TA0001 {phase}\n", encoding="utf-8")
+    code = main(["md2json", "--all", "--root", str(tmp_path)])
+    assert code == 0
+    for phase in ("DETECT", "INFORM", "MEMORISE", "ACT"):
+        f = tmp_path / phase / f"{phase}.json"
+        assert f.exists()
+
+
+def test_cli_json2md_all_finds_json_in_phase_subdirs(tmp_path: Path) -> None:
+    for phase in ("DETECT", "INFORM", "MEMORISE", "ACT"):
+        d = tmp_path / phase
+        d.mkdir()
+        (d / f"{phase}.json").write_text(
+            json.dumps(
+                {
+                    "phase": phase,
+                    "tactics": [
+                        {
+                            "id": "TA0001",
+                            "separator": " ",
+                            "name": phase,
+                            "description": "",
+                            "sections": [],
+                            "techniques": [],
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+    code = main(["json2md", "--all", "--root", str(tmp_path)])
+    assert code == 0
+    for phase in ("DETECT", "INFORM", "MEMORISE", "ACT"):
+        f = tmp_path / phase / f"{phase}.md"
+        assert f.exists()
+        assert f"# TA0001 {phase}" in f.read_text(encoding="utf-8")
+
+
 def test_cli_md2json_all_no_files_returns_error(tmp_path: Path) -> None:
     code = main(["md2json", "--all", "--root", str(tmp_path), "-o", str(tmp_path / "out")])
     assert code == 1

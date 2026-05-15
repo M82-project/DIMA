@@ -237,7 +237,13 @@ def _iter_phase_md(root: Path) -> list[Path]:
 
 
 def _iter_phase_json(root: Path) -> list[Path]:
-    return sorted(p for p in root.glob("*.json") if p.stem.upper() in PHASES)
+    found: list[Path] = []
+    for phase in PHASES:
+        for candidate in (root / phase / f"{phase}.json", root / f"{phase}.json"):
+            if candidate.exists():
+                found.append(candidate)
+                break
+    return found
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -260,14 +266,15 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "md2json":
         if args.all:
-            out_dir = Path(args.output) if args.output else Path(args.root)
-            out_dir.mkdir(parents=True, exist_ok=True)
             paths = _iter_phase_md(Path(args.root))
             if not paths:
                 print(f"Aucun fichier de phase trouve sous {args.root}", file=sys.stderr)
                 return 1
+            out_dir = Path(args.output) if args.output else None
+            if out_dir is not None:
+                out_dir.mkdir(parents=True, exist_ok=True)
             for md in paths:
-                target = out_dir / f"{md.stem}.json"
+                target = (out_dir / f"{md.stem}.json") if out_dir else md.with_suffix(".json")
                 md_to_json(md, target)
                 print(f"{md} -> {target}")
             return 0
@@ -281,14 +288,15 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.cmd == "json2md":
         if args.all:
-            out_dir = Path(args.output) if args.output else Path(args.root)
-            out_dir.mkdir(parents=True, exist_ok=True)
             paths = _iter_phase_json(Path(args.root))
             if not paths:
                 print(f"Aucun .json de phase trouve sous {args.root}", file=sys.stderr)
                 return 1
+            out_dir = Path(args.output) if args.output else None
+            if out_dir is not None:
+                out_dir.mkdir(parents=True, exist_ok=True)
             for js in paths:
-                target = out_dir / f"{js.stem}.md"
+                target = (out_dir / f"{js.stem}.md") if out_dir else js.with_suffix(".md")
                 json_to_md(js, target)
                 print(f"{js} -> {target}")
             return 0
