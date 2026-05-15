@@ -577,9 +577,11 @@ a:hover { text-decoration: underline; }
 
     <div class="report-actions">
       <button class="btn" id="report-cancel">Fermer</button>
+      <button class="btn" id="report-import">Importer JSON</button>
       <button class="btn" id="report-json">Exporter JSON</button>
       <button class="btn primary" id="report-print">Imprimer / PDF</button>
     </div>
+    <input type="file" id="report-import-file" accept="application/json,.json" hidden />
   </div>
 </div>
 
@@ -1020,6 +1022,56 @@ function buildCampaignJSON() {
     })),
   };
 }
+
+const importBtn = document.getElementById("report-import");
+const importFile = document.getElementById("report-import-file");
+
+importBtn.addEventListener("click", () => importFile.click());
+
+importFile.addEventListener("change", async () => {
+  const file = importFile.files?.[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if (!Array.isArray(data.techniques)) {
+      throw new Error("format invalide (techniques[] manquant)");
+    }
+    const knownIds = new Set(allTechniques.map((t) => t.tech.id));
+    const importedIds = data.techniques.map((t) => t.id).filter((id) => knownIds.has(id));
+    const unknown = data.techniques.length - importedIds.length;
+
+    const replace = !selected.size || confirm(
+      `Importer ${importedIds.length} technique(s)${unknown ? ` (${unknown} inconnue(s) ignoree(s))` : ""} ?\nLa selection actuelle sera remplacee.`
+    );
+    if (!replace) { importFile.value = ""; return; }
+
+    selected.clear();
+    Object.keys(techNotes).forEach((k) => delete techNotes[k]);
+    for (const t of data.techniques) {
+      if (!knownIds.has(t.id)) continue;
+      selected.add(t.id);
+      if (t.observation) techNotes[t.id] = t.observation;
+    }
+    campaignName  = data.title || "";
+    campaignDate  = data.date  || "";
+    campaignNotes = data.notes || "";
+
+    // Sync UI: cases a cocher, marqueurs, formulaire
+    for (const t of allTechniques) {
+      const sel = selected.has(t.tech.id);
+      t.check.checked = sel;
+      t.el.classList.toggle("selected", sel);
+    }
+    saveSelection();
+    updateCampaignUI();
+    openReport();
+  } catch (err) {
+    alert(`Import echoue: ${err.message}`);
+  } finally {
+    importFile.value = "";
+  }
+});
 
 document.getElementById("report-json").addEventListener("click", () => {
   campaignName  = repName.value;
