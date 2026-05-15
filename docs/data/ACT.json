@@ -3,7 +3,7 @@
   "tactics": [
     {
       "id": "TA0041",
-      "separator": " ",
+      "separator": " : ",
       "name": "Valorisation individuelle",
       "techniques": [
         {
@@ -71,12 +71,12 @@
           ]
         }
       ],
-      "description": "Tactique qui valorisent le jugement personnel et la confiance en soi.",
+      "description": "Tactique qui valorise le jugement personnel et la confiance en soi.",
       "sections": []
     },
     {
       "id": "TA0042",
-      "separator": " ",
+      "separator": " : ",
       "name": "Renforcement escalatoire",
       "techniques": [
         {
@@ -129,7 +129,7 @@
           "id": "TE0423",
           "separator": " : ",
           "name": "Biais de la preuve sociale artificielle",
-          "description": "Tendance des individus à adopter les comportements des autres en situation d'incertitude. La preuve sociale artificielle cherche à exploiter cette tendance en donnant l'illusion d'un consencus ou d'un comportement massivement partagé.\nCréation d'une illusion de consensus ou de popularité pour influencer la décision individuelle. Exploitation du fait que les gens ont tendance à suivre les actions de la masse.",
+          "description": "Tendance des individus à adopter les comportements des autres en situation d'incertitude. La preuve sociale artificielle cherche à exploiter cette tendance en donnant l'illusion d'un consensus ou d'un comportement massivement partagé. Création d'une illusion de consensus ou de popularité pour influencer la décision individuelle. Exploitation du fait que les gens ont tendance à suivre les actions de la masse.",
           "sections": [
             {
               "title": "Exemples",
@@ -330,7 +330,7 @@
             },
             {
               "title": "Référence",
-              "text": "<https://www.psychomedia.qc.ca/psychologie/biais-cognitifs>"
+              "text": "[source](https://www.psychomedia.qc.ca/psychologie/biais-cognitifs)"
             }
           ]
         },
@@ -350,7 +350,7 @@
             },
             {
               "title": "Référence",
-              "text": "<https://www.psychomedia.qc.ca/psychologie/biais-cognitifs>"
+              "text": "[source](https://www.psychomedia.qc.ca/psychologie/biais-cognitifs)"
             }
           ]
         },
@@ -371,14 +371,14 @@
             {
               "title": "Références",
               "items": [
-                "<https://fourweekmba.com/fr/paralysie-d%27analyse/>",
-                "<https://www.psychomedia.qc.ca/>"
+                "https://fourweekmba.com/fr/paralysie-d%27analyse/",
+                "https://www.psychomedia.qc.ca/"
               ]
             }
           ]
         }
       ],
-      "description": "Tactique qui consiste à favoriser chez une cible, l'immobilisme et l'absence d'action.",
+      "description": "Tactique qui consiste à favoriser chez une cible l'immobilisme et l'absence d'action.",
       "sections": []
     }
   ]

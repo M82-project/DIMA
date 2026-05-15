@@ -1,5 +1,5 @@
-# TA0041 Valorisation individuelle
-Tactique qui valorisent le jugement personnel et la confiance en soi. 
+# TA0041 : Valorisation individuelle
+Tactique qui valorise le jugement personnel et la confiance en soi.
 
 ## TE0411 : biais d'excès de confiance
 Surestimation de ses propres capacités ou connaissances conduisant à des prises de décision trop rapides ou insuffisamment réfléchies.
@@ -8,7 +8,7 @@ Surestimation de ses propres capacités ou connaissances conduisant à des prise
 - "Vous êtes assez intelligent pour comprendre"
 - "Avec vos compétences, c'est évident"
 - "Vous savez mieux que quiconque ce qu'il faut faire"
-  
+
 ## TE0412 : Effet Peltzman (compensation du risque)
 Tendance à prendre plus de risques lorsqu'on se sent protégé ou en sécurité, compensant ainsi les mesures de sécurité mises en place.
 
@@ -16,6 +16,7 @@ Tendance à prendre plus de risques lorsqu'on se sent protégé ou en sécurité
 - "Avec cette protection, vous pouvez y aller sans crainte"
 - "C'est sécurisé, alors n'hésitez pas"
 - "Le système vous protège, foncez"
+
 ## TE0413 : Supériorité illusoire
 Conviction d'être meilleur, plus intelligent ou plus compétent que la moyenne, créant une confiance excessive dans ses propres jugements.
 
@@ -33,8 +34,8 @@ Technique qui exploite une forme d'anxiété sociale caractérisée par la peur 
 - "Dernière chance de participer"
 
 
-# TA0042 Renforcement escalatoire 
-Tactique qui favorise la réalisation d'actions déjà engagées. 
+# TA0042 : Renforcement escalatoire
+Tactique qui favorise la réalisation d'actions déjà engagées.
 
 ## TE0421 : biais des coûts irrécupérables
 Tendance à continuer une activité ou un investissement en raison des ressources (temps, argent, effort) déjà investies, même si l'abandon serait plus rationnel.
@@ -47,7 +48,7 @@ Tendance à continuer une activité ou un investissement en raison des ressource
 **Références:**
 - Principe fondamental en économie comportementale
 - Lié à l'aversion aux pertes (Kahneman & Tversky)
-  
+
 ## TE0422 : biais d'autorité
 Tendance à accorder plus de crédibilité ou à suivre les directives de personnes perçues comme étant en position d'autorité, même quand ces directives sont questionnables.
 
@@ -61,9 +62,7 @@ Tendance à accorder plus de crédibilité ou à suivre les directives de person
 - Principe d'autorité de Cialdini
 
 ## TE0423 : Biais de la preuve sociale artificielle
-
-Tendance des individus à adopter les comportements des autres en situation d'incertitude. La preuve sociale artificielle cherche à exploiter cette tendance en donnant l'illusion d'un consencus ou d'un comportement massivement partagé. 
-Création d'une illusion de consensus ou de popularité pour influencer la décision individuelle. Exploitation du fait que les gens ont tendance à suivre les actions de la masse.
+Tendance des individus à adopter les comportements des autres en situation d'incertitude. La preuve sociale artificielle cherche à exploiter cette tendance en donnant l'illusion d'un consensus ou d'un comportement massivement partagé. Création d'une illusion de consensus ou de popularité pour influencer la décision individuelle. Exploitation du fait que les gens ont tendance à suivre les actions de la masse.
 
 **Exemples:**
 - "Des millions de personnes nous font confiance"
@@ -77,7 +76,7 @@ Création d'une illusion de consensus ou de popularité pour influencer la déci
 
 **Note:** Différent de la preuve sociale authentique - ici il y a manipulation ou fabrication des données de popularité.
 
-## TE0424 : Biais de rareté 
+## TE0424 : Biais de rareté
 Valorisation accrue d'une opportunité ou d'un objet perçu comme rare, limité ou difficile à obtenir. La perception de rareté crée un sentiment d'urgence et pousse à l'action immédiate.
 
 **Exemples:**
@@ -103,7 +102,7 @@ Valorisation accrue d'une opportunité ou d'un objet perçu comme rare, limité 
 - Propagande politique ("dernière chance de sauver...")
 - Manipulation sectaire ("accès limité à la connaissance")
 
-## TE0425 : Pied dans la porte 
+## TE0425 : Pied dans la porte
 Obtenir d'abord un petit engagement initial (facile, peu coûteux) pour ensuite solliciter un engagement plus important. La personne ayant accepté la première demande sera plus encline à accepter la seconde par besoin de cohérence comportementale.
 
 **Exemples:**
@@ -137,8 +136,7 @@ Obtenir d'abord un petit engagement initial (facile, peu coûteux) pour ensuite 
 
 **Technique opposée:** Porte au nez (Door-in-the-face) - demande énorme refusée suivie d'une demande raisonnable.
 
-## TE0426 : Biais de réciprocité 
-
+## TE0426 : Biais de réciprocité
 Sentiment psychologique d'obligation de rendre une faveur, un cadeau ou un service reçu, même s'il n'a pas été sollicité. Cette norme sociale universelle est exploitée pour créer une dette psychologique qui pousse la personne à agir en retour.
 
 **Exemples:**
@@ -180,7 +178,7 @@ Sentiment psychologique d'obligation de rendre une faveur, un cadeau ou un servi
 
 
 # TA0043 : Ozaekomi waza (contrôle par immobilisation)
-Tactique qui consiste à favoriser chez une cible, l'immobilisme et l'absence d'action.
+Tactique qui consiste à favoriser chez une cible l'immobilisme et l'absence d'action.
 
 ## TE0431 : Biais d'omission
 
@@ -192,7 +190,7 @@ Le biais d'omission consiste à considérer que causer éventuellement un tort p
 - "L'inaction évite les erreurs"
 
 **Référence:**
-<https://www.psychomedia.qc.ca/psychologie/biais-cognitifs>
+[source](https://www.psychomedia.qc.ca/psychologie/biais-cognitifs)
 
 ## TE0432 : Biais du statu quo
 
@@ -204,7 +202,7 @@ Le biais de statu quo est la tendance à préférer laisser les choses telles qu
 - "Le changement est trop risqué"
 
 **Référence:**
-<https://www.psychomedia.qc.ca/psychologie/biais-cognitifs>
+[source](https://www.psychomedia.qc.ca/psychologie/biais-cognitifs)
 
 ## TE0433 : Saturation informationnelle
 
@@ -218,6 +216,6 @@ La saturation informationnelle vise à déclencher le processus de "paralysie de
 - Complexité artificielle créant confusion
 
 **Références:**
-- <https://fourweekmba.com/fr/paralysie-d%27analyse/>
-- <https://www.psychomedia.qc.ca/>
+- https://fourweekmba.com/fr/paralysie-d%27analyse/
+- https://www.psychomedia.qc.ca/
 
