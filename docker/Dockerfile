@@ -22,15 +22,17 @@ RUN uv run --no-project python src/dima_convert.py md2json --all -o docs/data
 FROM ghcr.io/astral-sh/uv:python3.12-alpine AS tests
 WORKDIR /app
 
-COPY pyproject.toml ./
+COPY pyproject.toml uv.lock ./
 COPY src/      ./src/
 COPY DETECT/   ./DETECT/
 COPY INFORM/   ./INFORM/
 COPY MEMORISE/ ./MEMORISE/
 COPY ACT/      ./ACT/
 
-# Synchronise the dev group (pytest) into /app/.venv.
-RUN uv sync --group dev
+# Synchronise the dev group (pytest) into /app/.venv with the exact
+# versions resolved in uv.lock (--frozen). The image is reproducible:
+# rebuilding from the same commit always pulls the same pytest.
+RUN uv sync --group dev --frozen
 
 # Run the suite at build time so `docker build --target tests` fails on regression.
 RUN uv run pytest

@@ -9,10 +9,13 @@ on:
       - "docker/**"
       - ".github/workflows/docker.yml"
       - "src/**"
+      - "docs/**"
       - "DETECT/**"
       - "INFORM/**"
       - "MEMORISE/**"
       - "ACT/**"
+      - "pyproject.toml"
+      - "uv.lock"
   workflow_dispatch:
 
 permissions:
