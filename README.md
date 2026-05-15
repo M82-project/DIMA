@@ -17,7 +17,6 @@ Source of truth: one Markdown file per phase, under [`DETECT/`](DETECT/),
 |-----------------------------------------------|----------------------------------------------------------------------------|
 | Parcourir la matrice dans le navigateur       | [DIMA Navigator](https://m82-project.github.io/DIMA/)                      |
 | Lire le détail d'une phase                    | `DETECT/DETECT.md`, `INFORM/INFORM.md`, `MEMORISE/MEMORISE.md`, `ACT/ACT.md` |
-| Importer la matrice dans MISP                 | [`misp/galaxies/dima.json`](misp/galaxies/dima.json) + [`misp/clusters/dima.json`](misp/clusters/dima.json) |
 | Convertir Markdown ↔ JSON                     | Section [Convertisseur Python](#convertisseur-python) ci-dessous           |
 | Bâtir un rapport de campagne PDF / JSON       | Section [Rapport de campagne](#rapport-de-campagne) ci-dessous             |
 
@@ -101,9 +100,6 @@ uv run src/dima_convert.py md2json --all
 # 2. JSON -> Markdown (pour reformatter le markdown depuis le JSON)
 uv run src/dima_convert.py json2md --all
 
-# 3. Markdown -> MISP galaxy (cluster + descriptor)
-uv run src/dima_convert.py md2misp -o misp
-
 # Mono-fichier
 uv run src/dima_convert.py md2json DETECT/DETECT.md -o /tmp/detect.json
 uv run src/dima_convert.py json2md /tmp/detect.json -o /tmp/detect.md
@@ -139,20 +135,6 @@ uv run src/dima_convert.py json2md /tmp/detect.json -o /tmp/detect.md
 Round-trip stable : `parse → render → parse` produit un JSON identique,
 testé sur les 4 fichiers réels du repo.
 
-### Format MISP galaxy
-
-Le sous-dossier [`misp/`](misp/) contient les deux fichiers à déposer
-respectivement dans `galaxies/` et `clusters/` de votre instance MISP :
-
-- `misp/galaxies/dima.json` — descripteur (UUID fixe `5e6c2f7a-…`).
-- `misp/clusters/dima.json` — une entrée par TA et TE.
-
-Chaque technique pointe vers sa tactique parente via un `related[]`
-de type `subtechnique-of`. Les UUIDs sont **déterministes** (`uuid5`
-sur un namespace fixe + l'ID DIMA), donc une régénération produit un
-fichier identique au bit près — pas de churn dans les liens MISP côté
-utilisateur.
-
 ### Convention markdown
 
 Les 4 fichiers de phase suivent la même convention (voir PR #39) :
@@ -168,20 +150,19 @@ Les 4 fichiers de phase suivent la même convention (voir PR #39) :
 
 ```powershell
 uv sync --group dev    # premier lancement
-uv run pytest          # 27 tests : parser, round-trip, CLI, MISP
+uv run pytest          # parser, round-trip, CLI
 ```
 
 ---
 
 ## CI / CD
 
-Trois workflows GitHub Actions :
+Workflows GitHub Actions :
 
 | Workflow                                       | Déclencheurs                                                | Rôle                                                                                          |
 |------------------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | [`tests.yml`](.github/workflows/tests.yml)     | push `main`, PR `main`                                      | Exécute pytest sur Python 3.10 / 3.11 / 3.12.                                                 |
 | [`pages.yml`](.github/workflows/pages.yml)     | push `main` touchant `docs/`, les `.md` ou le script        | Régénère `docs/data/*.json` depuis les `.md` puis déploie `docs/` sur GitHub Pages.            |
-| [`misp.yml`](.github/workflows/misp.yml)       | push `main`, PR `main` touchant `.md`, le script ou `misp/` | Régénère la galaxy MISP dans un dossier temporaire et échoue si `misp/` commité a divergé.    |
 | [`create-release.yml`](.github/workflows/create-release.yml) | tag `v*`                                          | Publie la release et attache l'archive ZIP du plugin Chrome.                                  |
 
 ---
@@ -191,14 +172,11 @@ Trois workflows GitHub Actions :
 ```
 DETECT/   INFORM/   MEMORISE/   ACT/      # sources Markdown (un .md par phase)
 src/
-  dima_convert.py                         # convertisseur md ↔ json ↔ misp
+  dima_convert.py                         # convertisseur md ↔ json
   tests/test_dima_convert.py              # suite pytest
 docs/
   index.html                              # SPA navigator
   data/<PHASE>.json                       # JSONs servis sur Pages
-misp/
-  galaxies/dima.json                      # descripteur galaxy MISP
-  clusters/dima.json                      # entrées TA + TE
 .github/workflows/                        # CI / CD
 pyproject.toml                            # config uv + pytest
 ```
