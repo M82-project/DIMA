@@ -1,0 +1,993 @@
+{
+  "authors": [
+    "M82 Project"
+  ],
+  "category": "tactic",
+  "description": "DIMA — cadre d'identification de tentatives d'exploitation des biais cognitifs (Detect, Inform, Memorise, Act).",
+  "name": "DIMA",
+  "source": "https://github.com/M82-project/DIMA",
+  "type": "dima",
+  "uuid": "5e6c2f7a-7d3b-5a6d-9d2c-aef4b7d6e1c2",
+  "values": [
+    {
+      "value": "TA0011 - Information préexistante",
+      "description": "Tactique qui utilise des informations préexistantes ou des croyances établies pour capter l'attention de la cible.",
+      "uuid": "73aa5c5e-e1e6-5bea-9769-f84f47146484",
+      "meta": {
+        "external_id": "TA0011",
+        "phase": "DETECT",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0111 - Heuristique de disponibilité",
+      "description": "L'heuristique de disponibilité est un biais cognitif par lequel vous prenez une décision sur la base d'un exemple, d'une information ou d'une expérience récente qui vous est facilement accessible, même si ce n'est pas le meilleur exemple pour éclairer votre décision (Tversky & Kahneman, 1973). [source](https://mentorshow.com/blog/heuristique-de-disponibilite)",
+      "uuid": "4dd2a667-7d6f-5a52-b20d-66b2dc5195a3",
+      "meta": {
+        "external_id": "TE0111",
+        "phase": "DETECT",
+        "tactic": "TA0011",
+        "type": "technique",
+        "refs": [
+          "https://mentorshow.com/blog/heuristique-de-disponibilite"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "73aa5c5e-e1e6-5bea-9769-f84f47146484",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0012 - Information à exposition répétée",
+      "description": "Tactique qui repose sur l'exploitation de la répétition de l'information en vue de faciliter sa détection par la cible.",
+      "uuid": "209a1882-adb0-5794-971b-1dd95879d63f",
+      "meta": {
+        "external_id": "TA0012",
+        "phase": "DETECT",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0121 - Illusion de la fréquence",
+      "description": "Autrement connu sous le nom de phénomène Baader-Meinhof, l'illusion de la fréquence semble être une combinaison de plusieurs biais qui nous amène à pratiquer une forme \"d'attention sélective\". Ce mécanisme est particulièrement à l'œuvre dans la diffusion des thèses complotistes.\n\n\"L'illusion de fréquence consiste, après avoir remarqué une chose une première fois, à avoir tendance à la remarquer plus souvent, ce qui conduit à croire qu'elle se produit plus fréquemment qu'auparavant.\" [source](https://www.psychomedia.qc.ca/psychologie/biais-cognitifs)",
+      "uuid": "5c003c10-2740-5df7-8463-39c8611d22ea",
+      "meta": {
+        "external_id": "TE0121",
+        "phase": "DETECT",
+        "tactic": "TA0012",
+        "type": "technique",
+        "refs": [
+          "https://www.psychomedia.qc.ca/psychologie/biais-cognitifs"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "209a1882-adb0-5794-971b-1dd95879d63f",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0122 - Effet de contexte",
+      "description": "Tendance à analyser une perception par rapport à des situations proches ou similaires. [source](https://en.wikipedia.org/wiki/Context_effect)",
+      "uuid": "e9f40779-bf20-525c-84c2-5cfa059815b4",
+      "meta": {
+        "external_id": "TE0122",
+        "phase": "DETECT",
+        "tactic": "TA0012",
+        "type": "technique",
+        "refs": [
+          "https://en.wikipedia.org/wiki/Context_effect"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "209a1882-adb0-5794-971b-1dd95879d63f",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0013 - Information clivante",
+      "description": "Tactique qui favorise les informations clivantes, étranges ou surprenantes pour capter l'attention de la cible.",
+      "uuid": "69e50d9c-748a-5e76-b568-85641f6be547",
+      "meta": {
+        "external_id": "TA0013",
+        "phase": "DETECT",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0131 - Effet de bizarrerie",
+      "description": "Tactique qui utilise la tendance à remarquer plus facilement les choses étranges.",
+      "uuid": "032d4263-748c-53cc-9589-0bc9b015de18",
+      "meta": {
+        "external_id": "TE0131",
+        "phase": "DETECT",
+        "tactic": "TA0013",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "69e50d9c-748a-5e76-b568-85641f6be547",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0132 - Biais de négativité",
+      "description": "Tactique qui exploite la tendance à accorder plus d'attention et de poids aux expériences négatives qu'aux positives.",
+      "uuid": "f2ab52b6-6fe2-5331-a1ac-9190a21d63b0",
+      "meta": {
+        "external_id": "TE0132",
+        "phase": "DETECT",
+        "tactic": "TA0013",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "69e50d9c-748a-5e76-b568-85641f6be547",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0014 - Ecart à la norme",
+      "description": "Tactique qui repose sur la capacité à détecter les changements dans notre environnement.",
+      "uuid": "a56c6a10-10ee-5d0c-882e-9399622c6c45",
+      "meta": {
+        "external_id": "TA0014",
+        "phase": "DETECT",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0141 - Effet von Restorff",
+      "description": "L'effet Von Restorff, nommé d'après la psychiatre Hedwig von Restorff, ou effet d'isolation, prévoit qu'un objet qui se détache d'autres, « tel un pouce levé de la main », est plus susceptible d'être retenu. Il engendre ainsi un biais cognitif retenant ce qui est inhabituel, qui s'écarte de la normalité attendue. [source](https://fr.wikipedia.org/wiki/Effet_von_Restorff)",
+      "uuid": "4cc98f83-8f22-5b85-914c-6ddac0dfa179",
+      "meta": {
+        "external_id": "TE0141",
+        "phase": "DETECT",
+        "tactic": "TA0014",
+        "type": "technique",
+        "refs": [
+          "https://fr.wikipedia.org/wiki/Effet_von_Restorff"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "a56c6a10-10ee-5d0c-882e-9399622c6c45",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0142 - Biais d'ancrage",
+      "description": "En psychologie, l'ancrage désigne la difficulté à se départir d'une première impression. C'est un biais de jugement qui pousse à se fier à l'information reçue en premier dans une prise de décision. [source](https://fr.wikipedia.org/wiki/Ancrage_(psychologie))",
+      "uuid": "1d68bc88-06f7-546f-a3e0-78e2b34467b7",
+      "meta": {
+        "external_id": "TE0142",
+        "phase": "DETECT",
+        "tactic": "TA0014",
+        "type": "technique",
+        "refs": [
+          "https://fr.wikipedia.org/wiki/Ancrage_(psychologie"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "a56c6a10-10ee-5d0c-882e-9399622c6c45",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0143 - Effet de contraste",
+      "description": "L'effet de contraste est une tactique dans laquelle on va modifier la perception d'un fait en favorisant la comparaison avec un autre précédemment observé. C'est un phénomène psychologique dans lequel la perception d'un objet ou d'une expérience est modifiée en fonction de sa comparaison avec un autre objet ou expérience récemment observé. [source](https://biais-cognitif.com/biais/effet-de-contraste/)",
+      "uuid": "fe1a1937-ecac-5cab-a544-10114e8961ad",
+      "meta": {
+        "external_id": "TE0143",
+        "phase": "DETECT",
+        "tactic": "TA0014",
+        "type": "technique",
+        "refs": [
+          "https://biais-cognitif.com/biais/effet-de-contraste/"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "a56c6a10-10ee-5d0c-882e-9399622c6c45",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0015 - Détail signifiant",
+      "description": "Tactique qui exploite la propension d'une cible à détecter un détail et à lui donner du sens.",
+      "uuid": "3d90eb88-1545-546b-b6b2-355f2edecdf2",
+      "meta": {
+        "external_id": "TA0015",
+        "phase": "DETECT",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0151 - Biais de distinction",
+      "description": "Technique qui repose sur le fait que nous avons tendance à surévaluer les différences entre deux options lorsque nous les examinons ensemble. Cette technique privilégie donc la proposition d'options à comparer.",
+      "uuid": "40196b7c-d8cb-5df1-a091-03690f96914e",
+      "meta": {
+        "external_id": "TE0151",
+        "phase": "DETECT",
+        "tactic": "TA0015",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "3d90eb88-1545-546b-b6b2-355f2edecdf2",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0152 - Loi de Weber-Fechner",
+      "description": "Selon cette loi, plus l'intensité du stimulus est élevée, plus la DJJ (différence juste perceptible) est importante. Autrement dit, pour percevoir une différence, il faut une variation plus importante de l'intensité du stimulus lorsque celui-ci est déjà intense. Cette technique va donc adapter l'intensité de l'information au contexte initial. Elle peut en outre être utilisée pour \"noyer le poisson\". En clair, en sur-exposant les cibles avec un sujet ou une information, vous rendez tout changement plus coûteux.",
+      "uuid": "e82856e0-8a68-53a3-a2c1-2fba27b82333",
+      "meta": {
+        "external_id": "TE0152",
+        "phase": "DETECT",
+        "tactic": "TA0015",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "3d90eb88-1545-546b-b6b2-355f2edecdf2",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0153 - Clickbait",
+      "description": "Un piège à clics (en anglais clickbait : « appât à clics »), appelé vulgairement une pute à clics, pute-à-clics ou putaclic, est un contenu web destiné exclusivement à attirer le maximum de passages d'internautes afin de générer des revenus publicitaires en ligne. Il a pour but de rapporter de l'argent au créateur de l'article. Pour ce faire, celui-ci s'appuie sur un titre racoleur, voire mensonger, et sur des éléments sensationnels ou émotionnels au détriment de la qualité ou de l'exactitude, basculant éventuellement vers la fausse information. Le piège à clics sert à attirer les clics à peu de frais et à encourager le partage de son contenu sur les réseaux sociaux. [source](https://fr.wikipedia.org/wiki/Pi%C3%A8ge_%C3%A0_clics)",
+      "uuid": "a23b6348-0577-5519-8152-0bc7b3be9823",
+      "meta": {
+        "external_id": "TE0153",
+        "phase": "DETECT",
+        "tactic": "TA0015",
+        "type": "technique",
+        "refs": [
+          "https://fr.wikipedia.org/wiki/Pi%C3%A8ge_%C3%A0_clics"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "3d90eb88-1545-546b-b6b2-355f2edecdf2",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0021 - Création d'un motif",
+      "description": "Tactique qui permet de mettre en récit une information reçue, de l'intégrer dans un contexte préexistant.",
+      "uuid": "0c615b30-bcc2-5141-b778-9dd6104868a3",
+      "meta": {
+        "external_id": "TA0021",
+        "phase": "INFORM",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0211 - Biais de corrélation illusoire",
+      "description": "Le biais de corrélation illusoire est un biais cognitif qui consiste à imaginer un lien entre deux évènements ou deux types d'évènements alors qu'il n'y en a pas ou à exagérer ce lien. Autres formulations possibles : biais de fausse corrélation ou biais de corrélation trompeuse.",
+      "uuid": "fec42808-fb78-5bf6-a14d-d338c0a542b0",
+      "meta": {
+        "external_id": "TE0211",
+        "phase": "INFORM",
+        "tactic": "TA0021",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "0c615b30-bcc2-5141-b778-9dd6104868a3",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0212 - Biais de la preuve anecdotique",
+      "description": "Utilisation de preuves anecdotiques pour nourrir un raisonnement. Les preuves anecdotiques sont des preuves tirées d'anecdotes, c'est-à-dire des preuves recueillies de façon occasionnelle ou informelle, s'appuyant fortement ou entièrement sur des témoignages personnels.",
+      "uuid": "29277c14-b502-5d2d-8744-27638863785c",
+      "meta": {
+        "external_id": "TE0212",
+        "phase": "INFORM",
+        "tactic": "TA0021",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "0c615b30-bcc2-5141-b778-9dd6104868a3",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0213 - Illusion des séries",
+      "description": "Tendance à percevoir à tort de fausses séquences ou coïncidences significatives dans des données aléatoires. [source](https://biais-cognitif.com/biais/illusion-des-series/)",
+      "uuid": "71eec4c4-ce41-5590-8bed-c9e2ea40a54f",
+      "meta": {
+        "external_id": "TE0213",
+        "phase": "INFORM",
+        "tactic": "TA0021",
+        "type": "technique",
+        "refs": [
+          "https://biais-cognitif.com/biais/illusion-des-series/"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "0c615b30-bcc2-5141-b778-9dd6104868a3",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0022 - Généralisation et renforcement de stéréotypes",
+      "description": "Tactique qui vise à simplifier une ou des informations perçues pour les rendre acceptables et/ou intelligibles par la cible.",
+      "uuid": "f6e98533-a70c-575a-8579-c832959a6e7a",
+      "meta": {
+        "external_id": "TA0022",
+        "phase": "INFORM",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0221 - Effet de retournement",
+      "description": "Tendance à renforcer ses croyances préexistantes lorsqu'on est confronté à des informations contradictoires, malgré des preuves contraires.",
+      "uuid": "96bb149f-d5ad-539b-99fe-bb23389e9bfa",
+      "meta": {
+        "external_id": "TE0221",
+        "phase": "INFORM",
+        "tactic": "TA0022",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "f6e98533-a70c-575a-8579-c832959a6e7a",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0222 - Biais de confirmation",
+      "description": "Le biais de confirmation, également dénommé biais de confirmation d'hypothèse, est un mécanisme cognitif qui consiste à privilégier les informations confirmant ses idées préconçues ou ses hypothèses, ou à accorder moins de poids aux hypothèses et informations jouant en défaveur de ses conceptions, ce qui se traduit par une réticence à changer d'avis.",
+      "uuid": "f3dd24a5-5f21-5f82-88f2-29469527fb23",
+      "meta": {
+        "external_id": "TE0222",
+        "phase": "INFORM",
+        "tactic": "TA0022",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "f6e98533-a70c-575a-8579-c832959a6e7a",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0023 - Supériorité familière",
+      "description": "Tactique qui permet de valoriser une information aux yeux de la cible par exploitation des proximités.",
+      "uuid": "3bcadaab-40ab-5d11-91bd-59ee91e6abaa",
+      "meta": {
+        "external_id": "TA0023",
+        "phase": "INFORM",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0231 - Biais d'homogénéité",
+      "description": "Ce biais nous pousse à croire que les individus d'un groupe auquel nous n'appartenons pas sont tous semblables, tandis que nous percevons plus de diversité dans notre propre groupe.",
+      "uuid": "88e591bd-2a17-5b4d-920b-e01a301e5c39",
+      "meta": {
+        "external_id": "TE0231",
+        "phase": "INFORM",
+        "tactic": "TA0023",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "3bcadaab-40ab-5d11-91bd-59ee91e6abaa",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0232 - Biais de la route connue",
+      "description": "Tendance à écarter les informations qui s'éloignent de ce que l'on connaît par ailleurs.",
+      "uuid": "8575c5d0-f70c-56b5-9680-78b8b2284f2d",
+      "meta": {
+        "external_id": "TE0232",
+        "phase": "INFORM",
+        "tactic": "TA0023",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "3bcadaab-40ab-5d11-91bd-59ee91e6abaa",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0024 - Simplification",
+      "description": "Tactique qui simplifie les concepts et favorise les ordres de grandeur pour faciliter l'acceptabilité d'une information.",
+      "uuid": "f13047a3-0a7d-5a19-911e-40444cd33011",
+      "meta": {
+        "external_id": "TA0024",
+        "phase": "INFORM",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0241 - Biais de la somme nulle",
+      "description": "Le biais de la somme nulle est un biais cognitif associé à la pensée à somme nulle ; c'est la tendance des gens à juger intuitivement qu'une situation est à somme nulle, même si ce n'est pas le cas. Ce biais favorise les erreurs à somme nulle, les fausses croyances selon lesquelles les situations sont à somme nulle. De telles erreurs peuvent entraîner de mauvais jugements et de mauvaises décisions. [source](https://fr.wikipedia.org/wiki/Pens%C3%A9e_%C3%A0_somme_nulle)",
+      "uuid": "24966089-d624-5a3c-8944-971309b87af0",
+      "meta": {
+        "external_id": "TE0241",
+        "phase": "INFORM",
+        "tactic": "TA0024",
+        "type": "technique",
+        "refs": [
+          "https://fr.wikipedia.org/wiki/Pens%C3%A9e_%C3%A0_somme_nulle"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "f13047a3-0a7d-5a19-911e-40444cd33011",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0242 - Biais de normalité",
+      "description": "Le biais de normalité est un biais cognitif qui conduit les individus à sous-estimer, minimiser voire nier la probabilité, la gravité ou la réalité d'un événement inhabituel, extrême ou catastrophique, en supposant que les choses continueront à se dérouler comme d'habitude. Il repose sur l'idée implicite que le futur ressemblera toujours au passé, que les perturbations majeures sont peu probables ou transitoires, ou qu'elles n'arrivent qu'aux autres.",
+      "uuid": "a503db26-6e59-5600-ba3b-84f60f91b423",
+      "meta": {
+        "external_id": "TE0242",
+        "phase": "INFORM",
+        "tactic": "TA0024",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "f13047a3-0a7d-5a19-911e-40444cd33011",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0025 - Auto-référence",
+      "description": "Tactique qui exploite le fait que la cible pense que ses interlocuteurs ont le même niveau de connaissance et partagent des références communes.",
+      "uuid": "02c22f8e-94dc-54f2-9cf2-1de5932c2414",
+      "meta": {
+        "external_id": "TA0025",
+        "phase": "INFORM",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0251 - Effet de faux consensus",
+      "description": "L'effet de consensus fallacieux, également connu sous le nom de biais de consensus, est un préjugé cognitif omniprésent qui amène les gens à « voir leurs propres choix comportementaux et jugements comme relativement communs et appropriés aux circonstances existantes ». En d'autres termes, ils supposent que leurs qualités personnelles, leurs caractéristiques, leurs croyances et leurs actions sont relativement répandues par la population générale. Ce faux consensus est important car il augmente l'estime de soi (effet de confiance). Il peut être dérivé d'un désir de se conformer et d'être aimé par d'autres dans un environnement social. [source](https://en.wikipedia.org/wiki/False_consensus_effect)",
+      "uuid": "33e346ad-03f4-5641-b209-99671df27a43",
+      "meta": {
+        "external_id": "TE0251",
+        "phase": "INFORM",
+        "tactic": "TA0025",
+        "type": "technique",
+        "refs": [
+          "https://en.wikipedia.org/wiki/False_consensus_effect"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "02c22f8e-94dc-54f2-9cf2-1de5932c2414",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0026 - Projection temporelle",
+      "description": "Tactique qui s'appuie sur les souvenirs (réels ou forgés) pour crédibiliser un discours ou une information.",
+      "uuid": "4d0bfeda-b9cc-5cbf-9f0a-f83d9914489b",
+      "meta": {
+        "external_id": "TA0026",
+        "phase": "INFORM",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0261 - Biais rétrospectif",
+      "description": "Le biais rétrospectif ou déterminisme rampant est la tendance commune des gens à percevoir les événements passés comme ayant été plus prévisibles qu'ils ne l'étaient. Après qu'un événement se soit produit, les gens pensent souvent qu'ils auraient prédit ou peut-être même auraient su avec un degré élevé de certitude ce que le résultat de l'événement aurait été avant que l'événement ne se soit produit. [source](https://en.wikipedia.org/wiki/Hindsight_bias)\n\n## Illustration\nLe biais rétrospectif est utilisé dans la diffusion de nombreuses théories conspirationnistes pour expliquer un événement. Ce biais surestime la présence de signes ou de signaux faibles qui auraient dû conduire à une prise de décision. En manipulation de l'information, ce biais est utilisé pour favoriser les discours d'analyse de situations post-événement en mettant en avant de prétendus signes avant-coureurs. Le narratif repose alors sur des formulations simples qui s'appuient sur des événements réels ou forgés.",
+      "uuid": "cfd67c28-242a-5f2f-b0a8-bd0e87b691a9",
+      "meta": {
+        "external_id": "TE0261",
+        "phase": "INFORM",
+        "tactic": "TA0026",
+        "type": "technique",
+        "refs": [
+          "https://en.wikipedia.org/wiki/Hindsight_bias"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "4d0bfeda-b9cc-5cbf-9f0a-f83d9914489b",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0031 - Renforcement indirect",
+      "description": "Tactique qui favorise la mémorisation et la construction de souvenirs par renforcement de sources secondaires.",
+      "uuid": "0d8f7b7d-865f-594e-8e76-2220123fec73",
+      "meta": {
+        "external_id": "TA0031",
+        "phase": "MEMORISE",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0312 - Biais de confusion de source",
+      "description": "",
+      "uuid": "cc8afad2-30b2-5c31-ace2-1f8e8e9009e6",
+      "meta": {
+        "external_id": "TE0312",
+        "phase": "MEMORISE",
+        "tactic": "TA0031",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "0d8f7b7d-865f-594e-8e76-2220123fec73",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0313 - Effet d'espacement",
+      "description": "",
+      "uuid": "42d6580e-0d4e-5f93-a45d-ab98804d3d4e",
+      "meta": {
+        "external_id": "TE0313",
+        "phase": "MEMORISE",
+        "tactic": "TA0031",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "0d8f7b7d-865f-594e-8e76-2220123fec73",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0314 - Effet de suggestion",
+      "description": "",
+      "uuid": "e339300d-8ce4-5192-8bd7-fb3568d23fe7",
+      "meta": {
+        "external_id": "TE0314",
+        "phase": "MEMORISE",
+        "tactic": "TA0031",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "0d8f7b7d-865f-594e-8e76-2220123fec73",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0315 - Effet de génération",
+      "description": "[source](https://en.wikipedia.org/wiki/Generation_effect)",
+      "uuid": "2664ac63-a01a-5fcd-949a-3b03f8f0e47d",
+      "meta": {
+        "external_id": "TE0315",
+        "phase": "MEMORISE",
+        "tactic": "TA0031",
+        "type": "technique",
+        "refs": [
+          "https://en.wikipedia.org/wiki/Generation_effect"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "0d8f7b7d-865f-594e-8e76-2220123fec73",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0032 - Renforcement pré-existant",
+      "description": "Tactique qui favorise la mémorisation d'une information en s'appuyant sur des stéréotypes ou des croyances pré-existantes.",
+      "uuid": "170fbac4-bc4e-5ef7-a917-f85189ef9369",
+      "meta": {
+        "external_id": "TA0032",
+        "phase": "MEMORISE",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0321 - Stéréotype implicite",
+      "description": "Le stéréotype implicite désigne des associations automatiques et inconscientes entre des groupes sociaux et des traits ou comportements spécifiques. Ces biais influencent nos jugements et interactions, souvent sans que nous en soyons conscients, et peuvent perpétuer des inégalités. [source](https://en.wikipedia.org/wiki/Implicit_stereotype)",
+      "uuid": "d0eea563-40fa-56f0-b478-e6360d70d395",
+      "meta": {
+        "external_id": "TE0321",
+        "phase": "MEMORISE",
+        "tactic": "TA0032",
+        "type": "technique",
+        "refs": [
+          "https://en.wikipedia.org/wiki/Implicit_stereotype"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "170fbac4-bc4e-5ef7-a917-f85189ef9369",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0322 - Effacement négatif",
+      "description": "[source](https://en.wikipedia.org/wiki/Fading_affect_bias)",
+      "uuid": "516f4fec-dbf1-51a0-b1b8-167950b232a1",
+      "meta": {
+        "external_id": "TE0322",
+        "phase": "MEMORISE",
+        "tactic": "TA0032",
+        "type": "technique",
+        "refs": [
+          "https://en.wikipedia.org/wiki/Fading_affect_bias"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "170fbac4-bc4e-5ef7-a917-f85189ef9369",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0033 - Exposition de contenus",
+      "description": "Tactique qui favorise la surexposition à une information pour favoriser sa mémorisation.",
+      "uuid": "c6b8a62e-55d2-50e9-b2d1-fe112783d9db",
+      "meta": {
+        "external_id": "TA0033",
+        "phase": "MEMORISE",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0331 - Effet de récence",
+      "description": "L'effet de récence est un biais cognitif où les informations les plus récentes reçues par une personne ont un impact disproportionné sur sa mémoire et ses décisions. Cet effet est souvent comparé à l'effet de primauté, qui désigne la mémorisation préférentielle des premières informations. Alors que l'effet de primauté concerne l'ancrage des premières informations dans la mémoire à long terme, l'effet de récence reflète la persistance des dernières informations dans la mémoire à court terme. [source](https://biais-cognitif.com/biais/effet-de-recence/)",
+      "uuid": "7335bbb8-4459-5e6c-b7a9-4f90a09bd7be",
+      "meta": {
+        "external_id": "TE0331",
+        "phase": "MEMORISE",
+        "tactic": "TA0033",
+        "type": "technique",
+        "refs": [
+          "https://biais-cognitif.com/biais/effet-de-recence/"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "c6b8a62e-55d2-50e9-b2d1-fe112783d9db",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0332 - Effet de simple exposition",
+      "description": "L'effet de simple exposition, identifié par le psychologue Robert Zajonc en 1968, se base sur l'idée que la répétition d'exposition à un stimulus augmente notre préférence pour celui-ci. Cette tendance est intrinsèquement liée à notre perception de familiarité et de confort avec ce qui est connu et habituel. Le fondement de ce biais réside dans notre traitement psychologique et émotionnel de la familiarité comme un indicateur de sécurité et de fiabilité.\n\nCe biais peut être brièvement comparé à l'effet de récence (TE0331), où les informations les plus récemment reçues sont les plus influentes. Tandis que l'effet de récence porte sur l'impact des dernières informations sur notre mémoire et notre jugement, l'effet de simple exposition s'attache à la familiarité et à la préférence croissante pour un stimulus à travers des expositions répétées, indépendamment de son contenu ou de sa qualité. [source](https://biais-cognitif.com/biais/effet-de-simple-exposition/)",
+      "uuid": "84e3e29d-98c0-5828-86e4-37039019a1dd",
+      "meta": {
+        "external_id": "TE0332",
+        "phase": "MEMORISE",
+        "tactic": "TA0033",
+        "type": "technique",
+        "refs": [
+          "https://biais-cognitif.com/biais/effet-de-simple-exposition/"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "c6b8a62e-55d2-50e9-b2d1-fe112783d9db",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0333 - Effet de primauté",
+      "description": "L'effet de primauté est un biais cognitif où les premières informations reçues exercent une influence disproportionnée sur la perception et le jugement. Cela peut être comparé, bien que brièvement, à l'effet de récence (TE0331), où les dernières informations présentées ont un impact similaire. L'effet de primauté se distingue par la persistance des premières informations dans la mémoire à long terme, alors que l'effet de récence concerne la mémoire à court terme. [source](https://biais-cognitif.com/biais/effet-de-primaute/)\n\n## Illustration\nCe phénomène est particulièrement utile pour le traitement de l'actualité. La façon dont un sujet est initialement présenté va durablement orienter la manière dont il est reçu et traité par le public. Une erreur de communication initiale est très difficilement rattrapée et place l'interlocuteur en \"défensive\", ce qui nuit à la portée de son discours.",
+      "uuid": "45f7c9c0-238c-5f77-a919-1886458fb2ae",
+      "meta": {
+        "external_id": "TE0333",
+        "phase": "MEMORISE",
+        "tactic": "TA0033",
+        "type": "technique",
+        "refs": [
+          "https://biais-cognitif.com/biais/effet-de-primaute/"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "c6b8a62e-55d2-50e9-b2d1-fe112783d9db",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0041 - Valorisation individuelle",
+      "description": "Tactique qui valorise le jugement personnel et la confiance en soi.",
+      "uuid": "240739fd-1728-560c-845b-be20c657c322",
+      "meta": {
+        "external_id": "TA0041",
+        "phase": "ACT",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0411 - biais d'excès de confiance",
+      "description": "Surestimation de ses propres capacités ou connaissances conduisant à des prises de décision trop rapides ou insuffisamment réfléchies.\n\n## Exemples\n- \"Vous êtes assez intelligent pour comprendre\"\n- \"Avec vos compétences, c'est évident\"\n- \"Vous savez mieux que quiconque ce qu'il faut faire\"",
+      "uuid": "31f7542e-c4ff-5df0-bb72-c8599da93494",
+      "meta": {
+        "external_id": "TE0411",
+        "phase": "ACT",
+        "tactic": "TA0041",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "240739fd-1728-560c-845b-be20c657c322",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0412 - Effet Peltzman (compensation du risque)",
+      "description": "Tendance à prendre plus de risques lorsqu'on se sent protégé ou en sécurité, compensant ainsi les mesures de sécurité mises en place.\n\n## Exemples\n- \"Avec cette protection, vous pouvez y aller sans crainte\"\n- \"C'est sécurisé, alors n'hésitez pas\"\n- \"Le système vous protège, foncez\"",
+      "uuid": "6cc3f6ab-f0f8-54b0-a9f2-94030b275e91",
+      "meta": {
+        "external_id": "TE0412",
+        "phase": "ACT",
+        "tactic": "TA0041",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "240739fd-1728-560c-845b-be20c657c322",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0413 - Supériorité illusoire",
+      "description": "Conviction d'être meilleur, plus intelligent ou plus compétent que la moyenne, créant une confiance excessive dans ses propres jugements.\n\n## Exemples\n- \"Vous n'êtes pas comme les autres\"\n- \"Vous êtes au-dessus de la moyenne\"\n- \"Les gens ordinaires ne comprennent pas, mais vous si\"",
+      "uuid": "ad3e80ff-4893-5a8b-b30d-d89a7e3a0998",
+      "meta": {
+        "external_id": "TE0413",
+        "phase": "ACT",
+        "tactic": "TA0041",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "240739fd-1728-560c-845b-be20c657c322",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0414 - FOMO (fear of missing out)",
+      "description": "Technique qui exploite une forme d'anxiété sociale caractérisée par la peur constante de manquer une nouvelle importante ou tout autre événement donnant une occasion d'interagir socialement. Cette peur de \"rater quelque chose\" incite à agir, et interagir avec les contenus.\n\n## Exemples\n- \"Ne ratez pas cette opportunité unique\"\n- \"Tout le monde en parle, rejoignez le mouvement\"\n- \"Dernière chance de participer\"",
+      "uuid": "501cb5b1-1e55-50d3-9202-b6e27ea8b5df",
+      "meta": {
+        "external_id": "TE0414",
+        "phase": "ACT",
+        "tactic": "TA0041",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "240739fd-1728-560c-845b-be20c657c322",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0042 - Renforcement escalatoire",
+      "description": "Tactique qui favorise la réalisation d'actions déjà engagées.",
+      "uuid": "aff56cf2-d0bf-5cf3-ace2-63556bc5937a",
+      "meta": {
+        "external_id": "TA0042",
+        "phase": "ACT",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0421 - biais des coûts irrécupérables",
+      "description": "Tendance à continuer une activité ou un investissement en raison des ressources (temps, argent, effort) déjà investies, même si l'abandon serait plus rationnel.\n\n## Exemples\n- \"Après tout le temps qu'on y a passé, on ne peut pas abandonner\"\n- \"Vu l'argent déjà investi, il faut continuer\"\n- \"Trop tard pour faire marche arrière maintenant\"\n\n## Références\n- Principe fondamental en économie comportementale\n- Lié à l'aversion aux pertes (Kahneman & Tversky)",
+      "uuid": "fdc7ac45-69e3-5a70-b87a-64f46617f69a",
+      "meta": {
+        "external_id": "TE0421",
+        "phase": "ACT",
+        "tactic": "TA0042",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "aff56cf2-d0bf-5cf3-ace2-63556bc5937a",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0422 - biais d'autorité",
+      "description": "Tendance à accorder plus de crédibilité ou à suivre les directives de personnes perçues comme étant en position d'autorité, même quand ces directives sont questionnables.\n\n## Exemples\n- \"Les experts recommandent...\"\n- \"Selon les autorités...\"\n- \"Des spécialistes renommés affirment...\"\n\n## Références\n- Expérience de Milgram (1963)\n- Principe d'autorité de Cialdini",
+      "uuid": "b5e57637-7a91-58ea-a6fe-256132772dd0",
+      "meta": {
+        "external_id": "TE0422",
+        "phase": "ACT",
+        "tactic": "TA0042",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "aff56cf2-d0bf-5cf3-ace2-63556bc5937a",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0423 - Biais de la preuve sociale artificielle",
+      "description": "Tendance des individus à adopter les comportements des autres en situation d'incertitude. La preuve sociale artificielle cherche à exploiter cette tendance en donnant l'illusion d'un consensus ou d'un comportement massivement partagé. Création d'une illusion de consensus ou de popularité pour influencer la décision individuelle. Exploitation du fait que les gens ont tendance à suivre les actions de la masse.\n\n## Exemples\n- \"Des millions de personnes nous font confiance\"\n- \"Le plus populaire de sa catégorie\"\n- \"Tout le monde utilise ce produit/service\"\n- \"Tendance virale sur les réseaux\"\n\n## Références\n- Principe de preuve sociale de Cialdini\n- Expériences d'Asch sur le conformisme (1951)\n\n## Note\nDifférent de la preuve sociale authentique - ici il y a manipulation ou fabrication des données de popularité.",
+      "uuid": "0a795bd1-2fb1-5b5d-8c00-055fc22af5b2",
+      "meta": {
+        "external_id": "TE0423",
+        "phase": "ACT",
+        "tactic": "TA0042",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "aff56cf2-d0bf-5cf3-ace2-63556bc5937a",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0424 - Biais de rareté",
+      "description": "Valorisation accrue d'une opportunité ou d'un objet perçu comme rare, limité ou difficile à obtenir. La perception de rareté crée un sentiment d'urgence et pousse à l'action immédiate.\n\n## Exemples\n- \"Stock limité : plus que 3 articles disponibles\"\n- \"Offre valable pour les 50 premiers clients\"\n- \"Édition limitée numérotée\"\n- \"Tant que les stocks durent\"\n- \"Accès exclusif réservé aux membres\"\n\n## Fondements psychologiques\n- Principe de rareté de Cialdini (1984)\n- Théorie de la réactance psychologique (Brehm, 1966)\n- Aversion aux pertes (Kahneman & Tversky)\n\n## Références\n- Cialdini, R. B. (2006). *Influence: The Psychology of Persuasion*\n- Worchel, S., Lee, J., & Adewole, A. (1975). \"Effects of supply and demand on ratings of object value\"\n- Lynn, M. (1991). \"Scarcity effects on value: A quantitative review\"\n\n## Contextes fréquents\n- Marketing et e-commerce\n- Collecte de fonds\n- Propagande politique (\"dernière chance de sauver...\")\n- Manipulation sectaire (\"accès limité à la connaissance\")",
+      "uuid": "ff63d62c-8476-5bb0-8670-a9db9ec7ef0f",
+      "meta": {
+        "external_id": "TE0424",
+        "phase": "ACT",
+        "tactic": "TA0042",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "aff56cf2-d0bf-5cf3-ace2-63556bc5937a",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0425 - Pied dans la porte",
+      "description": "Obtenir d'abord un petit engagement initial (facile, peu coûteux) pour ensuite solliciter un engagement plus important. La personne ayant accepté la première demande sera plus encline à accepter la seconde par besoin de cohérence comportementale.\n\n## Exemples\n- \"Commencez par un essai gratuit sans engagement\"\n- \"Il suffit de créer un compte - c'est rapide\"\n- \"Première étape : inscrivez-vous simplement\"\n- \"Juste regarder ne vous engage à rien\"\n- \"Testez gratuitement pendant 7 jours\"\n\n## Fondements psychologiques\n- Étude fondatrice: Freedman & Fraser (1966)\n- Principe de cohérence (Cialdini)\n- Théorie de l'auto-perception (Bem, 1972)\n- Escalade d'engagement progressive\n\n## Références\n- Freedman, J. L., & Fraser, S. C. (1966). \"Compliance without pressure: The foot-in-the-door technique\". *Journal of Personality and Social Psychology*, 4(2), 195-202\n- Burger, J. M. (1999). \"The foot-in-the-door compliance procedure: A multiple-process analysis and review\". *Personality and Social Psychology Review*, 3(4), 303-325\n\n## Processus type\n1. Demande initiale minime (acceptée facilement)\n2. Sentiment d'engagement/cohérence créé\n3. Demande progressive plus importante\n4. Acceptation facilitée par besoin de cohérence\n\n## Contextes fréquents\n- Marketing digital (compte gratuit → essai → abonnement)\n- Recrutement sectaire (conférence → weekend → engagement total)\n- Propagande politique (pétition → meeting → militantisme)\n- Collecte de fonds (micro-don → don régulier → engagement majeur)\n\n## Technique opposée\nPorte au nez (Door-in-the-face) - demande énorme refusée suivie d'une demande raisonnable.",
+      "uuid": "1a654f94-442d-5a92-808c-41ec73c1a04b",
+      "meta": {
+        "external_id": "TE0425",
+        "phase": "ACT",
+        "tactic": "TA0042",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "aff56cf2-d0bf-5cf3-ace2-63556bc5937a",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0426 - Biais de réciprocité",
+      "description": "Sentiment psychologique d'obligation de rendre une faveur, un cadeau ou un service reçu, même s'il n'a pas été sollicité. Cette norme sociale universelle est exploitée pour créer une dette psychologique qui pousse la personne à agir en retour.\n\n## Exemples\n- \"Après tout ce qu'on a fait pour vous\"\n- \"On vous a offert X gratuitement, maintenant...\"\n- \"Nous vous avons aidé, à votre tour de nous soutenir\"\n- \"En retour, vous pourriez faire ce petit geste\"\n- \"C'est la moindre des choses après ce qu'on vous a donné\"\n\n## Fondements psychologiques\n- Premier principe de Cialdini (le plus puissant)\n- Norme sociale universelle (Gouldner, 1960)\n- Dette sociale et obligation psychologique\n- Réciprocité souvent disproportionnée\n\n## Références\n- Cialdini, R. B. (2006). *Influence: The Psychology of Persuasion*\n- Gouldner, A. W. (1960). \"The norm of reciprocity: A preliminary statement\". *American Sociological Review*, 25(2), 161-178\n- Regan, D. T. (1971). \"Effects of a favor and liking on compliance\". *Journal of Experimental Social Psychology*, 7(6), 627-639\n\n## Mécanismes\n1. Don initial (sollicité ou non)\n2. Création d'une dette psychologique\n3. Malaise si \"dette\" non remboursée\n4. Pression pour agir en retour (souvent disproportionnée)\n\n## Contextes fréquents\n- Marketing (échantillons gratuits → achat)\n- Collecte de fonds (cadeau dans courrier → don)\n- Propagande (\"on vous a défendus → soutenez-nous\")\n- Manipulation sectaire (aide initiale → engagement total)\n- Contexte professionnel (\"j'ai couvert ton absence...\")\n\n## Signes de manipulation\n- Don non sollicité créant dette artificielle\n- Rappels constants de ce qui a été donné\n- Culpabilisation si refus\n- Demande disproportionnée par rapport au don",
+      "uuid": "1ea525b5-d8ed-5ed4-b374-d86db8155c59",
+      "meta": {
+        "external_id": "TE0426",
+        "phase": "ACT",
+        "tactic": "TA0042",
+        "type": "technique"
+      },
+      "related": [
+        {
+          "dest-uuid": "aff56cf2-d0bf-5cf3-ace2-63556bc5937a",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TA0043 - Ozaekomi waza (contrôle par immobilisation)",
+      "description": "Tactique qui consiste à favoriser chez une cible l'immobilisme et l'absence d'action.",
+      "uuid": "a51d01ff-f013-5d80-a1fc-96443d93bebe",
+      "meta": {
+        "external_id": "TA0043",
+        "phase": "ACT",
+        "type": "tactic"
+      }
+    },
+    {
+      "value": "TE0431 - Biais d'omission",
+      "description": "Le biais d'omission consiste à considérer que causer éventuellement un tort par une action est pire que causer un tort par l'inaction. Ainsi, le biais d'omission pourrait contribuer à expliquer que, dans l'incertitude, certains choisiront de refuser la vaccination pour leurs enfants.\n\n## Exemples\n- \"Ne rien faire est plus sûr\"\n- \"Mieux vaut laisser faire les choses naturellement\"\n- \"L'inaction évite les erreurs\"\n\n## Référence\n[source](https://www.psychomedia.qc.ca/psychologie/biais-cognitifs)",
+      "uuid": "9455f390-df57-5a3e-bd02-962fae7fe762",
+      "meta": {
+        "external_id": "TE0431",
+        "phase": "ACT",
+        "tactic": "TA0043",
+        "type": "technique",
+        "refs": [
+          "https://www.psychomedia.qc.ca/psychologie/biais-cognitifs"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "a51d01ff-f013-5d80-a1fc-96443d93bebe",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0432 - Biais du statu quo",
+      "description": "Le biais de statu quo est la tendance à préférer laisser les choses telles qu'elles sont, un changement apparaissant comme apportant plus de risques et d'inconvénients que d'avantages possibles. Dans divers domaines, ce biais explique des choix qui ne sont pas les plus rationnels. (Un biais se rapprochant du biais de statu quo est celui de la tendance à la justification du système.)\n\n## Exemples\n- \"Restons-en là, c'est plus sûr\"\n- \"Mieux vaut ne pas changer ce qui marche\"\n- \"Le changement est trop risqué\"\n\n## Référence\n[source](https://www.psychomedia.qc.ca/psychologie/biais-cognitifs)",
+      "uuid": "a51e00f9-6348-5d27-abd9-99d5d8e289d8",
+      "meta": {
+        "external_id": "TE0432",
+        "phase": "ACT",
+        "tactic": "TA0043",
+        "type": "technique",
+        "refs": [
+          "https://www.psychomedia.qc.ca/psychologie/biais-cognitifs"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "a51d01ff-f013-5d80-a1fc-96443d93bebe",
+          "type": "subtechnique-of"
+        }
+      ]
+    },
+    {
+      "value": "TE0433 - Saturation informationnelle",
+      "description": "Technique qui consiste à saturer la cible d'information afin de limiter sa capacité de traitement et in fine paralyser la décision.\n\nLa saturation informationnelle vise à déclencher le processus de \"paralysie de l'analyse\".\n\n## Exemples\n- Trop d'options présentées simultanément\n- Informations contradictoires en masse\n- Complexité artificielle créant confusion\n\n## Références\n- https://fourweekmba.com/fr/paralysie-d%27analyse/\n- https://www.psychomedia.qc.ca/",
+      "uuid": "7afe4497-f2b4-5fa3-b992-48279605b727",
+      "meta": {
+        "external_id": "TE0433",
+        "phase": "ACT",
+        "tactic": "TA0043",
+        "type": "technique",
+        "refs": [
+          "https://fourweekmba.com/fr/paralysie-d%27analyse/",
+          "https://www.psychomedia.qc.ca/"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "a51d01ff-f013-5d80-a1fc-96443d93bebe",
+          "type": "subtechnique-of"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}
