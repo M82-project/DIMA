@@ -212,7 +212,7 @@ def test_roundtrip_preserves_structure() -> None:
 
 
 def test_roundtrip_real_files_if_present() -> None:
-    repo = Path(__file__).resolve().parents[1]
+    repo = Path(__file__).resolve().parents[2]
     phases = [repo / p / f"{p}.md" for p in ("DETECT", "INFORM", "MEMORISE", "ACT")]
     found = [p for p in phases if p.exists()]
     if not found:
