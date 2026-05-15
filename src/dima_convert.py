@@ -56,6 +56,12 @@ PHASES = ("DETECT", "INFORM", "MEMORISE", "ACT")
 MISP_NAMESPACE = uuid.UUID("4dbf1d7a-3b5e-5d4a-9d2f-1c1a5dd2b8f0")
 MISP_GALAXY_UUID = "5e6c2f7a-7d3b-5a6d-9d2c-aef4b7d6e1c2"
 
+
+def _write_text(path: Path, content: str) -> None:
+    """Ecrit un fichier en UTF-8 avec des sauts de ligne LF, peu importe l'OS."""
+    with path.open("w", encoding="utf-8", newline="\n") as fh:
+        fh.write(content)
+
 HEADING_RE = re.compile(
     r"^(?P<hashes>#{1,2})\s+(?P<id>(?:TA|TE)\d+)(?P<sep>\s*[:\-]?\s*)(?P<name>.*?)\s*$"
 )
@@ -221,9 +227,7 @@ def md_to_json(md_path: Path, out_path: Path | None) -> Path:
     md_text = md_path.read_text(encoding="utf-8")
     data = parse_markdown(md_text, phase=_infer_phase(md_path))
     target = out_path or md_path.with_suffix(".json")
-    target.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+    _write_text(target, json.dumps(data, ensure_ascii=False, indent=2) + "\n")
     return target
 
 
@@ -231,7 +235,7 @@ def json_to_md(json_path: Path, out_path: Path | None) -> Path:
     data = json.loads(json_path.read_text(encoding="utf-8"))
     md_text = render_markdown(data)
     target = out_path or json_path.with_suffix(".md")
-    target.write_text(md_text, encoding="utf-8")
+    _write_text(target, md_text)
     return target
 
 
@@ -393,14 +397,8 @@ def md2misp(md_root: Path, out_dir: Path) -> tuple[Path, Path]:
     galaxy_path = galaxies_dir / "dima.json"
     cluster_path = clusters_dir / "dima.json"
 
-    galaxy_path.write_text(
-        json.dumps(to_misp_galaxy(), ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    cluster_path.write_text(
-        json.dumps(to_misp_cluster(parsed), ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    _write_text(galaxy_path, json.dumps(to_misp_galaxy(), ensure_ascii=False, indent=2) + "\n")
+    _write_text(cluster_path, json.dumps(to_misp_cluster(parsed), ensure_ascii=False, indent=2) + "\n")
     return galaxy_path, cluster_path
 
 
