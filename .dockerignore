@@ -1,0 +1,34 @@
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI / IDE / harness metadata
+.github/
+.vscode/
+.idea/
+.claude/
+
+# Python / uv caches and virtualenvs
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Large or unrelated repo content
+DIMA_V7.pdf
+article/
+plugin/
+misp/
+
+# Docs & licensing not needed at build time
+README.md
+LICENSE
+
+# Test outputs
+_regen_misp/

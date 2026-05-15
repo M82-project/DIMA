@@ -1,10 +1,12 @@
 # syntax=docker/dockerfile:1.6
 
 # ---- Stage 1: regenerate the per-phase JSONs from the Markdown sources ----
-FROM python:3.12-alpine AS builder
+# Uses the official uv image (Python 3.12 on Alpine) so the same toolchain
+# is used in every stage. The converter itself depends on stdlib only,
+# so we invoke python directly via `uv run --no-project`.
+FROM ghcr.io/astral-sh/uv:python3.12-alpine AS builder
 WORKDIR /build
 
-# Only stdlib is needed by the converter, no pip install required.
 COPY src/dima_convert.py ./src/dima_convert.py
 COPY DETECT/   ./DETECT/
 COPY INFORM/   ./INFORM/
@@ -12,10 +14,12 @@ COPY MEMORISE/ ./MEMORISE/
 COPY ACT/      ./ACT/
 COPY docs/     ./docs/
 
-RUN python src/dima_convert.py md2json --all -o docs/data
+RUN uv run --no-project python src/dima_convert.py md2json --all -o docs/data
 
 # ---- Stage 2: pytest runner (build standalone with --target tests) ----
-FROM python:3.12-alpine AS tests
+# Pytest version comes from pyproject.toml's [dependency-groups].dev,
+# so the build stays reproducible (no implicit pytest latest).
+FROM ghcr.io/astral-sh/uv:python3.12-alpine AS tests
 WORKDIR /app
 
 COPY pyproject.toml ./
@@ -25,13 +29,14 @@ COPY INFORM/   ./INFORM/
 COPY MEMORISE/ ./MEMORISE/
 COPY ACT/      ./ACT/
 
-RUN pip install --no-cache-dir pytest
+# Synchronise the dev group (pytest) into /app/.venv.
+RUN uv sync --group dev
 
 # Run the suite at build time so `docker build --target tests` fails on regression.
-RUN pytest
+RUN uv run pytest
 
 # And keep the same entrypoint for interactive runs (docker run --rm <image>).
-CMD ["pytest", "-v"]
+CMD ["uv", "run", "pytest", "-v"]
 
 # ---- Stage 3: nginx runtime (default target) ----
 FROM nginxinc/nginx-unprivileged:alpine AS runtime

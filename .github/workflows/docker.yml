@@ -53,6 +53,7 @@ jobs:
           tags: |
             type=ref,event=tag
             type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=sha-,enable=${{ github.event_name == 'workflow_dispatch' }}
 
       - name: Build (and push on tag or main)
         uses: docker/build-push-action@v6
@@ -61,7 +62,7 @@ jobs:
           file: docker/Dockerfile
           target: runtime
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' && steps.meta.outputs.tags != '' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=runtime
@@ -94,6 +95,7 @@ jobs:
           tags: |
             type=ref,event=tag
             type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=sha-,enable=${{ github.event_name == 'workflow_dispatch' }}
 
       - name: Build (linux/amd64 only) and push
         uses: docker/build-push-action@v6
@@ -102,7 +104,7 @@ jobs:
           file: docker/Dockerfile
           target: tests
           platforms: linux/amd64
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' && steps.meta.outputs.tags != '' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=tests
