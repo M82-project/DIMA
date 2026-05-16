@@ -9,11 +9,15 @@ from textwrap import dedent
 import pytest
 
 from dima_convert import (
+    MISP_GALAXY_UUID,
     json_to_md,
     main,
+    md2misp,
     md_to_json,
     parse_markdown,
     render_markdown,
+    to_misp_cluster,
+    to_misp_galaxy,
 )
 
 
@@ -363,6 +367,87 @@ def test_cli_json2md_all_finds_json_in_phase_subdirs(tmp_path: Path) -> None:
 
 def test_cli_md2json_all_no_files_returns_error(tmp_path: Path) -> None:
     code = main(["md2json", "--all", "--root", str(tmp_path), "-o", str(tmp_path / "out")])
+    assert code == 1
+
+
+# ---------- MISP export ---------------------------------------------------
+
+
+def _sample_parsed_phase() -> dict[str, object]:
+    return parse_markdown(
+        dedent(
+            """
+            # TA0011 : Tactique exemple
+            Description tactique.
+
+            ## TE0111 : Technique exemple
+            Description technique. [source](https://example.com/te0111)
+
+            **Exemples:**
+            - "Voici un exemple"
+            """
+        ).strip(),
+        phase="DETECT",
+    )
+
+
+def test_to_misp_galaxy_descriptor_has_fixed_uuid() -> None:
+    g = to_misp_galaxy()
+    assert g["uuid"] == MISP_GALAXY_UUID
+    assert g["name"] == "DIMA"
+    assert g["type"] == "dima"
+
+
+def test_to_misp_cluster_emits_ta_and_te_values_with_relation() -> None:
+    cluster = to_misp_cluster([_sample_parsed_phase()])
+    assert cluster["uuid"] == MISP_GALAXY_UUID
+    values = cluster["values"]
+    assert len(values) == 2
+
+    ta = next(v for v in values if v["meta"]["type"] == "tactic")
+    te = next(v for v in values if v["meta"]["type"] == "technique")
+
+    assert ta["meta"]["external_id"] == "TA0011"
+    assert ta["meta"]["phase"] == "DETECT"
+    assert ta["value"].startswith("TA0011 - ")
+
+    assert te["meta"]["external_id"] == "TE0111"
+    assert te["meta"]["tactic"] == "TA0011"
+    assert te["meta"]["refs"] == ["https://example.com/te0111"]
+    assert te["related"] == [{"dest-uuid": ta["uuid"], "type": "subtechnique-of"}]
+
+
+def test_misp_uuids_are_deterministic() -> None:
+    a = to_misp_cluster([_sample_parsed_phase()])
+    b = to_misp_cluster([_sample_parsed_phase()])
+    assert [v["uuid"] for v in a["values"]] == [v["uuid"] for v in b["values"]]
+
+
+def test_cli_md2misp_writes_galaxy_and_cluster(tmp_path: Path) -> None:
+    for phase in ("DETECT", "INFORM", "MEMORISE", "ACT"):
+        d = tmp_path / phase
+        d.mkdir()
+        (d / f"{phase}.md").write_text(
+            f"# TA0001 : Tactique {phase}\nDesc.\n\n## TE0001 : Tech {phase}\nDesc tech.\n",
+            encoding="utf-8",
+        )
+    out_dir = tmp_path / "misp"
+    code = main(["md2misp", "--root", str(tmp_path), "-o", str(out_dir)])
+    assert code == 0
+
+    galaxy = json.loads((out_dir / "galaxies" / "dima.json").read_text(encoding="utf-8"))
+    cluster = json.loads((out_dir / "clusters" / "dima.json").read_text(encoding="utf-8"))
+    assert galaxy["uuid"] == cluster["uuid"] == MISP_GALAXY_UUID
+    # 4 phases * (1 TA + 1 TE) = 8 values
+    assert len(cluster["values"]) == 8
+    # Each TE should reference its TA via a related entry
+    for v in cluster["values"]:
+        if v["meta"]["type"] == "technique":
+            assert v["related"][0]["type"] == "subtechnique-of"
+
+
+def test_cli_md2misp_no_files_returns_error(tmp_path: Path) -> None:
+    code = main(["md2misp", "--root", str(tmp_path), "-o", str(tmp_path / "misp")])
     assert code == 1
 
 

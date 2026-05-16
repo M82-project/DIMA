@@ -1,0 +1,9 @@
+{
+  "description": "DIMA — cadre d'identification de tentatives d'exploitation des biais cognitifs (Detect, Inform, Memorise, Act).",
+  "icon": "shield-halved",
+  "name": "DIMA",
+  "namespace": "m82-project",
+  "type": "dima",
+  "uuid": "5e6c2f7a-7d3b-5a6d-9d2c-aef4b7d6e1c2",
+  "version": 1
+}

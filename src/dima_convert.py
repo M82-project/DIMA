@@ -10,6 +10,7 @@ Usage:
     python dima_convert.py json2md <fichier.json> [-o sortie.md]
     python dima_convert.py md2json --all [-o dossier_sortie]
     python dima_convert.py json2md --all <dossier_json> [-o dossier_md]
+    python dima_convert.py md2misp [--root .] [-o misp/]
 
 Format JSON produit:
 {
@@ -43,10 +44,23 @@ import argparse
 import json
 import re
 import sys
+import uuid
 from pathlib import Path
 from typing import Any
 
 PHASES = ("DETECT", "INFORM", "MEMORISE", "ACT")
+
+# Namespace UUID fixe pour deriver les UUID des clusters MISP de maniere
+# deterministe (uuid5). Genere une seule fois -- ne pas le modifier sous
+# peine de casser les uuid des clusters deja diffuses.
+MISP_NAMESPACE = uuid.UUID("4dbf1d7a-3b5e-5d4a-9d2f-1c1a5dd2b8f0")
+MISP_GALAXY_UUID = "5e6c2f7a-7d3b-5a6d-9d2c-aef4b7d6e1c2"
+
+
+def _write_text(path: Path, content: str) -> None:
+    """Ecrit un fichier en UTF-8 avec des sauts de ligne LF, peu importe l'OS."""
+    with path.open("w", encoding="utf-8", newline="\n") as fh:
+        fh.write(content)
 
 HEADING_RE = re.compile(
     r"^(?P<hashes>#{1,2})\s+(?P<id>(?:TA|TE)\d+)(?P<sep>\s*[:\-]?\s*)(?P<name>.*?)\s*$"
@@ -213,9 +227,7 @@ def md_to_json(md_path: Path, out_path: Path | None) -> Path:
     md_text = md_path.read_text(encoding="utf-8")
     data = parse_markdown(md_text, phase=_infer_phase(md_path))
     target = out_path or md_path.with_suffix(".json")
-    target.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
-    )
+    _write_text(target, json.dumps(data, ensure_ascii=False, indent=2) + "\n")
     return target
 
 
@@ -223,7 +235,7 @@ def json_to_md(json_path: Path, out_path: Path | None) -> Path:
     data = json.loads(json_path.read_text(encoding="utf-8"))
     md_text = render_markdown(data)
     target = out_path or json_path.with_suffix(".md")
-    target.write_text(md_text, encoding="utf-8")
+    _write_text(target, md_text)
     return target
 
 
@@ -234,6 +246,160 @@ def _iter_phase_md(root: Path) -> list[Path]:
         if candidate.exists():
             found.append(candidate)
     return found
+
+
+def _misp_uuid(slug: str) -> str:
+    return str(uuid.uuid5(MISP_NAMESPACE, slug))
+
+
+_URL_RE = re.compile(r"https?://[^\s)]+")
+_MD_LINK_RE = re.compile(r"\[[^\]]+\]\((https?://[^)\s]+)\)")
+
+
+def _extract_refs(*texts: str) -> list[str]:
+    """Recupere les URLs de descriptions et de sections (links markdown + URLs nues)."""
+    refs: list[str] = []
+    seen: set[str] = set()
+    for t in texts:
+        if not t:
+            continue
+        for m in _MD_LINK_RE.finditer(t):
+            url = m.group(1)
+            if url not in seen:
+                refs.append(url)
+                seen.add(url)
+        # URLs nues (en ignorant celles deja dans un [..](..))
+        without_md_links = _MD_LINK_RE.sub("", t)
+        for m in _URL_RE.finditer(without_md_links):
+            url = m.group(0).rstrip(".,;:!?")
+            if url not in seen:
+                refs.append(url)
+                seen.add(url)
+    return refs
+
+
+def _section_to_text(section: dict[str, Any]) -> str:
+    parts: list[str] = []
+    title = section.get("title", "").strip()
+    if title:
+        parts.append(f"## {title}")
+    text = section.get("text", "").strip()
+    if text:
+        parts.append(text)
+    for item in section.get("items", []) or []:
+        parts.append(f"- {item}")
+    return "\n".join(parts)
+
+
+def _build_description(data: dict[str, Any]) -> str:
+    """Combine la description et les sections en un seul bloc markdown."""
+    parts: list[str] = []
+    desc = (data.get("description") or "").strip()
+    if desc:
+        parts.append(desc)
+    for sec in data.get("sections", []) or []:
+        body = _section_to_text(sec)
+        if body:
+            parts.append(body)
+    return "\n\n".join(parts)
+
+
+def to_misp_cluster(parsed_phases: list[dict[str, Any]]) -> dict[str, Any]:
+    """Construit un cluster MISP a partir des JSON parses de chaque phase."""
+    values: list[dict[str, Any]] = []
+
+    for data in parsed_phases:
+        phase = (data.get("phase") or "").upper()
+        for tactic in data.get("tactics", []):
+            tac_id = tactic["id"]
+            tac_uuid = _misp_uuid(f"dima:{phase}:{tac_id}")
+            tac_refs = _extract_refs(
+                tactic.get("description", ""),
+                *[_section_to_text(s) for s in tactic.get("sections", []) or []],
+            )
+            tac_meta: dict[str, Any] = {
+                "external_id": tac_id,
+                "phase": phase,
+                "type": "tactic",
+            }
+            if tac_refs:
+                tac_meta["refs"] = tac_refs
+            values.append({
+                "value": f"{tac_id} - {tactic.get('name', '').strip()}",
+                "description": _build_description(tactic),
+                "uuid": tac_uuid,
+                "meta": tac_meta,
+            })
+
+            for tech in tactic.get("techniques", []) or []:
+                te_id = tech["id"]
+                te_uuid = _misp_uuid(f"dima:{phase}:{tac_id}:{te_id}")
+                te_refs = _extract_refs(
+                    tech.get("description", ""),
+                    *[_section_to_text(s) for s in tech.get("sections", []) or []],
+                )
+                te_meta: dict[str, Any] = {
+                    "external_id": te_id,
+                    "phase": phase,
+                    "tactic": tac_id,
+                    "type": "technique",
+                }
+                if te_refs:
+                    te_meta["refs"] = te_refs
+                values.append({
+                    "value": f"{te_id} - {tech.get('name', '').strip()}",
+                    "description": _build_description(tech),
+                    "uuid": te_uuid,
+                    "meta": te_meta,
+                    "related": [{
+                        "dest-uuid": tac_uuid,
+                        "type": "subtechnique-of",
+                    }],
+                })
+
+    return {
+        "authors": ["M82 Project"],
+        "category": "tactic",
+        "description": "DIMA — cadre d'identification de tentatives d'exploitation des biais cognitifs (Detect, Inform, Memorise, Act).",
+        "name": "DIMA",
+        "source": "https://github.com/M82-project/DIMA",
+        "type": "dima",
+        "uuid": MISP_GALAXY_UUID,
+        "values": values,
+        "version": 1,
+    }
+
+
+def to_misp_galaxy() -> dict[str, Any]:
+    return {
+        "description": "DIMA — cadre d'identification de tentatives d'exploitation des biais cognitifs (Detect, Inform, Memorise, Act).",
+        "icon": "shield-halved",
+        "name": "DIMA",
+        "namespace": "m82-project",
+        "type": "dima",
+        "uuid": MISP_GALAXY_UUID,
+        "version": 1,
+    }
+
+
+def md2misp(md_root: Path, out_dir: Path) -> tuple[Path, Path]:
+    """Lit les .md des 4 phases et ecrit le couple galaxy+cluster MISP."""
+    paths = _iter_phase_md(md_root)
+    parsed: list[dict[str, Any]] = []
+    for md_path in paths:
+        parsed.append(parse_markdown(md_path.read_text(encoding="utf-8"), phase=md_path.stem))
+
+    galaxies_dir = out_dir / "galaxies"
+    clusters_dir = out_dir / "clusters"
+    galaxies_dir.mkdir(parents=True, exist_ok=True)
+    clusters_dir.mkdir(parents=True, exist_ok=True)
+
+    galaxy_path = galaxies_dir / "dima.json"
+    cluster_path = clusters_dir / "dima.json"
+
+    _write_text(galaxy_path, json.dumps(to_misp_galaxy(), ensure_ascii=False, indent=2) + "\n")
+    _write_text(cluster_path, json.dumps(to_misp_cluster(parsed), ensure_ascii=False, indent=2) + "\n")
+    return galaxy_path, cluster_path
 
 
 def _iter_phase_json(root: Path) -> list[Path]:
@@ -255,6 +421,10 @@ def main(argv: list[str] | None = None) -> int:
     p_md.add_argument("--all", action="store_true", help="Convertit DETECT/INFORM/MEMORISE/ACT")
     p_md.add_argument("--root", default=".", help="Racine du projet DIMA (defaut: .)")
     p_md.add_argument("-o", "--output", help="Fichier ou dossier de sortie")
+
+    p_mp = sub.add_parser("md2misp", help="Exporte les 4 phases en galaxy MISP (galaxies/dima.json + clusters/dima.json)")
+    p_mp.add_argument("--root", default=".", help="Racine du projet DIMA (defaut: .)")
+    p_mp.add_argument("-o", "--output", default="misp", help="Dossier de sortie (defaut: misp/)")
 
     p_js = sub.add_parser("json2md", help="Convertit un .json (ou un dossier de JSON) en Markdown")
     p_js.add_argument("input", nargs="?", help="Fichier .json a convertir")
@@ -284,6 +454,17 @@ def main(argv: list[str] | None = None) -> int:
         out_path = Path(args.output) if args.output else None
         result = md_to_json(in_path, out_path)
         print(f"{in_path} -> {result}")
+        return 0
+
+    if args.cmd == "md2misp":
+        root = Path(args.root)
+        if not _iter_phase_md(root):
+            print(f"Aucun fichier de phase trouve sous {root}", file=sys.stderr)
+            return 1
+        out_dir = Path(args.output)
+        galaxy_path, cluster_path = md2misp(root, out_dir)
+        print(f"galaxy  -> {galaxy_path}")
+        print(f"cluster -> {cluster_path}")
         return 0
 
     if args.cmd == "json2md":
