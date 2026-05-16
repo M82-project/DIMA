@@ -19,6 +19,7 @@ Source of truth: one Markdown file per phase, under [`DETECT/`](DETECT/),
 | Lire le détail d'une phase                    | `DETECT/DETECT.md`, `INFORM/INFORM.md`, `MEMORISE/MEMORISE.md`, `ACT/ACT.md` |
 | Convertir Markdown ↔ JSON                     | Section [Convertisseur Python](#convertisseur-python) ci-dessous           |
 | Bâtir un rapport de campagne PDF / JSON       | Section [Rapport de campagne](#rapport-de-campagne) ci-dessous             |
+| Auto-héberger le navigateur (Docker)          | Section [Image Docker](#image-docker) ci-dessous                           |
 
 ---
 
@@ -153,6 +154,66 @@ uv sync --group dev    # premier lancement
 uv run pytest          # parser, round-trip, CLI
 ```
 
+Une image Docker dédiée permet aussi de lancer la suite sans installer
+Python (voir [Image Docker](#image-docker)).
+
+---
+
+## Image Docker
+
+Le SPA se déploie clé en main via une image GHCR construite par la CI :
+
+```bash
+# Récupère la dernière version et la sert sur http://localhost:8080
+docker run --rm -p 8080:8080 ghcr.io/m82-project/dima:latest
+```
+
+Une **image-sœur** embarque pytest et le code source pour faire tourner
+les tests dans un environnement reproductible :
+
+```bash
+# Joue toute la suite
+docker run --rm ghcr.io/m82-project/dima:latest-tests
+
+# Filtre, mode verbeux, etc. (le CMD par défaut est `pytest -v`)
+docker run --rm ghcr.io/m82-project/dima:latest-tests pytest -v -k roundtrip
+```
+
+### Tags publiés
+
+| Évènement                | Image runtime                       | Image tests                          |
+|--------------------------|-------------------------------------|--------------------------------------|
+| push sur `main`          | `ghcr.io/m82-project/dima:latest`   | `ghcr.io/m82-project/dima:latest-tests` |
+| push d'un tag `v1.2.3`   | `ghcr.io/m82-project/dima:v1.2.3`   | `ghcr.io/m82-project/dima:v1.2.3-tests` |
+
+- L'image runtime est **multi-arch** (`linux/amd64` + `linux/arm64`).
+- L'image tests est `linux/amd64` uniquement (pas la peine d'émuler arm64
+  juste pour pytest).
+- Les deux flux ne s'écrasent jamais : un merge sur `main` rafraîchit
+  `:latest`, un tag `vX.Y.Z` publie cette version sans toucher à `:latest`.
+
+### Construire localement
+
+```bash
+# Image runtime
+docker build -f docker/Dockerfile -t dima:dev .
+docker run --rm -p 8080:8080 dima:dev
+
+# Image tests (le pytest s'exécute pendant le build : échec = build cassé)
+docker build --target tests -f docker/Dockerfile -t dima-tests:dev .
+docker run --rm dima-tests:dev
+```
+
+Le `Dockerfile` est multi-stage :
+
+1. `builder` — regénère `docs/data/*.json` depuis les `.md` sources avec
+   le script Python (stdlib only, pas de `pip install` dans cette étape).
+2. `tests` — installe pytest et joue la suite. Le `RUN pytest` casse le
+   build si un test échoue.
+3. `runtime` — `nginxinc/nginx-unprivileged:alpine` qui sert sur le port
+   **8080** avec un [`nginx.conf`](docker/nginx.conf) custom (gzip,
+   no-cache HTML/JSON, cache long sur assets statiques).
+
 ---
 
 ## CI / CD
@@ -163,6 +224,7 @@ Workflows GitHub Actions :
 |------------------------------------------------|-------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | [`tests.yml`](.github/workflows/tests.yml)     | push `main`, PR `main`                                      | Exécute pytest sur Python 3.10 / 3.11 / 3.12.                                                 |
 | [`pages.yml`](.github/workflows/pages.yml)     | push `main` touchant `docs/`, les `.md` ou le script        | Régénère `docs/data/*.json` depuis les `.md` puis déploie `docs/` sur GitHub Pages.            |
+| [`docker.yml`](.github/workflows/docker.yml)   | push `main`, tag `v*`, PR touchant `docker/` ou les sources | Build & push runtime (multi-arch) et tests (amd64) vers GHCR — voir [Image Docker](#image-docker). |
 | [`create-release.yml`](.github/workflows/create-release.yml) | tag `v*`                                          | Publie la release et attache l'archive ZIP du plugin Chrome.                                  |
 
 ---
@@ -177,6 +239,9 @@ src/
 docs/
   index.html                              # SPA navigator
   data/<PHASE>.json                       # JSONs servis sur Pages
+docker/
+  Dockerfile                              # multi-stage : builder + tests + runtime
+  nginx.conf                              # config nginx servant la SPA
 .github/workflows/                        # CI / CD
 pyproject.toml                            # config uv + pytest
 ```
