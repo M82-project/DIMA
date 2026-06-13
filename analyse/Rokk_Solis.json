@@ -1,0 +1,178 @@
+{
+  "title": "Rapport DIMA",
+  "date": "",
+  "notes": "",
+  "generated_at": "2026-06-13T08:41:00.121Z",
+  "techniques": [
+    {
+      "id": "TE0121",
+      "name": "Illusion de la fréquence",
+      "phase": "DETECT",
+      "tactic_id": "TA0012",
+      "tactic_name": "Information à exposition répétée",
+      "description": "Autrement connu sous le nom de phénomène Baader-Meinhof, l'illusion de la fréquence semble être une combinaison de plusieurs biais qui nous amène à pratiquer une forme \"d'attention sélective\". Ce mécanisme est particulièrement à l'œuvre dans la diffusion des thèses complotistes.\n\n\"L'illusion de fréquence consiste, après avoir remarqué une chose une première fois, à avoir tendance à la remarquer plus souvent, ce qui conduit à croire qu'elle se produit plus fréquemment qu'auparavant.\" [source](https://www.psychomedia.qc.ca/psychologie/biais-cognitifs)",
+      "sections": [],
+      "observation": "Les accusations contre les candidats LFI sont diffusées simultanément sur 6 sites, 4 plateformes et via des centaines de comptes coordonnés. Un électeur croisant ces contenus sur X, puis Facebook, puis sous forme de tracts dans sa rue perçoit une fréquence élevée qui renforce la crédibilité apparente des accusations sans aucune vérification. Le déploiement multi-actifs crée artificiellement l'illusion Baader-Meinhof : 'cette affaire est partout, donc elle doit être vraie'."
+    },
+    {
+      "id": "TE0131",
+      "name": "Effet de bizarrerie",
+      "phase": "DETECT",
+      "tactic_id": "TA0013",
+      "tactic_name": "Information clivante",
+      "description": "Tactique qui utilise la tendance à remarquer plus facilement les choses étranges.",
+      "sections": [],
+      "observation": "La mise en scène de deux écosystèmes antagonistes — un faux groupe islamiste radical (forsane-alizza.eu) et une fausse association souverainiste catholique (rcn-france.org) qui s'affrontent publiquement — est délibérément inhabituelle et clivante. L'étrangeté de cette confrontation fabriquée capte l'attention précisément parce qu'elle sort de l'ordinaire et génère de l'engagement émotionnel."
+    },
+    {
+      "id": "TE0132",
+      "name": "Biais de négativité",
+      "phase": "DETECT",
+      "tactic_id": "TA0013",
+      "tactic_name": "Information clivante",
+      "description": "Tactique qui exploite la tendance à accorder plus d'attention et de poids aux expériences négatives qu'aux positives.",
+      "sections": [],
+      "observation": "Le choix délibéré d'accusations criminelles à valence extrêmement négative (viol pour Delogu, pédophilie et soutien au terrorisme pour Piquemal) exploite le biais de négativité : ces informations captent l'attention plus durablement et restent mémorisées avec plus d'intensité que les démentis. L'asymétrie est structurelle : l'accusation diffuse en quelques heures, le démenti ne rattrape jamais complètement l'effet initial."
+    },
+    {
+      "id": "TE0211",
+      "name": "Biais de corrélation illusoire",
+      "phase": "INFORM",
+      "tactic_id": "TA0021",
+      "tactic_name": "Création d'un motif",
+      "description": "Le biais de corrélation illusoire est un biais cognitif qui consiste à imaginer un lien entre deux évènements ou deux types d'évènements alors qu'il n'y en a pas ou à exagérer ce lien. Autres formulations possibles : biais de fausse corrélation ou biais de corrélation trompeuse.",
+      "sections": [],
+      "observation": "Le site lalternative2026.com liste 108 candidats LFI en les associant à un programme islamiste communautariste (droit religieux, signes religieux dans les services publics). Il n'existe aucun lien réel entre ces candidats et ce programme, mais la juxtaposition crée une corrélation illusoire dans l'esprit du lecteur : 'LFI = communautarisme musulman'. Le biais de corrélation illusoire est ici l'outil principal du volet de discrédit partisan."
+    },
+    {
+      "id": "TE0221",
+      "name": "Effet de retournement",
+      "phase": "INFORM",
+      "tactic_id": "TA0022",
+      "tactic_name": "Généralisation et renforcement de stéréotypes",
+      "description": "Tendance à renforcer ses croyances préexistantes lorsqu'on est confronté à des informations contradictoires, malgré des preuves contraires.",
+      "sections": [],
+      "observation": "Le MOI n'invente pas le stéréotype du communautarisme de LFI — il exploite et amplifie une représentation préexistante dans le débat public français. L'effet de retournement est activé : les préjugés déjà présents chez certains électeurs (LFI accusée de complaisance envers l'islamisme) sont renforcés par un exemple 'confirmatoire' fabriqué. L'opérateur choisit ses vecteurs en fonction des stéréotypes existants, non l'inverse."
+    },
+    {
+      "id": "TE0312",
+      "name": "Biais de confusion de source",
+      "phase": "MEMORISE",
+      "tactic_id": "TA0031",
+      "tactic_name": "Renforcement indirect",
+      "description": "",
+      "sections": [],
+      "observation": "L'usurpation de l'identité de l'association 'Enfance et Partage' (fondée en 1977, 10 000 abonnés réels) pour diffuser de fausses accusations contre Piquemal exploite directement ce biais. Le lecteur retient l'accusation mais confond la source (fausse page créée en février 2026) avec l'organisation légitime. Longtemps après la découverte de la fraude, la mémoire associe le candidat à une mise en cause par une association de protection de l'enfance."
+    },
+    {
+      "id": "TE0314",
+      "name": "Effet de suggestion",
+      "phase": "MEMORISE",
+      "tactic_id": "TA0031",
+      "tactic_name": "Renforcement indirect",
+      "description": "",
+      "sections": [],
+      "observation": "La vidéo du témoignage de 'Sophie' (dos à la caméra, voix modifiée) n'apporte aucune preuve vérifiable — mais la mise en scène suggère un vécu réel et une situation de danger. L'effet de suggestion fait que la forme (émotion apparente, authenticité simulée, peur des représailles évoquée) supplante le fond (absence totale de preuve). La suggestion est renforcée par la capture d'écran d'une prétendue conversation avec Delogu, également fabriquée."
+    },
+    {
+      "id": "TE0321",
+      "name": "Stéréotype implicite",
+      "phase": "MEMORISE",
+      "tactic_id": "TA0032",
+      "tactic_name": "Renforcement pré-existant",
+      "description": "Le stéréotype implicite désigne des associations automatiques et inconscientes entre des groupes sociaux et des traits ou comportements spécifiques. Ces biais influencent nos jugements et interactions, souvent sans que nous en soyons conscients, et peuvent perpétuer des inégalités. [source](https://en.wikipedia.org/wiki/Implicit_stereotype)",
+      "sections": [],
+      "observation": "Le MOI s'appuie sur des représentations implicites préexistantes (élus de gauche impunis, LFI proche de l'islam radical) pour faciliter l'ancrage mémoriel des fausses accusations. Le stéréotype implicite fonctionne comme un sillon cognitif déjà creusé dans lequel le message glisse sans friction. Forsane Alizza a été choisi précisément parce que le nom active des représentations de radicalisme islamiste ancrées depuis 2010-2012."
+    },
+    {
+      "id": "TE0333",
+      "name": "Effet de primauté",
+      "phase": "MEMORISE",
+      "tactic_id": "TA0033",
+      "tactic_name": "Exposition de contenus",
+      "description": "L'effet de primauté est un biais cognitif où les premières informations reçues exercent une influence disproportionnée sur la perception et le jugement. Cela peut être comparé, bien que brièvement, à l'effet de récence (TE0331), où les dernières informations présentées ont un impact similaire. L'effet de primauté se distingue par la persistance des premières informations dans la mémoire à long terme, alors que l'effet de récence concerne la mémoire à court terme. [source](https://biais-cognitif.com/biais/effet-de-primaute/)",
+      "sections": [
+        {
+          "title": "Illustration",
+          "text": "Ce phénomène est particulièrement utile pour le traitement de l'actualité. La façon dont un sujet est initialement présenté va durablement orienter la manière dont il est reçu et traité par le public. Une erreur de communication initiale est très difficilement rattrapée et place l'interlocuteur en \"défensive\", ce qui nuit à la portée de son discours."
+        }
+      ],
+      "observation": "Les 4 sites principaux sont déployés entre le 9 et le 19 février 2026, soit 3 à 5 semaines avant le scrutin. La première information reçue bénéficie d'un ancrage mémoriel supérieur aux démentis publiés ultérieurement. Le timing du déploiement est une exploitation consciente de l'effet de primauté : les accusations s'installent avant que le débat contradictoire puisse s'organiser."
+    },
+    {
+      "id": "TE0422",
+      "name": "biais d'autorité",
+      "phase": "ACT",
+      "tactic_id": "TA0042",
+      "tactic_name": "Renforcement escalatoire",
+      "description": "Tendance à accorder plus de crédibilité ou à suivre les directives de personnes perçues comme étant en position d'autorité, même quand ces directives sont questionnables.",
+      "sections": [
+        {
+          "title": "Exemples",
+          "items": [
+            "\"Les experts recommandent...\"",
+            "\"Selon les autorités...\"",
+            "\"Des spécialistes renommés affirment...\""
+          ]
+        },
+        {
+          "title": "Références",
+          "items": [
+            "Expérience de Milgram (1963)",
+            "Principe d'autorité de Cialdini"
+          ]
+        }
+      ],
+      "observation": "Le placement payant via ABNewswire sur AP News et OpenPR confère une autorité institutionnelle apparente à lalternative2026.com. Une agence de presse comme AP est une figure d'autorité — son nom associé au contenu bascule la perception du lecteur vers la crédibilité, sans que celui-ci vérifie que le placement est commercial et non éditorial. Le biais d'autorité est également activé par l'usurpation d'identité d'organisations légitimes (Enfance et Partage, Forsane Alizza comme groupe 'connu')."
+    },
+    {
+      "id": "TE0431",
+      "name": "Biais d'omission",
+      "phase": "ACT",
+      "tactic_id": "TA0043",
+      "tactic_name": "Ozaekomi waza (contrôle par immobilisation)",
+      "description": "Le biais d'omission consiste à considérer que causer éventuellement un tort par une action est pire que causer un tort par l'inaction. Ainsi, le biais d'omission pourrait contribuer à expliquer que, dans l'incertitude, certains choisiront de refuser la vaccination pour leurs enfants.",
+      "sections": [
+        {
+          "title": "Exemples",
+          "items": [
+            "\"Ne rien faire est plus sûr\"",
+            "\"Mieux vaut laisser faire les choses naturellement\"",
+            "\"L'inaction évite les erreurs\""
+          ]
+        },
+        {
+          "title": "Référence",
+          "text": "[source](https://www.psychomedia.qc.ca/psychologie/biais-cognitifs)"
+        }
+      ],
+      "observation": "L'interpellation directe de Delogu sur X (3 fois, en répondant à ses propres publications) place le candidat dans un dilemme asymétrique exploitant le biais d'omission : ne pas répondre équivaut à une validation tacite de l'accusation aux yeux des observateurs ; répondre amplifie la visibilité de l'accusation. De même, l'envoi de messages WhatsApp aux élus RN au nom de Forsane Alizza exploite le même mécanisme — l'omission de réponse publique peut être interprétée comme une forme de capitulation."
+    },
+    {
+      "id": "TE0433",
+      "name": "Saturation informationnelle",
+      "phase": "ACT",
+      "tactic_id": "TA0043",
+      "tactic_name": "Ozaekomi waza (contrôle par immobilisation)",
+      "description": "Technique qui consiste à saturer la cible d'information afin de limiter sa capacité de traitement et in fine paralyser la décision.\n\nLa saturation informationnelle vise à déclencher le processus de \"paralysie de l'analyse\".",
+      "sections": [
+        {
+          "title": "Exemples",
+          "items": [
+            "Trop d'options présentées simultanément",
+            "Informations contradictoires en masse",
+            "Complexité artificielle créant confusion"
+          ]
+        },
+        {
+          "title": "Références",
+          "items": [
+            "https://fourweekmba.com/fr/paralysie-d%27analyse/",
+            "https://www.psychomedia.qc.ca/"
+          ]
+        }
+      ],
+      "observation": "Le déploiement simultané de 6 sites sur 4 plateformes avec plusieurs centaines de comptes coordonnés produit une saturation délibérée. L'effet cognitif visé est l'immobilisation de la cible (candidats, soutiens, électeurs indécis) : face au volume d'accusations sur autant de fronts, la réponse devient structurellement impossible dans les délais électoraux. C'est la logique d'Ozaekomi waza — contrôler par immobilisation, non par conviction."
+    }
+  ]
+}
